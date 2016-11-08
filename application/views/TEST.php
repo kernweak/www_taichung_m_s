@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' /> -->
-    <title>TEST</title>
+    <title>役男家屬生活扶助系統</title>
     <!-- 最新編譯和最佳化的 CSS -->
     <link rel="stylesheet" href="/0MS/css/bootstrap.css">
     <!-- 選擇性佈景主題 -->
@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="/0MS/css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen.css">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
+    <script src="/0MS/js/jquery-3.1.0.min.js"></script>
 </head>
 
 <body style="overflow: hidden;">
@@ -51,7 +52,7 @@
                                 </ul>
                             </li>
                             <!--<li><a href="#filelist-navcon" role="tab" data-toggle="tab">案件列表 <span class="sr-only">(current)</span></a></li>-->
-                            <li class="dropdown">
+                            <li class="dropdown" id="family-edit-nav">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-users icon"></span>案件編修 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                     <li><a href="#edit-navcon" role="tab" data-toggle="tab">家屬編修</a></li>
@@ -76,7 +77,9 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="$('#Law_1').modal('toggle')">法條參照</a></li>
                                     <li><a href="#" onclick="$('#Law_2').modal('toggle')">地號查地址</a></li>
-                                    <li><a href="#" onclick="$('#Law_3').modal('toggle')">股票查詢</a></li>
+                                    <li><a href="#" onclick="$('#Law_3').modal('toggle')">職類薪資</a></li>
+                                    <li><a href="#" onclick="">農林漁牧技藝</a></li>
+                                    <li><a href="#" onclick="$('#Law_4').modal('toggle')">股票查詢</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">Separated link</a></li>
                                 </ul>
@@ -112,10 +115,13 @@
     
     <?php include('Law_1.php');?>
     <?php include('Law_2.php');?>
+    <?php include('Law_3.php');?>
     <?php include('Stock.php');?>
+    <?php include('add_file_modal.php');?>
+    
 </body>
 <!-- 最新編譯和最佳化的 JavaScript -->
-<script src="/0MS/js/jquery-3.1.0.min.js"></script>
+
 <script src="/0MS/js/bootstrap.min.js"></script>
 <script src="/0MS/extensions/DataTables/jquery.dataTables.js"></script>
 <script src="/0MS/extensions/DataTables/dataTables.bootstrap.js"></script>

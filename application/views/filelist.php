@@ -1,8 +1,8 @@
-<button type="button" class="btn btn-warning btn-sm" style="margin-bottom: 2em;">新增案件</button>
+<a type="button" class="btn btn-warning btn-sm" style="margin-bottom: 2em;" href="#" onclick="$('#Add_file').modal('toggle')">新增案件</a>
 <table id="table_id" class="table table-condensed table-hover">
     <thead>
         <tr>
-            <th style="width: 2.8em;">#</th>
+            
             <th style="width: 8em;">案件文號</th>
             <th style="width: 7em;">承辦機關</th>
             <th style="width: 7em;">役男姓名</th>
@@ -16,7 +16,7 @@
     </thead>
     <tbody>
         <tr>
-            <th scope="row">1</th>
+            
             <td>1030000137</td>
             <td>西屯區公所</td>
             <td>歐陽鋒</td>
@@ -34,7 +34,7 @@
             <td>案二弟有大學甄試入學錄取證明，目前為高中生</td>
         </tr>
         <tr>
-            <th scope="row">2</th>
+            
             <td>1030000139</td>
             <td>大里區公所</td>
             <td>廖添丁</td>
@@ -52,7 +52,7 @@
             <td></td>
         </tr>
         <tr onclick="$('#myModal').modal('toggle')">
-            <th scope="row">3</th>
+            
             <td>1030000140
             </td>
             <td>豐原區公所</td>
@@ -71,7 +71,7 @@
             <td>案父車禍住院中, 04/13入院, 有附診斷證明</td>
         </tr>
         <tr>
-            <th scope="row">4</th>
+            
             <td>1030000142</td>
             <td>神岡區公所</td>
             <td>林平之</td>
@@ -89,7 +89,7 @@
             <td></td>
         </tr>
         <tr>
-            <th scope="row">5</th>
+            
             <td>1030000145</td>
             <td>潭子區公所</td>
             <td>黃飛鴻</td>

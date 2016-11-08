@@ -223,7 +223,7 @@
     }
     .income-total, .property-total{
         width: 8em;
-        height: 6.5em;
+        height: 3.5em;
         position: absolute;
         top: 0em;
         left: 7.5em;
@@ -233,11 +233,11 @@
         color: #3c3f41;
     }
     .property-total{
-        left: 16.5em;
+        left: 15.5em;
     }
     .people-income-total-value, .people-property-total-value {
         position: absolute;
-        top: 3em;
+        top: 2em;
         right: 0em;
         text-align: right;
         width: 7.8em;
@@ -251,9 +251,11 @@
     }
 
     .people-job{
-        width: 100%;
+        width: 16em;
         position: absolute;
-        top: 1.8em;
+        top: 4em;
+        font-size: 1.3em;
+        left: 8em;
     }
     .people-job > div{
         display: inline-block;

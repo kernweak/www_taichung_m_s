@@ -202,6 +202,7 @@
             <div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="0MS/images/people/custom/woman-avatar.svg" /></div>
             <div class="income-total"><div>所得</div><div class="people-income-total-value">22766<img class="svg social-link NTD" src="0MS/images/NTD.svg"></div></div>
             <div class="property-total"><div>財產</div><div class="people-property-total-value">19600<img class="svg social-link NTD" src="0MS/images/NTD.svg"></div></div>
+            <div class="people-job"><input class="people-input-left" placeholder="所得職業" value="工讀生"></div>
             <div class="people-title"><input class="people-input-center" value="二妹"></div>
             <div class="people-name"><input class="people-input-left" value="王菲"></div>
             <div class="people-id"><input class="people-input-left" value="L203578956"></div>
