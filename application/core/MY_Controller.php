@@ -95,7 +95,7 @@ class  MY_Controller  extends  CI_Controller  {
 		$this->session->unset_userdata('organization');
 		$this->session->unset_userdata('department');
 		$this->session->unset_userdata('User_Level');
-		header("Location: http://192.168.1.2:88/"); /* Redirect browser */
+		header("Location: /"); /* Redirect browser */
 		exit();
 	}
 
