@@ -43,6 +43,13 @@ class Area extends MY_Controller {
 
 	public function get_town_by_county(){
 		
+		$this->load->model('area_model');
+		$county = $this->input->post('ADF_county');		
+		$towns = $this->area_model->town_by_county($county);
+		$data['town_list'] = $towns;
+
+		echo json_encode($data);
+		
 	}
 
 	public function get_village_by_town(){
