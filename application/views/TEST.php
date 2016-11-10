@@ -55,8 +55,8 @@
                             <li class="dropdown" id="family-edit-nav">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-users icon"></span>案件編修 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
+                                    <li><a href="#edit-home" role="tab" data-toggle="tab">整體家況</a></li>
                                     <li><a href="#edit-navcon" role="tab" data-toggle="tab">家屬編修</a></li>
-                                    <li><a href="#">整體家況</a></li>
                                     <li><a href="#">儲存</a></li>
                                     <li><a href="#">儲存後關閉</a></li>
                                     <li><a href="#">不儲存關閉</a></li>
@@ -100,6 +100,9 @@
         <div class="tab-content" id="Home_root">
             <div id="filelist-navcon" role="tabpanel" class="tab-pane active fade in nav-container">
                 <?php include('filelist.php');?>
+            </div>
+            <div id="edit-home" role="tabpanel" class="tab-pane fade nav-container">
+                <?php include('people_home.php');?>
             </div>
             <div id="edit-navcon" role="tabpanel" class="tab-pane fade nav-container">
                 <?php include('people_basic.php');?>
