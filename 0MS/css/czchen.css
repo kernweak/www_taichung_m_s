@@ -551,3 +551,26 @@
   .center-total-count{width: 40%;}
   .right-total-count{width: 40%;}
 }
+
+/********************************************************************/
+.PH-label-g{
+    width: 20em; 
+    display: inline-block;
+}
+
+.people_home span{
+    color: black; font-size: 1.1em;
+}
+.people_home label{
+    width: 6em;    
+}
+.people_home{
+    margin:auto;
+    max-width:1200px;
+    background-color: #fdd4a4;
+}
+
+#Add_file select{
+    vertical-align: top;
+    height: 1.8em;
+}

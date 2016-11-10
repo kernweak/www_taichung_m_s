@@ -21,33 +21,41 @@
                     <input type="text" name="ADF-code" id="ADF-code">
                     <button class="button helper-button clear" onclick="$('#ADF-code').val('')"><span class="mif-cross"></span></button>
                 </div>
-                <div class="input-control password full-size" data-role="input">
-                    <label for="ADF-birthday">役男生日:</label>
-                    <input type="text" name="ADF-birthday" id="ADF-birthday" placeholder="7位數民國日期">
-                    <button class="button helper-button clear" onclick="$('#ADF-birthday').val('')"><span class="mif-cross"></span></button>
-                </div>
-                <div class="input-control password full-size" data-role="input">
-                    <label for="ADF-milidate">入伍日期:</label>
-                    <input type="text" name="ADF-milidate" id="ADF-milidate" placeholder="7位數民國日期">
-                    <button class="button helper-button clear" onclick="$('#ADF-milidate').val('')"><span class="mif-cross"></span></button>
-                </div>
-                <div class="input-control password full-size" data-role="input">
-                    <label for="ADF-type">服役軍種:</label>
-                    <!--<input type="text" name="user_password" id="user_password">-->
-                    <select name="ADF-type" id="ADF-type"><option value="陸軍">陸軍</option><option value="海軍">海軍</option><option value="空軍">空軍</option value=""><option value="一般替代役">一般替代役</option><option value="研發替代役">研發替代役</option></select>  
-                </div>
-                <div class="input-control password full-size" data-role="input">
-                    <label for="ADF-status">服役狀態:</label>
-                    <select name="ADF-status" id="ADF-status"><option value="服役中">服役中</option><option value="停役中">停役中</option><option value="已退役">已退役</option></select>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="button primary" id="ADF-submit">新增</button>
-                    <button type="button" class="button link" id="ADF-clear">清除</button>
+
+                <div id="ADF-toggle" style="display: none;">
+                    <div class="input-control password full-size" data-role="input">
+                        <label for="ADF-birthday">役男生日:</label>
+                        <input type="text" name="ADF-birthday" id="ADF-birthday" placeholder="7位數民國日期">
+                        <button class="button helper-button clear" onclick="$('#ADF-birthday').val('')"><span class="mif-cross"></span></button>
+                    </div>
+                    <div class="input-control password full-size" data-role="input">
+                        <label for="ADF-milidate">入伍日期:</label>
+                        <input type="text" name="ADF-milidate" id="ADF-milidate" placeholder="7位數民國日期">
+                        <button class="button helper-button clear" onclick="$('#ADF-milidate').val('')"><span class="mif-cross"></span></button>
+                    </div>
+                    <div class="input-control password full-size" data-role="input">
+                        <label for="ADF-address">戶籍地址:</label>
+                        <select name="ADF-county" id="ADF-county"><option value="66000">臺中市</option></select><select name="ADF-town" id="ADF-town"></select><select name="ADF-village" id="ADF-village"></select><input type="text" name="ADF-address" id="ADF-address" style="width:20em">
+                        <button class="button helper-button clear" onclick="$('#ADF-address').val('')"><span class="mif-cross"></span></button>
+                    </div>
+                    <div class="input-control password full-size" data-role="input">
+                        <label for="ADF-type">服役軍種:</label>
+                        <!--<input type="text" name="user_password" id="user_password">-->
+                        <select name="ADF-type" id="ADF-type"><option value="陸軍">陸軍</option><option value="海軍">海軍</option><option value="空軍">空軍</option value=""><option value="一般替代役">一般替代役</option><option value="研發替代役">研發替代役</option></select>  
+                    </div>
+                    <div class="input-control password full-size" data-role="input">
+                        <label for="ADF-status">服役狀態:</label>
+                        <select name="ADF-status" id="ADF-status"><option value="服役中">服役中</option><option value="停役中">停役中</option><option value="已退役">已退役</option></select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="button primary" id="ADF-submit">新增</button>
+                        <button type="button" class="button link" id="ADF-clear">清除</button>
+                    </div>
                 </div>
                 <hr class="thin"/>
                 <br />
                 <span class="mif-spinner2 mif-ani-spin fade" id="ADF-wait-icon"></span><span id="ADF-Msg">填寫資料</span>
-
+                
 
                 
                 
@@ -61,6 +69,62 @@
 </div>
 <script>
     $(document).ready(function() {
+        $("#Add_file").on('change', 'input', function(event) {
+            event.preventDefault();
+            var string = $(this).val();
+            $(this).val(string.trimall());
+            /* Act on the event */
+        });
+        $("#ADF-code").on('change', function(event) {   //輸入身分證字號後，連線檢查是否已存在
+            if($('#ADF-code').val() == ""){
+                alert("請輸入完整身分證字號!");
+                return;
+            }
+            $("#ADF-wait-icon").addClass('in');
+            $("#ADF-Msg").text('連線檢查中...')
+            $.ajax({
+                url: '/File/check_boy_exist',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    ADF_code        : $("#ADF-code").val()
+                },
+            })
+            .always(function() {
+                console.log("complete");
+                  // remove loading image maybe
+            })
+            .done(function(responsive) {
+                //var result = JSON.parse(responsive);
+                console.log(responsive);
+                $("#MSG").text(responsive['Msg']);
+                $("#MSG").fadeIn('400', function() {        
+                });
+                if (responsive == "已存在"){
+                    $("#ADF-toggle").slideUp('slow');
+                    $("#ADF-Msg").text('役男資料已存在，請利用其他功能產生案件')
+                }else{
+                    $("#ADF-toggle").slideDown('slow');
+                    $("#ADF-Msg").text('新增扶助案件')
+                }
+                $("#ADF-wait-icon").removeClass('in');
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            });
+
+
+
+
+
+
+            
+            /* Act on the event */
+        });
+        
+
+
         $("#ADF-clear").on('click', function(event) {
             event.preventDefault();
             $("#ADF-name").val("");
@@ -77,7 +141,61 @@
             // ADF-status
         });
 
+    $( "#ADF-submit" ).on( "click", function( event ) {
+        event.preventDefault();
+        //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
+        if($('#ADF-name').val() == ""){
+            alert("請先輸入帳號!");
+            return;
+        }
+        if($('#ADF-code').val() == ""){
+            alert("請先輸入身分證字號!");
+            return;
+        }
+        $("#MSG").text("連線中...");
+//console.log( $( this ).serialize() );
+        $.ajax({
+            url: '/file/check_boy_exist',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                ADF_name        : $("#ADF-name").val(),
+                ADF_code        : $("#ADF-code").val(),
+                ADF_birthday    : $("#ADF-birthday").val(),
+                ADF_milidate    : $("#ADF-milidate").val(),
+                ADF_type        : $("#ADF-type").val(),
+                ADF_status      : $("#ADF-status").val()
+            },
+        })
+        .always(function() {
+            console.log("complete");
+              // remove loading image maybe
+        })
+        .done(function(responsive) {
+            //var result = JSON.parse(responsive);
+            console.log(responsive);
+            $("#MSG").text(responsive['Msg']);
+            $("#MSG").fadeIn('400', function() {        
+            });
+            if (responsive['Code'] == 1){
+                console.log("data_get");
+                setTimeout(function(){
+                    
+                    window.location.href="/";
+                 },1000);
+            }else{
 
+            }
+
+            console.log("success");
+        })
+        .fail(function() {
+            console.log("error");
+        });
+      
+      
+
+    });
 
 
 
