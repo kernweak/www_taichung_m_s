@@ -17,13 +17,16 @@ class Area_model extends CI_Model {
 		return $result;
 	}
 
-	function village_by_town($Boy_ID_code){
-		$this->db->select('*');
-		$this->db->from('miliboy_table');
-		$this->db->where('身分證字號', $Boy_ID_code);
-		//$this->db->where('Login_PW', $Login_PW);
+	function village_by_town($Town_code){
+		$this->db->select('Village_id, Village_name');
+		$this->db->from('area_village');
+		$this->db->where('Village_Town_code', $Town_code);
+		
 		$query = $this->db->get();
-		return $query;
+		$result = $query->result();
+		log_message('debug', 'village query result:');
+		log_message('debug', print_r($result,true));		
+		return $result;		
 	}
 
 
