@@ -35,7 +35,7 @@
                     </div>
                     <div class="input-control password full-size" data-role="input">
                         <label for="ADF-address">戶籍地址:</label>
-                        <select name="ADF-county" id="ADF-county"><option value="66000">臺中市</option></select><select name="ADF-town" id="ADF-town"></select><select name="ADF-village" id="ADF-village"></select><input type="text" name="ADF-address" id="ADF-address" style="width:20em">
+                        <select name="ADF-county" id="ADF-county"><option value="66000">臺中市</option></select><select name="ADF-town" id="ADF-town"></select><select name="ADF-village" id="ADF-village" style="width: 5.6em;"></select><input type="text" name="ADF-address" id="ADF-address" style="width:20em">
                         <button class="button helper-button clear" onclick="$('#ADF-address').val('')"><span class="mif-cross"></span></button>
                     </div>
                     <div class="input-control password full-size" data-role="input">
@@ -108,6 +108,11 @@
                     $("#ADF-Msg").text('新增扶助案件')
                 }
                 $("#ADF-wait-icon").removeClass('in');
+                refresh_town();
+                // setTimeout(function(){            
+                //     refresh_village();
+                // },1000);
+                
                 console.log("success");
             })
             .fail(function() {
@@ -141,63 +146,131 @@
             // ADF-status
         });
 
-    $( "#ADF-submit" ).on( "click", function( event ) {
-        event.preventDefault();
-        //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
-        if($('#ADF-name').val() == ""){
-            alert("請先輸入帳號!");
-            return;
-        }
-        if($('#ADF-code').val() == ""){
-            alert("請先輸入身分證字號!");
-            return;
-        }
-        $("#MSG").text("連線中...");
-//console.log( $( this ).serialize() );
-        $.ajax({
-            url: '/file/check_boy_exist',
-            type: 'post',
-            dataType: 'json',
-            data: {
-                ADF_name        : $("#ADF-name").val(),
-                ADF_code        : $("#ADF-code").val(),
-                ADF_birthday    : $("#ADF-birthday").val(),
-                ADF_milidate    : $("#ADF-milidate").val(),
-                ADF_type        : $("#ADF-type").val(),
-                ADF_status      : $("#ADF-status").val()
-            },
-        })
-        .always(function() {
-            console.log("complete");
-              // remove loading image maybe
-        })
-        .done(function(responsive) {
-            //var result = JSON.parse(responsive);
-            console.log(responsive);
-            $("#MSG").text(responsive['Msg']);
-            $("#MSG").fadeIn('400', function() {        
-            });
-            if (responsive['Code'] == 1){
-                console.log("data_get");
-                setTimeout(function(){
-                    
-                    window.location.href="/";
-                 },1000);
-            }else{
-
+        $( "#ADF-submit" ).on( "click", function( event ) {
+            event.preventDefault();
+            //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
+            if($('#ADF-name').val() == ""){
+                alert("請先輸入帳號!");
+                return;
             }
+            if($('#ADF-code').val() == ""){
+                alert("請先輸入身分證字號!");
+                return;
+            }
+            $("#MSG").text("連線中...");
+            $.ajax({
+                url: '/file/check_boy_exist',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    ADF_name        : $("#ADF-name").val(),
+                    ADF_code        : $("#ADF-code").val(),
+                    ADF_birthday    : $("#ADF-birthday").val(),
+                    ADF_milidate    : $("#ADF-milidate").val(),
+                    ADF_type        : $("#ADF-type").val(),
+                    ADF_status      : $("#ADF-status").val()
+                },
+            })
+            .always(function() {
+                console.log("complete");
+                  // remove loading image maybe
+            })
+            .done(function(responsive) {
+                //var result = JSON.parse(responsive);
+                console.log(responsive);
+                $("#MSG").text(responsive['Msg']);
+                $("#MSG").fadeIn('400', function() {
+                    if (responsive['Code'] == 1){
+                        console.log("data_get");
+                        setTimeout(function(){
+                            
+                            window.location.href="/";
+                         },1000);
+                    }else{
 
-            console.log("success");
-        })
-        .fail(function() {
-            console.log("error");
+                    }
+                });
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            });
         });
-      
-      
 
-    });
+        $('#ADF-town').on('change', function(event) {
+            refresh_village();
+        });
 
+        function refresh_town(){
+            //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
+            $('#ADF-town').empty();
+            $("#MSG").text("連線中...");
+            $.ajax({
+                url: '/area/get_town_by_county',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    ADF_county        : $("#ADF-county").val()
+                },
+            })
+            .always(function() {
+                console.log("complete");
 
+                  // remove loading image maybe
+            })
+            .done(function(responsive_) {
+                //var result = JSON.parse(responsive);
+                var responsive = responsive_['town_list'];
+                console.log(responsive);
+                var seloption = "";
+                $.each(responsive, function(index, record){
+                    seloption += '<option value="'+record.Town_code+'">'+record.Town_name+'</option>'; 
+                });
+
+                $('#ADF-town').append(seloption);
+                setTimeout(function(){
+                    refresh_village();
+                },300);
+                
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            });
+        }
+
+        function refresh_village(){
+            //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
+            $('#ADF-village').empty();
+            $("#MSG").text("連線中...");
+            $.ajax({
+                url: '/area/get_village_by_town',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    ADF_town        : $("#ADF-town").val()
+                },
+            })
+            .always(function() {
+                console.log("complete");
+                  // remove loading image maybe
+            })
+            .done(function(responsive_) {
+                //var result = JSON.parse(responsive);
+                var responsive = responsive_['village_list'];
+                console.log(responsive);
+                var seloption = "";
+                $.each(responsive, function(index, record){
+                    seloption += '<option value="'+record.Village_id+'">'+record.Village_name+'</option>'; 
+                });
+
+                $('#ADF-village').append(seloption);
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            });
+        }
 
 
 
