@@ -150,23 +150,29 @@
             event.preventDefault();
             //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
             if($('#ADF-name').val() == ""){
-                alert("請先輸入帳號!");
+                alert("請先輸入姓名!");
                 return;
             }
             if($('#ADF-code').val() == ""){
                 alert("請先輸入身分證字號!");
                 return;
             }
+
             $("#MSG").text("連線中...");
+            var ADF__birthday = yyy_to_date($("#ADF-birthday").val());
+            var ADF__milidate = yyy_to_date($("#ADF-milidate").val());
             $.ajax({
-                url: '/file/check_boy_exist',
+                url: '/file/add_new_boy_file',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     ADF_name        : $("#ADF-name").val(),
                     ADF_code        : $("#ADF-code").val(),
-                    ADF_birthday    : $("#ADF-birthday").val(),
-                    ADF_milidate    : $("#ADF-milidate").val(),
+                    ADF_birthday    : ADF__birthday,
+                    ADF_milidate    : ADF__milidate,
+                    ADF_county      : $("#ADF-county").val(),
+                    ADF_town        : $("#ADF-town").val(),
+                    ADF_village     : $("#ADF-village").val(),
                     ADF_type        : $("#ADF-type").val(),
                     ADF_status      : $("#ADF-status").val()
                 },
@@ -178,7 +184,8 @@
             .done(function(responsive) {
                 //var result = JSON.parse(responsive);
                 console.log(responsive);
-                $("#MSG").text(responsive['Msg']);
+                if (responsive['Msg'])
+                /*$("#MSG").text(responsive['Msg']);
                 $("#MSG").fadeIn('400', function() {
                     if (responsive['Code'] == 1){
                         console.log("data_get");
@@ -189,7 +196,7 @@
                     }else{
 
                     }
-                });
+                });*/
                 console.log("success");
             })
             .fail(function() {

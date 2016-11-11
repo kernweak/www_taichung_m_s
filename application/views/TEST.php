@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen.css">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
     <script src="/0MS/js/jquery-3.1.0.min.js"></script>
+    <script src="/0MS/js/czchen-0.js"></script>
 </head>
 
 <body style="overflow: hidden;">
@@ -86,7 +87,7 @@
                             </li>
                             <form class="navbar-form navbar-right">
                                 <div class="form-group">
-                                    <input id="body-zoom" type="number" step= 0.05 class="form-control" placeholder="縮放倍率" value="1.15" style="width: 5em;margin-right: 1em;">
+                                    <input id="body-zoom" type="number" step= 0.05 class="form-control" placeholder="縮放倍率" value="1.0" style="width: 5em;margin-right: 1em;">
                                 </div>
                             </form>
                             <li><a href="/Welcome/User_Logout"><span class="mif-security icon"></span>登出</a></li>
