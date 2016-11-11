@@ -159,6 +159,7 @@
             }
 
             $("#MSG").text("連線中...");
+            $("#ADF-wait-icon").addClass('in');
             var ADF__birthday = yyy_to_date($("#ADF-birthday").val());
             var ADF__milidate = yyy_to_date($("#ADF-milidate").val());
             $.ajax({
@@ -173,18 +174,23 @@
                     ADF_county      : $("#ADF-county").val(),
                     ADF_town        : $("#ADF-town").val(),
                     ADF_village     : $("#ADF-village").val(),
+                    ADF_address     : $("#ADF-address").val(),
                     ADF_type        : $("#ADF-type").val(),
                     ADF_status      : $("#ADF-status").val()
                 },
             })
             .always(function() {
                 console.log("complete");
+                //$("#ADF-wait-icon").removeClass('in');
                   // remove loading image maybe
             })
             .done(function(responsive) {
                 //var result = JSON.parse(responsive);
                 console.log(responsive);
-                if (responsive['Msg'])
+
+                if (responsive['Msg']=="success"){
+                    $("#MSG").text("連線成功，新增案件中...");
+                }
                 /*$("#MSG").text(responsive['Msg']);
                 $("#MSG").fadeIn('400', function() {
                     if (responsive['Code'] == 1){
