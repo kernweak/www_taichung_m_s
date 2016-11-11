@@ -66,4 +66,46 @@ class File extends MY_Controller {
 			    echo json_encode("不存在");
 			}
 	}
+
+	/*
+	* create a new military boy record, and initialize his subsidy file
+	*/
+	public function add_new_boy_file(){
+		// create a new boy record
+		$this->load->model('boy_model');
+		$name = $this->input->post('ADF_name');
+		$id = $this->input->post('ADF_code');
+		$birthday = $this->input->post('ADF_birthday');
+		$begin_date = $this->input->post('ADF_milidate');
+		$type = $this->input->post('ADF_type');
+		$status = $this->input->post('ADF_status');
+		
+		$boy_key = $this->boy_model->add_new_boy($name, $id, $birthday, $begin_date, $type, $status);
+
+		// create a new file record fo this boy
+		$this->load->model('file_model');
+		$county = $this->input->post('ADF_county');
+		$town = $this->input->post('ADF_town');
+		$village = $this->input->post('ADF_village');
+		$address = $this->input->post('ADF_address');
+		$today = date("Y-m-d H:i:s");
+		log_message('debug', print_r($today, true));
+
+		$file_key = $this->file_model->add_new_file($today, $boy_key, $county, $town, $village, $address);
+		
+		$this->boy_model->update_new_boy_file_link($boy_key, $file_key);
+		$data= array(
+			'boy_key' => $boy_key,
+			'file_key' => $file_key
+			);
+
+		echo json_encode($data);
+	}
+
+	public function read_new_file($file_key){
+		$this->load->model('file_model');
+		$file_info = $this->file_model->read_new_file($file_key);
+		//var_dump($file_info);
+		echo json_encode($file_info);
+	}
 }
