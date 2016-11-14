@@ -58,19 +58,19 @@
                             <ul class="dropdown-menu">
                                     <li><a href="#edit-home" role="tab" data-toggle="tab">整體家況</a></li>
                                     <li><a href="#edit-navcon" role="tab" data-toggle="tab">家屬編修</a></li>
-                                    <li><a href="#">儲存</a></li>
-                                    <li><a href="#">儲存後關閉</a></li>
+                                    <li><a href="#" onclick="empty_members()">儲存</a></li>
+                                    <li><a href="#" onclick="save_file()">儲存後關閉</a></li>
                                     <li><a href="#">不儲存關閉</a></li>
                                 </ul>
                             </li>
                             <li><a href="#statistics" role="tab" data-toggle="tab"><span class="mif-chart-bars icon"></span>統計分析 </a></li>
                         </ul>
-                        <form class="navbar-form navbar-left">
+                        <!--<form class="navbar-form navbar-left">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="快速搜尋">
                             </div>
                             <button type="submit" class="btn btn-default">送出</button>
-                        </form>
+                        </form>-->
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#" role="tab" data-toggle="tab"><span class="mif-security icon"></span>人事權限</a></li>
                             <li class="dropdown">

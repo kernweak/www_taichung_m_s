@@ -96,16 +96,18 @@ class File extends MY_Controller {
 		$this->boy_model->update_new_boy_file_link($boy_key, $file_key);
 		$data= array(
 			'boy_key' => $boy_key,
-			'file_key' => $file_key
+			'file_key' => $file_key,
+			'Msg' => "success"
 			);
 
 		echo json_encode($data);
 	}
 
-	public function read_new_file($file_key){
+	public function read_new_file(){
+		$file_key = $this->input->post('file_key');
 		$this->load->model('file_model');
 		$file_info = $this->file_model->read_new_file($file_key);
 		//var_dump($file_info);
-		echo json_encode($file_info);
+		echo json_encode($file_info[0]);
 	}
 }

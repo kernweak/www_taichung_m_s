@@ -31,9 +31,9 @@
         <div class="imm1">
             <table class="imm-total">
                 <tr><td rowspan="4" class="imm-head">房屋</td><td class="imm-head2">棟數</td><td>
-                    <div class="imm-head3"><span>雲林縣</span><span>1</span>棟</div>
-                    <div class="imm-head3"><span>彰化縣</span><span>1</span>棟</div>
-                    <div class="imm-head3"><span>臺中市</span><span>1</span>棟</div>
+                    <!--<div class="imm-head3"><span>雲林縣</span><span>1</span>棟</div>
+                    <div class="imm-head3"><span>彰化縣</span><span>1</span>棟</div>-->
+                    <div class="imm-head3"><!--<span>臺中市</span>--><span>1</span>棟</div>
                     </td></tr>
                 <tr><td class="imm-head2">金額</td><td class="imm-head3">2,435,459</td></tr>
                 <tr><td class="imm-head2">非自住棟數</td><td class="imm-head3">2</td></tr>
@@ -43,9 +43,9 @@
         <div class="imm1">
             <table class="imm-total">
                 <tr><td rowspan="4" class="imm-head">土地</td><td class="imm-head2">筆數</td><td>
-                    <div class="imm-head3"><span>雲林縣</span><span>1</span>筆</div>
-                    <div class="imm-head3"><span>彰化縣</span><span>1</span>筆</div>
-                    <div class="imm-head3"><span>臺中市</span><span>1</span>筆</div>
+                    <!--<div class="imm-head3"><span>雲林縣</span><span>1</span>筆</div>
+                    <div class="imm-head3"><span>彰化縣</span><span>1</span>筆</div>-->
+                    <div class="imm-head3"><!--<span>臺中市</span>--><span>1</span>筆</div>
                     </td></tr>
                 <tr><td class="imm-head2">金額</td><td class="imm-head3">2,935,450</td></tr>
                 <tr><td class="imm-head2">非自住筆數</td><td class="imm-head3">2</td></tr>

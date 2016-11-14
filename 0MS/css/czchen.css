@@ -570,6 +570,10 @@
     background-color: #fdd4a4;
 }
 
+.people_home td{
+    padding:0.3em;
+}
+
 #Add_file select{
     vertical-align: top;
     height: 1.8em;

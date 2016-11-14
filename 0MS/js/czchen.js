@@ -118,37 +118,7 @@ $(document).ready(function() {
     }
 
     
-/*************************函式庫****************************************/    
-    function date_to_yyy(date_string){ //西元日期轉民國7碼
-        //date_string = "2016-05-03";
-        var date_a = date_string.split("-");
-        var yyy_date = (parseInt(date_a[0])-1911) + date_a[1] + date_a[2];
-        if(yyy_date.length==6){
-            yyy_date = "0" + yyy_date;
-        }
-        //console.log(yyy_date);
-        return yyy_date;
-    }
-    //date_to_yyy();
-    //yyy_to_date();
 
-    function yyy_to_date(date_string){  //民國6/7碼轉西元日期
-        //date_string = "1040310";
-        date_string += "";
-        if(date_string.length == 6){
-           var yyyy_date = (parseInt(date_string.substr(0,2))+1911)+"-"+date_string.substr(2,2)+"-"+date_string.substr(4,2);
-        }
-        if(date_string.length == 7){
-            var yyyy_date = (parseInt(date_string.substr(0,3))+1911)+"-"+date_string.substr(3,2)+"-"+date_string.substr(5,2);
-        }
-        //console.log(yyyy_date);
-        return yyyy_date;
-    }
-if (!String.prototype.trimall) {            //去除所有空白
-  String.prototype.trimall = function () {
-    return this.replace(/\s+/g, "");
-  };
-}
 /*************************待辦案件      filelist.php****************************************/
     //彈出窗--點擊開啟檔案
     $("#myModal-table_id > tbody > tr:nth-child(1) > td:nth-child(2) > button").click(function(event) {
@@ -408,6 +378,7 @@ if (!String.prototype.trimall) {            //去除所有空白
         $("#area_cost").text("");
         $("#area_cost_year").text("");
         $("#area_limit").text("");
+
         $("#right_tab_area .town-name.selected").removeClass('selected');
         if ($('.group-div.selected').find(".member_area").attr('area-index') != "" && $('.group-div.selected').find(".member_area").attr('area-index') != null){
             var Aindex = $('.group-div.selected').find(".member_area").attr("area-index");
@@ -441,7 +412,7 @@ if (!String.prototype.trimall) {            //去除所有空白
 
     //右面板.財產.新增財產按鈕點擊事件
     $("#right_tab_property").on('click', '.add-proper', function(event) {
-        var PRO_DIV = '<div class="proper-inc-div" code=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"style="display: none;"><option value="m" selected="">自住</option><option value="y">非自住</option></select><select class="proper-inc-div-6" style="display: none;"><option value="臺北市" selected>臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
+        var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"style="display: none;"><option value="m" selected="">自住</option><option value="y">非自住</option></select><select class="proper-inc-div-6" style="display: none;"><option value="臺北市" selected>臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
         $(PRO_DIV).appendTo('#right_tab_property .pro-div-cont');
         /* Act on the event */
     });    
@@ -470,6 +441,18 @@ if (!String.prototype.trimall) {            //去除所有空白
 
     //右面板.財產.警告刪除財產提示板.點選確認觸發，刪除被selected的財產
     $('#confirm-delete-pro').on('click', 'a.btn-ok', function(event) {
+        var property = [];
+        var PDIV = $('.proper-inc-div.selected').eq(0);
+        if($(PDIV).attr('code')=="new"){
+
+        }else{
+            property['code'] = $(PDIV).attr('code');
+            property['edit'] = "delete";
+            console.log(property);
+            File_data_property.push(property);
+            console.log(File_data_property);
+        }
+
         $('.proper-inc-div.selected').remove();
         $('#confirm-delete-pro').modal('hide');
     });
@@ -534,7 +517,7 @@ if (!String.prototype.trimall) {            //去除所有空白
 
     //右面板.所得.新增所得按鈕被點擊後
     $("#right_tab_income .add-proper-inc").click(function(event) {
-        var INC_DIV = '<div class="proper-inc-div" code=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-inc" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Salary" selected>薪資</option><option value="Stock-int">股票配息</option><option value="Profit">營利</option><option value="Bank-int" >存款利息</option><option value="others">其他</option></select><input placeholder="額度-新台幣(元)" class="people-input-right proper-inc-div-2" value="0"><input placeholder="來源單位(企業或機構)" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"><option value="m">月收</option><option value="y" selected>年收</option></select><input placeholder="利率/值" class="people-input-right proper-inc-div-7" value="" style="display: none;"></div>';
+        var INC_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-inc" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Salary" selected>薪資</option><option value="Stock-int">股票配息</option><option value="Profit">營利</option><option value="Bank-int" >存款利息</option><option value="others">其他</option></select><input placeholder="額度-新台幣(元)" class="people-input-right proper-inc-div-2" value="0"><input placeholder="來源單位(企業或機構)" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"><option value="m">月收</option><option value="y" selected>年收</option></select><input placeholder="利率/值" class="people-input-right proper-inc-div-7" value="" style="display: none;"></div>';
         $(INC_DIV).appendTo('#right_tab_income .inc-div-cont');
     });
 
@@ -563,6 +546,24 @@ if (!String.prototype.trimall) {            //去除所有空白
 
     //右面板.所得.警告刪除所得提示板.點選確認觸發，刪除被selected的所得
     $('#confirm-delete-inc').on('click', 'a.btn-ok', function(event) {
+        var income = [];
+        var PDIV = $('.proper-inc-div.selected').eq(0);
+        if($(PDIV).attr('code')=="new"){
+
+        }else{
+            income['code'] = $(PDIV).attr('code');
+            income['edit'] = "delete";
+            console.log(income);
+            File_data_income.push(income);
+            console.log(File_data_income);
+        }
+
+
+        $('.proper-inc-div.selected').remove();
+        $('#confirm-delete-pro').modal('hide');
+
+
+
         $('.proper-inc-div.selected').remove();
         $('#confirm-delete-inc').modal('hide');
         total_count_incomes();
@@ -753,7 +754,7 @@ if (!String.prototype.trimall) {            //去除所有空白
     //中面板.家屬.新增家屬按鈕被點擊
     $(".center-total-count").on('click', '.add-people', function(event) {
         //event.preventDefault();
-        var GROUP_DIV = '<div class="group-div" code=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-people" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/man-avatar.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value=""></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value=""></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value=""></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value=""></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">一般</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0" selected>一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1">服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="2,30">55歲以上,16歲以下無收入</option><option value="2,31">身心障礙、重大傷病</option><option value="2,32">3個月內之重大傷病</option><option value="2,33">學生</option><option value="2,34">孕婦</option><option value="2,35">獨自照顧直系老幼親屬</option><option value="2,36">獨自照顧重大傷病親屬</option><option value="2,37">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div></div></div>';
+        var GROUP_DIV = '<div class="group-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-people" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/man-avatar.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value=""></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value=""></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value=""></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value=""></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">一般</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0" selected>一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1">服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="2,30">55歲以上,16歲以下無收入</option><option value="2,31">身心障礙、重大傷病</option><option value="2,32">3個月內之重大傷病</option><option value="2,33">學生</option><option value="2,34">孕婦</option><option value="2,35">獨自照顧直系老幼親屬</option><option value="2,36">獨自照顧重大傷病親屬</option><option value="2,37">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div></div></div>';
         $(GROUP_DIV).insertBefore($(this).parent());
         svg_redraw();
         recount_left_family_panel();

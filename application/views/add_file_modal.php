@@ -146,7 +146,7 @@
             // ADF-status
         });
 
-        $( "#ADF-submit" ).on( "click", function( event ) {
+        $( "#ADF-submit" ).on( "click", function( event ) {             //新增役男案件
             event.preventDefault();
             //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
             if($('#ADF-name').val() == ""){
@@ -191,6 +191,14 @@
                 if (responsive['Msg']=="success"){
                     $("#MSG").text("連線成功，新增案件中...");
                 }
+                setTimeout(function(){
+                            
+                $('#Add_file').modal('hide');
+                $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
+                read_file(responsive['file_key']);
+                },1000);
+                
+
                 /*$("#MSG").text(responsive['Msg']);
                 $("#MSG").fadeIn('400', function() {
                     if (responsive['Code'] == 1){
@@ -210,7 +218,7 @@
             });
         });
 
-        $('#ADF-town').on('change', function(event) {
+        $('#ADF-town').on('change', function(event) {//更新村里下拉選單
             refresh_village();
         });
 
@@ -234,7 +242,7 @@
             .done(function(responsive_) {
                 //var result = JSON.parse(responsive);
                 var responsive = responsive_['town_list'];
-                console.log(responsive);
+                //console.log(responsive);
                 var seloption = "";
                 $.each(responsive, function(index, record){
                     seloption += '<option value="'+record.Town_code+'">'+record.Town_name+'</option>'; 
@@ -249,7 +257,7 @@
             })
             .fail(function() {
                 console.log("error");
-            });
+            });//更新區鎮下拉選單
         }
 
         function refresh_village(){
@@ -271,7 +279,7 @@
             .done(function(responsive_) {
                 //var result = JSON.parse(responsive);
                 var responsive = responsive_['village_list'];
-                console.log(responsive);
+                //console.log(responsive);
                 var seloption = "";
                 $.each(responsive, function(index, record){
                     seloption += '<option value="'+record.Village_id+'">'+record.Village_name+'</option>'; 
@@ -282,7 +290,7 @@
             })
             .fail(function() {
                 console.log("error");
-            });
+            }); //更新村里下拉選單
         }
 
 

@@ -365,7 +365,7 @@
                 </select><input placeholder="股息率" class="people-input-left proper-inc-div-7" value="" style="display: none;">
             </div><div class="proper-inc-div"><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits">儲蓄存款</option><option value="Securities">有價證券</option><option value="Houses" selected="selected">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value=""><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"><option value="m">自住</option><option value="y" selected="selected">非自住</option></select><select class="proper-inc-div-6"><option value="臺北市" selected="">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select><input placeholder="股息率" class="people-input-left proper-inc-div-7" value="" style="display: none;"></div><div class="proper-inc-div"><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits">儲蓄存款</option><option value="Securities">有價證券</option><option value="Houses">房屋</option><option value="Land" selected="selected">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value=""><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"><option value="m">自住</option><option value="y" selected="selected">非自住</option></select><select class="proper-inc-div-6"><option value="臺北市" selected="">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select><input placeholder="股息率" class="people-input-left proper-inc-div-7" value="" style="display: none;"></div></div>            </div>
         </div>
-        <div class="group-div">
+        <div class="group-div add-new-button">
             <sapn class="add-people">新增家屬</sapn>
         </div>
     </div>
@@ -434,7 +434,7 @@
         <div class="inc-div-cont">
             
         </div>
-        <div class="proper-inc-div">
+        <div class="proper-inc-div add-new-button">
             <sapn class="add-proper-inc">新增所得</sapn>
         </div>
         <div class="modal fade" id="confirm-delete-inc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -502,7 +502,7 @@
             </div>
         </div>
         <div class="proper-inc-div">
-            <sapn class="add-proper">新增財產</sapn>
+            <sapn class="add-proper add-new-button">新增財產</sapn>
         </div>
         <div class="modal fade" id="confirm-delete-pro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
