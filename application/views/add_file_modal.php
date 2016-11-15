@@ -193,9 +193,9 @@
                 }
                 setTimeout(function(){
                             
-                $('#Add_file').modal('hide');
-                $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
-                read_file(responsive['file_key']);
+                    $('#Add_file').modal('hide');
+                    $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
+                    read_file(responsive['file_key']);
                 },1000);
                 
 

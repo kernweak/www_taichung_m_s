@@ -32,16 +32,21 @@ class File_model extends CI_Model {
 	}
 
 	public function read_new_file($file_key){
+		//var_dump($file_key);
 		$this->db->select('*');
 		$this->db->from('files_info_table');
 		$this->db->join('miliboy_table', 'miliboy_table.役男系統編號 = files_info_table.役男系統編號');
 		$this->db->join('area_county', 'area_county.County_code = files_info_table.county');
 		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
-		$this->db->join('area_village', 'area_village.	Village_id = files_info_table.village');
-		$this->db->join('files_type', 'files_type.	作業類別 = files_info_table.作業類別');
+		$this->db->join('area_village', 'area_village.Village_id = files_info_table.village');
+		$this->db->join('files_type', 'files_type.作業類別 = files_info_table.作業類別','left');
 		$this->db->where('files_info_table.案件流水號', $file_key);
 		$query = $this->db->get();
 		$result = $query->result();
+
+		//var_dump($result);
+		//var_dump($this->db->last_query());
+		
 		//var_dump($result);
 		return $result;
 	}
