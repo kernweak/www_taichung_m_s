@@ -38,6 +38,7 @@ class File_model extends CI_Model {
 		$this->db->join('area_county', 'area_county.County_code = files_info_table.county');
 		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
 		$this->db->join('area_village', 'area_village.	Village_id = files_info_table.village');
+		$this->db->join('files_type', 'files_type.	作業類別 = files_info_table.作業類別');
 		$this->db->where('files_info_table.案件流水號', $file_key);
 		$query = $this->db->get();
 		$result = $query->result();

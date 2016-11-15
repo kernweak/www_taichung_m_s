@@ -1,4 +1,6 @@
 <div class="people_home" style="padding:0.7em;" boy_id="" file_id="">
+	<div class="PH-label-g"><label>案件類別: </label><span id="PH-filetype">測試</span></div>
+	<br />
 	<div class="PH-label-g"><label>役男姓名: </label><span id="PH-name">陳宗儒</span></div>
 	<div class="PH-label-g"><label>身份字號: </label><span id="PH-code">S133745083</span></div>
 	<div class="PH-label-g"><label>役男生日: </label><span id="PH-birthday">790810</span></div>

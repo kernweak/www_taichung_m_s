@@ -47,7 +47,7 @@
                 //var result = JSON.parse(responsive);
                 //console.log(responsive);
                 //console.log(responsive['役男姓名']);
-
+                $("#PH-filetype").text(responsive['作業類別名稱']);
                 $("#PH-name").text(responsive['役男姓名']);
                 $("#PH-code").text(responsive['身分證字號']);
                 $("#PH-birthday").text(responsive['役男生日']);
