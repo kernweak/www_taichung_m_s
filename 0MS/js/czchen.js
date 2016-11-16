@@ -171,7 +171,7 @@ $(document).ready(function() {
         var limit_income = 0    //最低生活費總和
         var GDIV = $(".center-total-count .group-div");
         total_members_num = $(GDIV).length-1;   //要扣掉 新增家屬 按鈕
-        console.log(total_members_num);
+        //console.log(total_members_num);
         for(i=0;i < total_members_num;i++){
             var Special = $(GDIV).eq(i).find(".people-special .people-input-left").val();
             if ($(GDIV).eq(i).find(".member_area").attr('area-index') == "" || $(GDIV).eq(i).find(".member_area").attr('area-index') == null){
@@ -372,7 +372,7 @@ $(document).ready(function() {
     //中面板-選定中間成員後，重繪整個右方4大區塊
     function right_total_count_redraw(){
         //----
-        console.log("Family member selceted");
+        //console.log("Family member selceted");
         //----------------------------住址頁籤----------------------------------------------------
         $("#right_tab_area .town-name.selected").removeClass('selected');
         $("#area_cost").text("");
@@ -773,6 +773,7 @@ $(document).ready(function() {
 
         var YYYY = parseInt(YYY) + 1911;
         var YYYYMMDD = "" + YYYY + "-" + MM + "-" + DD +"";
+        $(this).attr('YYYYMMDD', YYYYMMDD);
         // console.log(YYYYMMDD);
         var age_ = new Date(YYYYMMDD);
         var age = _calculateAge(age_);
