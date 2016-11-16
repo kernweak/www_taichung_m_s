@@ -82,7 +82,7 @@ class File extends MY_Controller {
 		
 		$boy_key = $this->boy_model->add_new_boy($name, $id, $birthday, $begin_date, $type, $status);
 
-		// create a new file record fo this boy
+		// create a new file record for this boy
 		$this->load->model('file_model');
 		$county = $this->input->post('ADF_county');
 		$town = $this->input->post('ADF_town');
