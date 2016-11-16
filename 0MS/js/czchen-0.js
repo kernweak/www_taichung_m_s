@@ -107,13 +107,16 @@
                 $(this).remove();
             }
         });
+        File_data = [];
+        //File_data_property = [];
+        //File_data_income = [];
     }
     var File_data = [];
-    var File_data_property = [];
-    var File_data_income = [];
+    //var File_data_property = [];
+    //var File_data_income = [];
 
     function save_file(){
-        
+        File_data = [];
         $('.group-div').each(function(index, el) {
             if(!$(this).is('.add-new-button')){
                 var members=[];
@@ -121,8 +124,18 @@
                 members["edit"] = $(this).attr('edit');
                 members["title"]=$(this).find('.people-title input').val();
                 members["name"]=$(this).find('.people-name input').val();
+                members["code"] = $(this).find('.people-id input').val();
+                members["address"] = $(this).find('.people-id-address input').val();
+                members["job"] = $(this).find('.people-job input').val();
+                members["special"] = $(this).find('.people-special select').val();
+                // var BD_str = $(this).find('.people-birthday input').val();
+                // console.log(BD_str);
+                // BD_str = BD_str.replace(/^\D+/g, '');
+                // console.log(BD_str);
+                // console.log(yyy_to_date(BD_str));
 
-
+                // members["birthday"] = yyy_to_date(BD_str);
+                members["birthday"] = $(this).find('.people-birthday input').attr('YYYYMMDD');
 
 
                 File_data.push(members);
