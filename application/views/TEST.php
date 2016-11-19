@@ -78,8 +78,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="$('#Law_1').modal('toggle')">法條參照</a></li>
                                     <li><a href="#" onclick="$('#Law_2').modal('toggle')">地號查地址</a></li>
-                                    <li><a href="#" onclick="$('#Law_3').modal('toggle')">職類薪資</a></li>
-                                    <li><a href="#" onclick="">農林漁牧技藝</a></li>
+                                    <li><a href="https://pswst.mol.gov.tw/psdn/" target="_blank">職類薪資</a></li>
+                                    <li><a href="#" onclick="$('#Law_3').modal('toggle')">農林漁牧技藝</a></li>
                                     <li><a href="#" onclick="$('#Law_4').modal('toggle')">股票查詢</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">Separated link</a></li>
