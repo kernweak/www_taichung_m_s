@@ -12,11 +12,11 @@ class Property_model extends CI_Model {
     public function add($property, $member_key){
     	$data = array(
     		'成員系統編號' => $member_key,
-    		'財產類別' => $property['type'],
-    		'位於何處' => $property['from'],
-    		'價值' =>$property['value'],
-    		'自用' => $property['self_use'],
-    		'備註' => $property['note']
+    		'財產類別' => $property->type,
+    		'位於何處' => $property->from,
+    		'價值' =>$property->value,
+    		'自用' => $property->self_use,
+    		'備註' => $property->note
     		);
     	$this->db->insert('family_mem_property', $data);
 		$property_key = $this->db->insert_id();
@@ -30,13 +30,13 @@ class Property_model extends CI_Model {
 	*/
 	public function update($property){
     	$data = array(    		
-    		'財產類別' => $property['type'],
-    		'位於何處' => $property['from'],
-    		'價值' =>$property['value'],
-    		'自用' => $property['self_use'],
-    		'備註' => $property['note']
+    		'財產類別' => $property->type,
+    		'位於何處' => $property->from,
+    		'價值' =>$property->value,
+    		'自用' => $property->self_use,
+    		'備註' => $property->note
     		);
-    	$this->db->where('財產系統編號', $property['key']);
+    	$this->db->where('財產系統編號', $property->key);
     	$this->db->update('family_mem_property', $data);
 	}
 

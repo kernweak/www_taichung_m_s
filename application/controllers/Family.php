@@ -5,10 +5,11 @@ class Family extends MY_Controller {
 	
 
 	public function set_members_file(){
-		$members = $this->input->post('members');
-		$file_info = $this->input->post('file_info');
-		$file_key = $file_info['key'];
-
+		$members = json_decode($this->input->post('members'));
+		$file_info = json_decode($this->input->post('file_info'));
+		$file_key = $file_info->key;
+		log_message('debug', 'received post "file_info" ='.print_r($file_info, true));
+		log_message('debug', 'received post "members" ='.print_r($members, true));
 		$this->set_members($members, $file_key);
 		$this->update_file($file_info);
 	}
@@ -26,10 +27,10 @@ class Family extends MY_Controller {
 			if ($this->isNew($person)){
 				// add a new member
 				$member_key = $this->member_model->add($person, $file_key);
-				foreach($person['property'] as $prty){					
+				foreach($person->property as $prty){					
 					$this->property_model->add($prty, $member_key);
 				}
-				foreach($person['income'] as $income){
+				foreach($person->income as $income){
 					$this->income_model->add($income, $member_key);
 				}
 			}else{
@@ -37,24 +38,24 @@ class Family extends MY_Controller {
 				$this->member_model->update($person);
 				
 				// delete unlisted property
-				$this->clean_properties($person['property'], $person['key']);
+				$this->clean_properties($person->property, $person->key);
 
 				//add or update listed property
-				foreach($person['property'] as $prty){
+				foreach($person->property as $prty){
 					if ($this->isNew($prty)){
-						$this->property_model->add($prty, $person['key']);
+						$this->property_model->add($prty, $person->key);
 					}else{
 						$this->property_model->update($prty);
 					}					
 				}
 
 				// delete unlisted income
-				$this->clean_incomes($person['income'], $person['key']);
+				$this->clean_incomes($person->income, $person->key);
 
 				// add or update listed income
-				foreach($person['income'] as $income){
+				foreach($person->income as $income){
 					if ($this->isNew($income)){
-						$this->income_model->add($income, $person['key']);
+						$this->income_model->add($income, $person->key);
 					}else{
 						$this->income_model->update($income);
 					}					
@@ -73,7 +74,7 @@ class Family extends MY_Controller {
 		a new record by checking its key value
 	*/	
 	private function isNew($entity){		
-		$key = trim($entity['key']);
+		$key = trim($entity->key);
 		if (empty($key) || strcasecmp($key, 'new')==0){
 			return true;			
 		}else{
@@ -89,7 +90,7 @@ class Family extends MY_Controller {
 		$keep = [];
 		foreach ($members as $person) {			
 			if (!$this->isNew($person)){
-				$keep[] = $person['key'];
+				$keep[] = $person->key;
 			}
 		}
 		log_message('debug', 'members to keep = '.print_r($keep, true));
@@ -107,7 +108,7 @@ class Family extends MY_Controller {
 		$keep = [];
 		foreach($properties as $prty){					
 			if (!$this->isNew($prty)){
-				$keep[] = $prty['key'];
+				$keep[] = $prty->key;
 			}
 		}
 		if (empty($keep)){
@@ -124,7 +125,7 @@ class Family extends MY_Controller {
 		$keep = [];
 		foreach($incomes as $income){	
 			if (!$this->isNew($income)){
-				$keep[] = $income['key'];
+				$keep[] = $income->key;
 			}
 		}
 		if (empty($keep)){					
@@ -152,16 +153,16 @@ class Family extends MY_Controller {
 	*/
 	public function set_members_test2(){
 		$members = $this->getMembers();
-		$members[0]['key'] = '12';
-		$members[0]['name'] = '阿明新名2';
-		$members[0]['birthday'] = '1980-08-12';
+		$members[0]->key = '15';
+		$members[0]->name = '阿明新名2';
+		$members[0]->birthday = '1980-08-12';
 
-		$members[1]['key'] = '14';
-		$members[1]['title'] = '爸爸';
-		$members[1]['name'] = '阿明爸爸';
-		unset($members[1]['property'][0]);
+		$members[1]->key = '16';
+		$members[1]->title = '爸爸';
+		$members[1]->name = '阿明爸爸';
+		unset($members[1]->property[0]);
 		log_message('debug', 'members = '.print_r($members, true));
-		// $members[1]['income']=[];
+		// $members[1]->income=[];
 		$file_key = 1;
 		$this->set_members($members, $file_key);
 
@@ -169,7 +170,7 @@ class Family extends MY_Controller {
 
 	function getMembers(){
 		// two new property
-		$property1 = array(
+		$property1 = (object)array(
 			'key' => '',
 			'type' =>'土地',
 			'from' => '台中市西屯區',
@@ -177,7 +178,7 @@ class Family extends MY_Controller {
 			'self_use' => 'y',
 			'note'=>''
 			);
-		$property2 = array(
+		$property2 = (object)array(
 			'key' => '',
 			'type' =>'房屋',
 			'from' => '台中市西屯區',
@@ -190,7 +191,7 @@ class Family extends MY_Controller {
 		$property[] = $property2;
 		
 		// two new income
-		$income1 = array(
+		$income1 = (object)array(
 			'key' => '',
 			'type' => '利息',
 			'from' => '台灣銀行-定存',
@@ -199,7 +200,7 @@ class Family extends MY_Controller {
 			'rate' => '0.02',
 			'note' => '定存'
 			);
-		$income2 = array(			
+		$income2 = (object)array(			
 			'key' => '',
 			'type' => '租金',
 			'from' => '南京東路住家的房間',
@@ -213,7 +214,7 @@ class Family extends MY_Controller {
 		$income[] = $income2;
 
 		// 役男, 沒有property, 沒有income
-		$boy = array(
+		$boy = (object)array(
 			'key' => '',
 			'title' => '役男',
 			'name' => '阿明',
@@ -223,7 +224,7 @@ class Family extends MY_Controller {
 			'income' => []
 			);
 		// 役男的媽媽, 2筆 property, 2筆income
-		$mother = array(
+		$mother = (object)array(
 			'key' => '',
 			'title' => '媽媽',
 			'name' => '阿明媽',

@@ -12,12 +12,12 @@ class Income_model extends CI_Model {
     public function add($income, $member_key){
     	$data = array(
     		'成員系統編號' => $member_key,
-    		'所得類別' => $income['type'],
-    		'來源' => $income['from'],
-    		'年或月收入' => $income['m_or_y'],
-    		'金額' => $income['value'],
-    		'利率' => $income['rate'],
-    		'備註' => $income['note']
+    		'所得類別' => $income->type,
+    		'來源' => $income->from,
+    		'年或月收入' => $income->m_or_y,
+    		'金額' => $income->value,
+    		'利率' => $income->rate,
+    		'備註' => $income->note
     		);
     	$this->db->insert('family_mem_income', $data);
 		$income_key = $this->db->insert_id();
@@ -31,14 +31,14 @@ class Income_model extends CI_Model {
 	*/
 	public function update($income){
     	$data = array(    		    		
-    		'所得類別' => $income['type'],
-    		'來源' => $income['from'],
-    		'年或月收入' => $income['m_or_y'],
-    		'金額' => $income['value'],
-    		'利率' => $income['rate'],
-    		'備註' => $income['note']
+    		'所得類別' => $income->type,
+    		'來源' => $income->from,
+    		'年或月收入' => $income->m_or_y,
+    		'金額' => $income->value,
+    		'利率' => $income->rate,
+    		'備註' => $income->note
     		);
-    	$this->db->where('所得系統編號', $income['key']);
+    	$this->db->where('所得系統編號', $income->key);
     	$this->db->update('family_mem_income', $data);
 	}
 

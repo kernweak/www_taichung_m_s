@@ -171,53 +171,49 @@
         $('.group-div').each(function(index, el) {
             if(!$(this).is('.add-new-button')){
                 //每個成員
-                var member=[];
-                member["key"] = $(this).attr('code');
-                member["edit"] = $(this).attr('edit');
-                member["title"]=$(this).find('.people-title input').val();
-                member["name"]=$(this).find('.people-name input').val();
-                member["code"] = $(this).find('.people-id input').val();
-                member["birthday"] = $(this).find('.people-birthday input').attr('YYYYMMDD');
-
-                member["address"] = $(this).find('.people-id-address input').val();
-                member["job"] = $(this).find('.people-job input').val();
-                member["special"] = $(this).find('.people-special select').val();
-                member["marriage"] = $(this).find('.people-marriage input').val();
-                member["marriage_ex"] = $(this).find('.people-marriage2 input').val();
-
-                member["area"] = $(this).find('.member_area').val();
-                member["area_key"] = $(this).find('.member_area').attr('area-index');
-                member["comm"] = $(this).find('.comm-cont').val();
-
-                member["income"] = [];
-                member["property"] = [];
+                var member = {
+                    "key" : $(this).attr('code'),
+                    "edit" : $(this).attr('edit'),
+                    "title" : $(this).find('.people-title input').val(),
+                    "name" : $(this).find('.people-name input').val(),
+                    "code" : $(this).find('.people-id input').val(),
+                    "birthday" : $(this).find('.people-birthday input').attr('YYYYMMDD'),
+                    "address" : $(this).find('.people-id-address input').val(),
+                    "job" : $(this).find('.people-job input').val(),
+                    "special" : $(this).find('.people-special select').val(),
+                    "marriage" : $(this).find('.people-marriage input').val(),
+                    "marriage_ex" : $(this).find('.people-marriage2 input').val(),
+                    "area" : $(this).find('.member_area').val(),
+                    "area_key" : $(this).find('.member_area').attr('area-index'),
+                    "comm" : $(this).find('.comm-cont').val(),
+                    "income" : [],
+                    "property" : []
+                };
 
                 $(this).find('.income-cont .proper-inc-div').each(function(index, el) {
-                    var income=[];
-                    income["key"] = $(this).attr('code');
-                    income["type"] = $(this).children('.proper-inc-div-1 option:selected').text();
-                    income["value"] = $(this).children(".proper-inc-div-2").val(); 
-                    income["m_or_y"] = $(this).children(".proper-inc-div-4").val(); 
-                    income["from"] = $(this).children(".proper-inc-div-3").val(); 
-                    income["note"] = $(this).children(".proper-inc-div-5").val();
-                    income["rate"] = $(this).children(".proper-inc-div-7").val(); 
-                    member["income"].push(income);
+                    var income = {
+                            "key" : $(this).attr('code'),
+                            "type" : $(this).children('.proper-inc-div-1 option:selected').text(),
+                            "value" : $(this).children(".proper-inc-div-2").val(),
+                            "m_or_y" : $(this).children(".proper-inc-div-4").val(), 
+                            "from" : $(this).children(".proper-inc-div-3").val(),
+                            "note" : $(this).children(".proper-inc-div-5").val(),
+                            "rate" : $(this).children(".proper-inc-div-7").val() 
+                    };
+                    member.income.push(income);
                 });
                 $(this).find('.property-cont .proper-inc-div').each(function(index, el) {
-                    var property=[];
-                    property["key"] = $(this).attr('code');
-                    property["type"] = $(this).children('.proper-inc-div-1 option:selected').text();
-                    property["value"] = $(this).children(".proper-inc-div-2").val(); 
-                    //property["m-or-y"] = $(this).children(".proper-inc-div-4").val(); 
-                    property["from"] = $(this).children(".proper-inc-div-3").val(); 
-                    property["note"] = $(this).children(".proper-inc-div-5").val();
-                    property["self_use"] = $(this).children(".proper-inc-div-4").val();
+                    var property = {
+                    "key" : $(this).attr('code'),
+                    "type": $(this).children('.proper-inc-div-1 option:selected').text(),
+                    "value" : $(this).children(".proper-inc-div-2").val(),                    
+                    "from" : $(this).children(".proper-inc-div-3").val(),
+                    "note" : $(this).children(".proper-inc-div-5").val(),
+                    "self_use" : $(this).children(".proper-inc-div-4").val()
+                }
                     //property["interest_rate"] = $(this).children(".proper-inc-div-7").val(); 
-                    member["property"].push(property);
+                    member.property.push(property);
                 });
-
-
-
 
 
                 //$(this).find('.property-cont .proper-inc-div')
@@ -227,44 +223,30 @@
                 // console.log(BD_str);
                 // console.log(yyy_to_date(BD_str));
 
-                // members["birthday"] = yyy_to_date(BD_str);
-                
-
+                // members["birthday"] = yyy_to_date(BD_str);                
 
                 members.push(member);
             }
         });
         console.log(members);
-        // file_info = [];
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
-        // file_info[""] =;
+
+        file_info = {
+                "key" : 1       //案件流水號
+        };
+
+        file_json = JSON.stringify(file_info);
+        members_json = JSON.stringify(members);
+
+        console.log('file_info json = ' + file_json);
+        console.log('members json = ' + members_json);
 
         $.ajax({
-            url: '/file/read_new_file',
+            url: '/family/set_members_file',
             type: 'post',
             dataType: 'json',
             data: {
-                file_info        : file_key,
-                members          : members
+                file_info        : file_json,
+                members          : members_json
             },
         })
         .always(function() {

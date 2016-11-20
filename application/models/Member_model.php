@@ -12,10 +12,10 @@ class Member_model extends CI_Model {
     public function add($person, $file_key){
     	$data = array(
     		'案件流水號' => $file_key,
-    		'稱謂' => $person['title'],
-    		'姓名' => $person['name'],
-    		'身分證字號' =>$person['code'],
-    		'出生日期' => $person['birthday']
+    		'稱謂' => $person->title,
+    		'姓名' => $person->name,
+    		'身分證字號' =>$person->code,
+    		'出生日期' => $person->birthday
     		);
     	$this->db->insert('family_members', $data);
 		$member_key = $this->db->insert_id();
@@ -29,12 +29,12 @@ class Member_model extends CI_Model {
 	*/
 	public function update($person){
     	$data = array(    		
-    		'稱謂' => $person['title'],
-    		'姓名' => $person['name'],
-    		'身分證字號' =>$person['code'],
-    		'出生日期' => $person['birthday']
+    		'稱謂' => $person->title,
+    		'姓名' => $person->name,
+    		'身分證字號' =>$person->code,
+    		'出生日期' => $person->birthday
     		);
-    	$this->db->where('成員系統編號', $person['key']);
+    	$this->db->where('成員系統編號', $person->key);
     	$this->db->update('family_members', $data);
 	}
 
