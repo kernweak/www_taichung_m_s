@@ -232,30 +232,30 @@
 
         file_info = {
                 "key" :         $(".people_home").attr('file_id'),      //案件流水號
-                "Deposits"  :   $("#PH-Deposits").text(),
-                "Investment"  : $("#PH-Investment").text(),
-                "Securities"  : $("#PH-Securities").text(),
-                "Others_Pro"  : $("#PH-others-Pro").text(),
-                "Total-pro"  :  $("#PH-total-pro").text(),
-                "Houses"  :     $("#PH-Houses").text(),
-                "Houses_total"  : $("#PH-Houses-total").text(),
-                "Houses_num"  : $("#PH-Houses-num").text(),
-                "Houses_listtotal"  : $("#PH-Houses-listtotal").text(),
-                "Land"  :       $("#PH-Land").text(),
-                "Land_total"  : $("#PH-Land-total").text(),
-                "Land_num"  :   $("#PH-Land-num").text(),
-                "Land_listtotal"  : $("#PH-Land-listtotal").text(),
-                "Total_imm"  :  $("#PH-Total-imm").text(),
-                "Salary"  :     $("#PH-Salary").text(),
-                "Profit"  :     $("#PH-Profit").text(),
-                "Property_inc"  : $("#PH-Property-inc").text(),
-                "Bank_inc"  :   $("#PH-Bank-int").text(),
-                "Stock_inc"  :  $("#PH-Stock-int").text(),
-                "Others_inc"  : $("#PH-others-int").text(),
-                "total_inc"  :  $("#PH-total-inc").text(),
-                "Members"  :    $("#PH-members").text(),
-                "Need"  :       $("#PH-need").text(),
-                "Level"  :      $("#PH-level").text()
+                "Deposits"  :   $("#PH-Deposits").text(),               //存款
+                "Investment"  : $("#PH-Investment").text(),             //投資
+                "Securities"  : $("#PH-Securities").text(),             //證券
+                "Others_Pro"  : $("#PH-others-Pro").text(),             //其他動產
+                "Total-pro"  :  $("#PH-total-pro").text(),  //動產列計總額
+                "Houses"  :     $("#PH-Houses").text(),     //房屋棟數
+                "Houses_total"  : $("#PH-Houses-total").text(), //房屋總價
+                "Houses_num"  : $("#PH-Houses-num").text(), //列計棟數
+                "Houses_listtotal"  : $("#PH-Houses-listtotal").text(), //列計價值
+                "Land"  :       $("#PH-Land").text(),   //土地筆數      
+                "Land_total"  : $("#PH-Land-total").text(),     //土地總值
+                "Land_num"  :   $("#PH-Land-num").text(),       //列計筆數
+                "Land_listtotal"  : $("#PH-Land-listtotal").text(),     //列計價值
+                "Total_imm"  :  $("#PH-Total-imm").text(),     //不動產列計總額
+                "Salary"  :     $("#PH-Salary").text(),     //薪資
+                "Profit"  :     $("#PH-Profit").text(),     //營利
+                "Property_inc"  : $("#PH-Property-inc").text(), //財產所得
+                "Bank_inc"  :   $("#PH-Bank-int").text(),       //存款利息
+                "Stock_inc"  :  $("#PH-Stock-int").text(),      //股利
+                "Others_inc"  : $("#PH-others-int").text(),     //其他所得
+                "total_inc"  :  $("#PH-total-inc").text(),      //列計人口
+                "Members"  :    $("#PH-members").text(),        //生活所需-月
+                "Need"  :       $("#PH-need").text(),           //月均所得總額
+                "Level"  :      $("#PH-level").text()           //扶助等級
         };
         console.log('file_info = ' + file_info);
         file_json = JSON.stringify(file_info);
