@@ -19,7 +19,7 @@ class File_model extends CI_Model {
 	*/
 	public function add_new_file($today, $id, $county, $town, $village, $address){
 		$data = array(
-			'作業類別' => 1
+			'作業類別' => 1,
 			'建案日期' => $today,
 			'役男系統編號' => $id,
 			'county'=> (int)$county,
