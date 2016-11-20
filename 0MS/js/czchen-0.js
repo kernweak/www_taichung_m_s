@@ -251,10 +251,10 @@
                 "property_inc"  : $("#PH-Property-inc").text(), //財產所得
                 "bank_inc"  :   $("#PH-Bank-int").text(),       //存款利息
                 "stock_inc"  :  $("#PH-Stock-int").text(),      //股利
-                "others_inc"  : $("#PH-others-int").text(),     //其他所得
-                "total_inc"  :  $("#PH-total-inc").text(),      //列計人口
-                "members"  :    $("#PH-members").text(),        //生活所需-月
-                "need"  :       $("#PH-need").text(),           //月均所得總額
+                "others_inc"  : $("#PH-others-int").text(),     //其他所得 
+                "total_inc"  :  $("#PH-total-inc").text(),      //月均所得總額
+                "members"  :    $("#PH-members").text(),        //列計人口 
+                "need"  :       $("#PH-need").text(),           //生活所需-月
                 "level"  :      $("#PH-level").text()           //扶助等級
         };
         console.log(file_info);
