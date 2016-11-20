@@ -411,7 +411,7 @@
         border: 0.15em solid #861135;
     }
 
-    .proper-inc-div{
+    .proper-inc-div, #right_tab_membercomm > textarea{
         width: 90%;
         height: 6.8em;
         background-color: #ffd1a3;
@@ -474,7 +474,7 @@
         color: #882710;
         width: 4em;
     }
-    .add-proper-inc, .add-proper, .auto-proper {
+    .add-proper-inc, .add-proper, .auto-proper, .auto-comm {
         position: absolute;
         font-size: 1.3em;
         left: calc(50% - 2.5em);

@@ -84,38 +84,9 @@ $(document).ready(function() {
     function recount_left_family_panel(){
         total_count_members();
         total_count_incomes();
+        total_count_property();
     }
 
-    //找出所有img.svg，修改成嵌入式SVG碼，以便著色
-    function svg_redraw(){
-        jQuery('img.svg').each(function() {
-            var $img = jQuery(this);
-            var imgID = $img.attr('id');
-            var imgClass = $img.attr('class');
-            var imgURL = $img.attr('src');
-
-            jQuery.get(imgURL, function(data) {
-                // Get the SVG tag, ignore the rest
-                var $svg = jQuery(data).find('svg');
-
-                // Add replaced image's ID to the new SVG
-                if (typeof imgID !== 'undefined') {
-                    $svg = $svg.attr('id', imgID);
-                }
-                // Add replaced image's classes to the new SVG
-                if (typeof imgClass !== 'undefined') {
-                    $svg = $svg.attr('class', imgClass + ' replaced-svg');
-                }
-
-                // Remove any invalid XML tags as per http://validator.w3.org
-                $svg = $svg.removeAttr('xmlns:a');
-
-                // Replace image with new SVG
-                $img.replaceWith($svg);
-
-            }, 'xml');
-        });
-    }
 
     
 
@@ -232,6 +203,7 @@ $(document).ready(function() {
         $(".TC-L-D1-allpeople").text(total_members_num);
         $(".TC-L-D1-listpeople").text(list_members_num);
         $(".TC-L-D1-lastincome").text(numberWithCommas(limit_income));
+        $("#PH-need").text(limit_income);
     }
     //左面板-總收入計算
     function total_count_incomes(){ 
@@ -302,12 +274,36 @@ $(document).ready(function() {
         $(".TC-L-D2").empty();
         var outs = "";
         var sum = 0;
+        $("#PH-Property-int").text("0");
+        $("#PH-Salary").text("0");
+        $("#PH-Stock-int").text("0");
+        $("#PH-Profit").text("0");
+        $("#PH-Bank-int").text("0");
+        $("#PH-others-int").text("0");
+
         for(i=0;i<incomes_array.length;i++){
             outs += '<div class="total-count-left-lc">' + incomes_array[i][0] + '</div><div class="total-count-left-rc">' + incomes_array[i][1] + '</div>';
             sum +=  parseInt(incomes_array[i][1]);
+            if(incomes_array[i][0]=="薪資"){
+                $("#PH-Salary").text(incomes_array[i][1]);
+            }
+            if(incomes_array[i][0]=="股票配息"){
+                $("#PH-Stock-int").text(incomes_array[i][1]);
+            }
+            if(incomes_array[i][0]=="營利"){
+                $("#PH-Profit").text(incomes_array[i][1]);
+            }
+            if(incomes_array[i][0]=="存款利息"){
+                $("#PH-Bank-int").text(incomes_array[i][1]);
+            }
+            if(incomes_array[i][0]=="其他"){
+                $("#PH-others-int").text(incomes_array[i][1]);
+            }
         }
+        $("#PH-Property-int").text("0");
         $(".TC-L-D2").append(outs);
         $(".TC-L-D2-sum").text(numberWithCommas(sum));
+        $("#PH-total-inc").text(sum);
         var Thonscomm = $(".TC-L-D1-lastincome").text();
         var TInt = Thonscomm.replace(",", "");
         //console.log(parseInt(TInt));
@@ -317,10 +313,212 @@ $(document).ready(function() {
         var result = Math.round(original*10000)/100;
         //console.log(result);
         $(".TC-L-D2-percent").text(result + "%");
+
+        var listpeople = $(".TC-L-D1-listpeople").text();
+        var lavel = "";
+        if(result<=10){
+            lavel = "甲級"; 
+        }else if(result<=70){
+            lavel = "乙級"; 
+        }else if(result<=100){
+            lavel = "丙級"; 
+        }
+        $("#LP-result").text(lavel + listpeople + "口");
+        $(".TC-L-D2-percent").css('color', 'gray');
+        $("#PH-level").text(lavel + listpeople + "口");
+        if(result>100){
+            $("#LP-result").text("資格不符");
+            $("#PH-level").text("資格不符");
+            $(".TC-L-D2-percent").css('color', 'red');
+        }
+
+        
         //$(".TC-L-D1-lastincome").text();
         // $(".TC-L-D1-allpeople").text(total_members_num);
         // $(".TC-L-D1-listpeople").text(list_members_num);
         // $(".TC-L-D1-lastincome").text(numberWithCommas(limit_income));
+    }
+
+    //左面板-總財產計算
+    function total_count_property(){ 
+        var property_move_array = [];
+        var total_members_num = 0;  //總人數
+        var total_members_count = 0;  //總列計人數
+        var total_property_move = 0;    //動產總和
+        var total_property_Deposits = 0;    //儲蓄存款
+        var total_property_Securities = 0;  //有價證券
+        var total_property_Investment = 0;  //投資
+        var total_property_Others = 0;      //其他動產
+
+        var total_property_imm = 0;    //不動產總和
+        var total_property_imm_count = 0;    //不動產列計總和
+
+
+        var total_property_house_num = 0 ;   //房屋數
+        var total_property_house_value = 0;    //房屋總值
+        var total_property_house_num_con = 0;    //房屋列計數
+        var total_property_house_value_con = 0;    //房屋列計總值
+        var total_property_land_num = 0 ;   //房屋數
+        var total_property_land_value = 0 ;   //房屋總值
+        var total_property_land_num_con = 0 ;   //房屋列計數
+        var total_property_land_value_con = 0 ;   //房屋列計總值
+        
+
+
+        var property_move_limit = 0    //動產限額
+        var property_imm_limit = 0    //不動產限額
+        var members_area_array = []    //縣市
+        var GDIV = $(".center-total-count .group-div");
+        total_members_num = $(GDIV).length-1;   //要扣掉 新增家屬 按鈕
+
+
+        //console.log(total_members_num);
+        for(i=0;i < total_members_num;i++){
+            //console.log($(GDIV));
+            var Special = $(GDIV).eq(i).find(".people-special .people-input-left").val();
+            
+            // if ($(GDIV).eq(i).find(".member_area").attr('area-index') == "" || $(GDIV).eq(i).find(".member_area").attr('area-index') == null){
+            //     continue;
+            // }
+            var Property_Div = $(GDIV).eq(i).find(".property-cont > div");
+            // if ($(Property_Div).length == 0){
+            //     continue;
+            // }
+            var arr1= Special.split(',');
+            var title = $(GDIV).eq(i).find(".people-title input").val();
+            if (arr1[0] == '0' || arr1[0] == '2' || title == "役男"){    //-------------------一般&不計收入-----------------------------------------------------------------------------------------    
+                if(title != "役男"){total_members_count++;}//列計人數+1
+                  
+                var area = $(GDIV).eq(i).find(".member_area").attr('area-index');
+
+                members_area_array.push(Property_limit[area][3]);
+                for(j=0;j<$(Property_Div).length;j++){  
+                    //var income_ex_flag = 0;
+                    var Property_type = $(Property_Div).eq(j).find(".proper-inc-div-1 option:selected").text();
+
+                    if( Property_type == "儲蓄存款" || Property_type == "有價證券" ||  Property_type == "投資" ||  Property_type == "其他"){
+                        //total_property_move += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+                        total_property_Deposits += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+        
+                    }else if(Property_type == "有價證券"){
+                        total_property_Securities += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+        
+                    }
+                    else if(Property_type == "投資"){
+                        total_property_Investment += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+        
+                    }
+                    else if(Property_type == "其他"){
+                        total_property_Others += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+                    }
+                    else if(Property_type == "房屋"){
+                        if((Property_Div).eq(j).find(".proper-inc-div-4 option:selected").text()=="非自住"){
+                            //非自住
+                            total_property_house_num++;
+                            total_property_house_num_con++;
+                            total_property_house_value += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+                            total_property_house_value_con += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+                        }else{
+                            //自住
+                            total_property_house_num++;
+                            total_property_house_value += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+                        }
+
+                    }else if(Property_type == "土地"){
+                        if((Property_Div).eq(j).find(".proper-inc-div-4 option:selected").text()=="非自住"){
+                            //非自住
+                            total_property_land_num++;
+                            total_property_land_num_con++;
+                            total_property_land_value += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+                            total_property_land_value_con += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+                        }else{
+                            //自住
+                            total_property_land_num++;
+                            total_property_land_value += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+                        }
+                    }
+                }
+
+            }else if(arr1[0] == '1'){   //-------------------不列口數-----------------------------------------------------------------------------------------
+            }
+        }
+        total_property_imm_count = total_property_land_value_con + total_property_house_value_con;
+        property_move_limit = 2500000 + (total_members_count - 1) * 250000;
+        property_imm_limit = members_area_array.min();
+        total_property_move = total_property_Deposits+total_property_Securities+total_property_Investment+total_property_Others;
+
+        //console.log("列計人數："+total_members_count);
+        $("#PH-members").text(total_members_count);
+        
+        //console.log("儲蓄存款："+total_property_Deposits); 
+        $(".TC-L-D3 .total-count-left-rc").eq(0).text(total_property_Deposits);
+        $("#PH-Deposits").text(total_property_Deposits);
+
+        //console.log("投資："+total_property_Investment); 
+        $(".TC-L-D3 .total-count-left-rc").eq(1).text(total_property_Investment);
+        $("#PH-Investment").text(total_property_Investment);
+        //console.log("有價證券："+total_property_Securities); 
+        $(".TC-L-D3 .total-count-left-rc").eq(2).text(total_property_Securities);
+        $("#PH-Securities").text(total_property_Securities);
+        
+        //console.log("其他動產："+total_property_Others); 
+        $(".TC-L-D3 .total-count-left-rc").eq(3).text(total_property_Others);
+        $("#PH-others-Pro").text(total_property_Others);
+         //console.log("動產總額："+total_property_move);
+         $("#total_property_move").text(total_property_move);
+         $("#PH-total-pro").text(total_property_move);
+         //console.log("不動產總額："+total_property_imm);
+         //console.log("不動產列計總額："+total_property_imm_count);
+         $("#total_property_imm_count").text(total_property_imm_count);
+         $("#PH-total-imm").text(total_property_imm_count);
+        //console.log("房屋數："+total_property_house_num);  
+        $(".TC-L-D4 .imm-total .imm-head3 span").eq(0).text(total_property_house_num);
+        $("#PH-Houses").text(total_property_house_num);
+        //console.log("房屋總值："+total_property_house_value);    
+        $(".TC-L-D4 .imm-total .imm-head3").eq(1).text(total_property_house_value);
+        $("#PH-Houses-total").text(total_property_house_value);
+        //console.log("房屋列計數："+total_property_house_num_con);     
+        $(".TC-L-D4 .imm-total .imm-head3").eq(2).text(total_property_house_num_con);
+        $("#PH-Houses-num").text(total_property_house_num_con);
+        //console.log("房屋列計總值："+total_property_house_value_con);  
+        $(".TC-L-D4 .imm-total .imm-head3").eq(3).text(total_property_house_value_con);
+        $("#PH-Houses-listtotal").text(total_property_house_value_con);
+        //console.log("土地數："+total_property_land_num);  
+        $(".TC-L-D4 .imm-total .imm-head3 span").eq(1).text(total_property_land_num);
+        $("#PH-Land").text(total_property_land_num);
+        //console.log("土地總值："+total_property_land_value); 
+        $(".TC-L-D4 .imm-total .imm-head3").eq(5).text(total_property_land_value);
+        $("#PH-Land-total").text(total_property_land_value);
+        //console.log("土地列計數："+total_property_land_num_con);  
+        $(".TC-L-D4 .imm-total .imm-head3").eq(6).text(total_property_land_num_con);
+        $("#PH-Land-num").text(total_property_land_num_con);
+        //console.log("土地列計總值："+total_property_land_value_con);   
+        $(".TC-L-D4 .imm-total .imm-head3").eq(7).text(total_property_land_value_con);
+        $("#PH-Land-listtotal").text(total_property_land_value_con);
+
+        //console.log("動產限額："+property_move_limit);
+        $("#property_move_limit").text(property_move_limit);
+        //console.log("不動產限額："+property_imm_limit);
+        $("#property_imm_limit").text(property_imm_limit);
+        
+        if(property_move_limit < total_property_move) {
+            $("#property_move_limit").css('color', 'red');
+            $("#LP-result").text("資格不符");
+            $("#PH-level").text("資格不符");
+        }
+        else{$("#property_move_limit").css('color', 'gray');}
+
+        if(property_imm_limit < total_property_imm_count) {
+            $("#property_imm_limit").css('color', 'red');
+            $("#LP-result").text("資格不符");
+            $("#PH-level").text("資格不符");
+        }
+        else{$("#property_imm_limit").css('color', 'gray');}
+
+
+        //console.log(incomes_array);
+        //redraw_left_total_members(members_area_array,total_members_num,list_members_num,limit_income);
+        //redraw_left_total_incomes(incomes_array);
     }
 
     //中面板-個人資料-地址變化時，更新縣市紀錄，寫入個人隱藏紀錄板
@@ -397,6 +595,11 @@ $(document).ready(function() {
         if ($('.group-div.selected').find(".property-cont > div").length >= 1){
             $('.group-div.selected').find(".property-cont > div").clone().appendTo($(".pro-div-cont"));
         }
+        //----------------------------敘述頁籤----------------------------------------------------
+        $("#right_tab_membercomm > textarea").val($('.group-div.selected').find(".comm-cont").val());
+        //$('.group-div.selected').find(".comm-cont").val();
+
+        //<div class=comm-cont></div>
     }
 
 
@@ -412,7 +615,7 @@ $(document).ready(function() {
 
     //右面板.財產.新增財產按鈕點擊事件
     $("#right_tab_property").on('click', '.add-proper', function(event) {
-        var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"style="display: none;"><option value="m" selected="">自住</option><option value="y">非自住</option></select><select class="proper-inc-div-6" style="display: none;"><option value="臺北市" selected>臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
+        var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"style="display: none;"><option value="m" selected="">自住</option><option value="y">非自住</option></select><select class="proper-inc-div-6" style="display: none;"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
         $(PRO_DIV).appendTo('#right_tab_property .pro-div-cont');
         /* Act on the event */
     });    
@@ -448,13 +651,14 @@ $(document).ready(function() {
         }else{
             property['code'] = $(PDIV).attr('code');
             property['edit'] = "delete";
-            console.log(property);
+            //console.log(property);
             File_data_property.push(property);
-            console.log(File_data_property);
+            //console.log(File_data_property);
         }
 
         $('.proper-inc-div.selected').remove();
         $('#confirm-delete-pro').modal('hide');
+        recount_left_family_panel();
     });
     
     //右面板.財產.輸入欄位有變動觸發，立即寫回成員隱藏面板，並更新此家屬財產總額
@@ -504,15 +708,16 @@ $(document).ready(function() {
                 }else{
                     Income += parseInt(Inc_Value);
                 }
-            console.log(Inc_Title);
-            console.log(Inc_Value);
-            console.log(Inc_from);
-            console.log(Inc_self);
+            // console.log(Inc_Title);
+            // console.log(Inc_Value);
+            // console.log(Inc_from);
+            // console.log(Inc_self);
         }
         Income = parseInt(Income);
-        console.log(Income);
+        // console.log(Income);
         $(".group-div.selected").find('.people-property-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
         svg_redraw();
+        recount_left_family_panel();
     });
 
     //右面板.所得.新增所得按鈕被點擊後
@@ -566,7 +771,8 @@ $(document).ready(function() {
 
         $('.proper-inc-div.selected').remove();
         $('#confirm-delete-inc').modal('hide');
-        total_count_incomes();
+        //total_count_incomes();
+        recount_left_family_panel();
     });
 
     //右面板.所得.輸入欄位有變動觸發，立即寫回成員隱藏面板，並更新此家屬所得總額(轉換為月收入)
@@ -576,7 +782,9 @@ $(document).ready(function() {
             $(this).find("option:selected").attr('selected','selected');
 
             if($(this).children("option:selected").text() == '股票配息' || $(this).children("option:selected").text() == '存款利息'){
+                $(this).parent().find(".proper-inc-div-4").val("y");
                 $(this).parent().find(".proper-inc-div-7").fadeIn();
+                if($(this).children("option:selected").text() == '存款利息'){$(this).parent().find(".proper-inc-div-7").val(0.01355)}
             }else{
                 $(this).parent().find(".proper-inc-div-7").fadeOut();
             }
@@ -611,8 +819,44 @@ $(document).ready(function() {
         console.log(Income);
         $(".group-div.selected").find('.people-income-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
         svg_redraw();
-        total_count_incomes();
-    });  
+        //total_count_incomes();
+        recount_left_family_panel();
+    }); 
+    //右面板.敘述欄位有變動觸發，立即寫回成員隱藏面板，並更新此家屬所得總額(轉換為月收入)
+    $('#right_tab_membercomm').on('change', 'textarea', function(event) {
+        //event.preventDefault();
+        $(".group-div.selected").find('.comm-cont').val($(this).val());
+        /* Act on the event */
+    });
+
+    //自動成員敘述產生按鈕點擊.更新提示面板資訊
+    $('#right_tab_membercomm').on('click', '.auto-comm', function(event) {
+        $('#confirm-auto-comm').modal('toggle');
+        //var Inc_Cycle   =   $(Idiv).find(".proper-inc-div-4 option:selected").text();
+
+        $('#confirm-auto-comm .modal-body').html("");
+    });
+    //自動成員敘述產生按鈕點擊.關閉時觸發
+    $('#confirm-auto-comm').on('hidden.bs.modal', function (event) {
+       //$('.proper-inc-div.selected').removeClass('selected');  
+    });
+
+    //自動成員敘述產生按鈕點擊.點選確認觸發，啟用自動成員家況敘述功能
+    $('#confirm-auto-comm').on('click', 'a.btn-ok', function(event) {
+        
+    });
+
+
+
+
+
+
+
+
+
+
+
+
       
 /*************************統計分析          statistics.php****************************************/
     //測試chart.js 圖表
@@ -754,10 +998,12 @@ $(document).ready(function() {
     //中面板.家屬.新增家屬按鈕被點擊
     $(".center-total-count").on('click', '.add-people', function(event) {
         //event.preventDefault();
-        var GROUP_DIV = '<div class="group-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-people" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/man-avatar.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value=""></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value=""></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value=""></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value=""></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">一般</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0" selected>一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1">服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="2,30">55歲以上,16歲以下無收入</option><option value="2,31">身心障礙、重大傷病</option><option value="2,32">3個月內之重大傷病</option><option value="2,33">學生</option><option value="2,34">孕婦</option><option value="2,35">獨自照顧直系老幼親屬</option><option value="2,36">獨自照顧重大傷病親屬</option><option value="2,37">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div></div></div>';
+        var GROUP_DIV = '<div class="group-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-people" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/man-avatar.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value=""></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value=""></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value=""></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">一般</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0" selected>一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1">服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="2,30">55歲以上,16歲以下無收入</option><option value="2,31">身心障礙、重大傷病</option><option value="2,32">3個月內之重大傷病</option><option value="2,33">學生</option><option value="2,34">孕婦</option><option value="2,35">獨自照顧直系老幼親屬</option><option value="2,36">獨自照顧重大傷病親屬</option><option value="2,37">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
         $(GROUP_DIV).insertBefore($(this).parent());
         svg_redraw();
-        recount_left_family_panel();
+        var index_g = $(".group-div").length - 2;
+        $(".group-div").eq(index_g).find('.people-id-address input').trigger('change');
+        //recount_left_family_panel();
     });
 
     //中面板.家屬.生日改變：計算其歲數
@@ -777,6 +1023,7 @@ $(document).ready(function() {
         // console.log(YYYYMMDD);
         var age_ = new Date(YYYYMMDD);
         var age = _calculateAge(age_);
+        $(this).attr('age', age);
         // console.log(age);
         $(this).next('span').text("(" + age + "歲)");
         if(age<16 ||age >=55){

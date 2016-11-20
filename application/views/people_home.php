@@ -3,7 +3,7 @@
 	<br />
 	<div class="PH-label-g"><label>役男姓名: </label><span id="PH-name">陳宗儒</span></div>
 	<div class="PH-label-g"><label>身份字號: </label><span id="PH-code">S133745083</span></div>
-	<div class="PH-label-g"><label>役男生日: </label><span id="PH-birthday">790810</span></div>
+	<div class="PH-label-g"><label>役男生日: </label><span id="PH-birthday">1985-08-10</span></div>
 	<br />
 	<div class="PH-label-g"><label>入伍日期: </label><span id="PH-milidate">1050831</span></div>
 	<div class="PH-label-g"><label>服役軍種: </label><span id="PH-type">陸軍</span></div>
@@ -68,14 +68,14 @@
 		<tr>
 		<td colspan="2">動產列計總額total-pro</td>
 		<td colspan="4">不動產列計總額total-imm</td>
-		<td colspan="3">全年所得總額total-inc</td>
+		<td colspan="3">月均所得總額total-inc</td>
 		<td>扶助等級</td>
 		</tr>
 		<tr>
 		<td colspan="2">$<span id="PH-total-pro">9000000</span></td>
 		<td colspan="4">$<span id="PH-total-imm">9000000</span></td>
 		<td colspan="3">$<span id="PH-total-inc">9000000</span></td>
-		<td><span id="PH">甲</span>級</td></tr>
+		<td><span id="PH-level">甲</span></td></tr>
 	</table>
 	<hr class="thin"/>
 	<button>帶入家況</button>

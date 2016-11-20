@@ -525,7 +525,25 @@
   <div role="tabpanel" class="tab-pane fade" id="right_tab_membercomm">個人敘述將顯示於此
   <div class="proper-inc-div">
             <sapn class="auto-comm">自動帶入</sapn>
-        </div></div>
+  </div>
+  <textarea style="display: block;background-color: #f3ede8;height: 12em;">測試</textarea>
+  <div class="modal fade" id="confirm-auto-comm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        警告-將以自動產生的敘述覆蓋現有敘述文字
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <a class="btn btn-danger btn-ok">取代</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
 </div>
 
 </div>

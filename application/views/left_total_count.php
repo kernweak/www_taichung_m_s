@@ -23,8 +23,8 @@
     <div class="total-count-left-lc">有價證券</div><div class="total-count-left-rc">12,387</div>
     <div class="total-count-left-lc">其他動產</div><div class="total-count-left-rc">123,571</div>
     </div>
-    <div class="total-count-left-lc bold">總計</div><div class="total-count-left-rc bold">2282,906</div>
-    <div class="total-count-left-lc bold gray-word">動產限額</div><div class="total-count-left-rc bold gray-word">3,250,000</div>
+    <div class="total-count-left-lc bold">總計</div><div class="total-count-left-rc bold" id="total_property_move">2282,906</div>
+    <div class="total-count-left-lc bold gray-word">動產限額</div><div class="total-count-left-rc bold gray-word" id="property_move_limit">3,250,000</div>
 
     <div class="total-count-left-P P100">不動產統計</div>
     <div class="detial TC-L-D4">
@@ -53,9 +53,9 @@
             </table>
         </div>
     </div>
-    <div class="total-count-left-lc bold bg-danger">總計</div><div class="total-count-left-rc bold bg-danger">3,235,685</div>
-    <div class="total-count-left-lc bold gray-word" style="width:40%">不動產限額</div><div style="width:60%" class="total-count-left-rc bold gray-word"><span style="font-size:0.7em;">雲林縣</span><span>3,200,000</span></div>
+    <div class="total-count-left-lc bold bg-danger">總計</div><div class="total-count-left-rc bold bg-danger" id="total_property_imm_count">3,235,685</div>
+    <div class="total-count-left-lc bold gray-word" style="width:40%">不動產限額</div><div style="width:60%" class="total-count-left-rc bold gray-word" id="property_imm_limit">3,200,000</div>
     <div class="total-count-left-P P100">扶助級別</div>
-    <div class="total-count-left-lc bold bg-danger">結果：</div><div class="total-count-left-rc bold bg-danger">資格不符</div>
+    <div class="total-count-left-lc bold bg-danger">結果：</div><div class="total-count-left-rc bold bg-danger" id="LP-result"></div>
     <div></div>
 </div>

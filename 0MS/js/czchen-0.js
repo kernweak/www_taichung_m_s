@@ -1,4 +1,35 @@
 /*************************函式庫****************************************/    
+    //找出所有img.svg，修改成嵌入式SVG碼，以便著色
+    function svg_redraw(){
+        jQuery('img.svg').each(function() {
+            var $img = jQuery(this);
+            var imgID = $img.attr('id');
+            var imgClass = $img.attr('class');
+            var imgURL = $img.attr('src');
+
+            jQuery.get(imgURL, function(data) {
+                // Get the SVG tag, ignore the rest
+                var $svg = jQuery(data).find('svg');
+
+                // Add replaced image's ID to the new SVG
+                if (typeof imgID !== 'undefined') {
+                    $svg = $svg.attr('id', imgID);
+                }
+                // Add replaced image's classes to the new SVG
+                if (typeof imgClass !== 'undefined') {
+                    $svg = $svg.attr('class', imgClass + ' replaced-svg');
+                }
+
+                // Remove any invalid XML tags as per http://validator.w3.org
+                $svg = $svg.removeAttr('xmlns:a');
+
+                // Replace image with new SVG
+                $img.replaceWith($svg);
+
+            }, 'xml');
+        });
+    }
+
     function date_to_yyy(date_string){ //西元日期轉民國7碼
         //date_string = "2016-05-03";
         var date_a = date_string.split("-");
@@ -24,11 +55,21 @@
         //console.log(yyyy_date);
         return yyyy_date;
     }
+
     if (!String.prototype.trimall) {            //去除所有空白
       String.prototype.trimall = function () {
         return this.replace(/\s+/g, "");
       };
     }
+
+    Array.prototype.max = function() {      //取出陣列最大最小值
+      return Math.max.apply(null, this);
+    };
+
+    Array.prototype.min = function() {
+      return Math.min.apply(null, this);
+    };
+
     function read_file(file_key){
         $.ajax({
                 url: '/file/read_new_file',
@@ -88,6 +129,7 @@
                 $(".people_home").attr('boy_id', responsive['役男系統編號']);
                 
                 File_data = [];
+                empty_members();
                 console.log("success");
             })
             .fail(function() {
@@ -96,38 +138,89 @@
     }
 
     function empty_members(){
+        //右側欄位清空
         $("#right_tab_area .town-name.selected").removeClass('selected');
         $("#area_cost").text("");
         $("#area_cost_year").text("");
         $("#area_limit").text("");
         $(".inc-div-cont").empty();
         $(".pro-div-cont").empty();
+
         $('.group-div').each(function(index, el) {
             if(!$(this).is('.add-new-button')){
                 $(this).remove();
             }
         });
         File_data = [];
-        //File_data_property = [];
-        //File_data_income = [];
+        //console.log($("#PH-birthday").text());
+        //console.log(date_to_yyy($("#PH-birthday").text()));
+        var GROUP_DIV = '<div class="group-div" code=new edit=new><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/captain.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value="役男"></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value="'+$("#PH-name").text()+'"></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value="'+$("#PH-code").text()+'"></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="'+date_to_yyy($("#PH-birthday").text())+'" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">不列口數</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0">一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1" selected>服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="2,30">55歲以上,16歲以下無收入</option><option value="2,31">身心障礙、重大傷病</option><option value="2,32">3個月內之重大傷病</option><option value="2,33">學生</option><option value="2,34">孕婦</option><option value="2,35">獨自照顧直系老幼親屬</option><option value="2,36">獨自照顧重大傷病親屬</option><option value="2,37">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
+        $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
+        svg_redraw();
+        $(".group-div").eq(0).find('.people-id-address input').trigger('change');
+        $(".group-div").eq(0).find('.people-birthday input').trigger('change');
+        
+        //recount_left_family_panel();
     }
-    var File_data = [];
+    var members = [];
     //var File_data_property = [];
     //var File_data_income = [];
 
     function save_file(){
-        File_data = [];
+        members = [];
         $('.group-div').each(function(index, el) {
             if(!$(this).is('.add-new-button')){
-                var members=[];
-                members["id"] = $(this).attr('code');
-                members["edit"] = $(this).attr('edit');
-                members["title"]=$(this).find('.people-title input').val();
-                members["name"]=$(this).find('.people-name input').val();
-                members["code"] = $(this).find('.people-id input').val();
-                members["address"] = $(this).find('.people-id-address input').val();
-                members["job"] = $(this).find('.people-job input').val();
-                members["special"] = $(this).find('.people-special select').val();
+                //每個成員
+                var member=[];
+                member["key"] = $(this).attr('code');
+                member["edit"] = $(this).attr('edit');
+                member["title"]=$(this).find('.people-title input').val();
+                member["name"]=$(this).find('.people-name input').val();
+                member["code"] = $(this).find('.people-id input').val();
+                member["birthday"] = $(this).find('.people-birthday input').attr('YYYYMMDD');
+
+                member["address"] = $(this).find('.people-id-address input').val();
+                member["job"] = $(this).find('.people-job input').val();
+                member["special"] = $(this).find('.people-special select').val();
+                member["marriage"] = $(this).find('.people-marriage input').val();
+                member["marriage_ex"] = $(this).find('.people-marriage2 input').val();
+
+                member["area"] = $(this).find('.member_area').val();
+                member["area_key"] = $(this).find('.member_area').attr('area-index');
+                member["comm"] = $(this).find('.comm-cont').val();
+
+                member["income"] = [];
+                member["property"] = [];
+
+                $(this).find('.income-cont .proper-inc-div').each(function(index, el) {
+                    var income=[];
+                    income["key"] = $(this).attr('code');
+                    income["type"] = $(this).children('.proper-inc-div-1 option:selected').text();
+                    income["value"] = $(this).children(".proper-inc-div-2").val(); 
+                    income["m_or_y"] = $(this).children(".proper-inc-div-4").val(); 
+                    income["from"] = $(this).children(".proper-inc-div-3").val(); 
+                    income["note"] = $(this).children(".proper-inc-div-5").val();
+                    income["rate"] = $(this).children(".proper-inc-div-7").val(); 
+                    member["income"].push(income);
+                });
+                $(this).find('.property-cont .proper-inc-div').each(function(index, el) {
+                    var property=[];
+                    property["key"] = $(this).attr('code');
+                    property["type"] = $(this).children('.proper-inc-div-1 option:selected').text();
+                    property["value"] = $(this).children(".proper-inc-div-2").val(); 
+                    //property["m-or-y"] = $(this).children(".proper-inc-div-4").val(); 
+                    property["from"] = $(this).children(".proper-inc-div-3").val(); 
+                    property["note"] = $(this).children(".proper-inc-div-5").val();
+                    property["self_use"] = $(this).children(".proper-inc-div-4").val();
+                    //property["interest_rate"] = $(this).children(".proper-inc-div-7").val(); 
+                    member["property"].push(property);
+                });
+
+
+
+
+
+                //$(this).find('.property-cont .proper-inc-div')
                 // var BD_str = $(this).find('.people-birthday input').val();
                 // console.log(BD_str);
                 // BD_str = BD_str.replace(/^\D+/g, '');
@@ -135,12 +228,52 @@
                 // console.log(yyy_to_date(BD_str));
 
                 // members["birthday"] = yyy_to_date(BD_str);
-                members["birthday"] = $(this).find('.people-birthday input').attr('YYYYMMDD');
+                
 
 
-                File_data.push(members);
+                members.push(member);
             }
         });
-        console.log(File_data);
+        console.log(members);
+        // file_info = [];
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
+        // file_info[""] =;
 
+        $.ajax({
+            url: '/file/read_new_file',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_info        : file_key,
+                members          : members
+            },
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            console.log("success");
+        })
+        .fail(function() {
+            console.log("error");
+        });
     }
