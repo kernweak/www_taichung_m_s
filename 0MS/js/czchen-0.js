@@ -231,9 +231,33 @@
         console.log(members);
 
         file_info = {
-                "key" : 1       //案件流水號
+                "key" :         $(".people_home").attr('file_id'),      //案件流水號
+                "Deposits"  :   $("#PH-Deposits").text(),
+                "Investment"  : $("#PH-Investment").text(),
+                "Securities"  : $("#PH-Securities").text(),
+                "Others_Pro"  : $("#PH-others-Pro").text(),
+                "Total-pro"  :  $("#PH-total-pro").text(),
+                "Houses"  :     $("#PH-Houses").text(),
+                "Houses_total"  : $("#PH-Houses-total").text(),
+                "Houses_num"  : $("#PH-Houses-num").text(),
+                "Houses_listtotal"  : $("#PH-Houses-listtotal").text(),
+                "Land"  :       $("#PH-Land").text(),
+                "Land_total"  : $("#PH-Land-total").text(),
+                "Land_num"  :   $("#PH-Land-num").text(),
+                "Land_listtotal"  : $("#PH-Land-listtotal").text(),
+                "Total_imm"  :  $("#PH-Total-imm").text(),
+                "Salary"  :     $("#PH-Salary").text(),
+                "Profit"  :     $("#PH-Profit").text(),
+                "Property_inc"  : $("#PH-Property-inc").text(),
+                "Bank_inc"  :   $("#PH-Bank-int").text(),
+                "Stock_inc"  :  $("#PH-Stock-int").text(),
+                "Others_inc"  : $("#PH-others-int").text(),
+                "total_inc"  :  $("#PH-total-inc").text(),
+                "Members"  :    $("#PH-members").text(),
+                "Need"  :       $("#PH-need").text(),
+                "Level"  :      $("#PH-level").text()
         };
-
+        console.log('file_info = ' + file_info);
         file_json = JSON.stringify(file_info);
         members_json = JSON.stringify(members);
 
