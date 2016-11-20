@@ -561,6 +561,7 @@ $(document).ready(function() {
 
     //中面板-成員面板被點擊時，加上被選擇狀態，且更新右側詳細資料面板
     $('.center-total-count').on('click', '.group-div', function(event) {
+        if($(this).is(".add-new-button")){return;}
         $('.group-div.selected').removeClass('selected');
         $(this).addClass('selected');
         right_total_count_redraw();
