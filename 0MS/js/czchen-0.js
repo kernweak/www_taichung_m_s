@@ -70,6 +70,37 @@
       return Math.min.apply(null, this);
     };
 
+    function read_file_test(file_key){
+        //ajax read data
+        //read file_info
+        //read members
+        //          read property
+        //          read income
+    }
+
+    function rf_file_info(file_key){
+
+    }
+
+    function rf_members(file_key){
+        
+    }
+
+    function rf_mem_property(property){
+        property.key
+        "type"
+        "value"                 
+        "from"
+        "note"
+        "self_use"
+
+    }
+
+    function rf_mem_income(income){
+        
+    }
+
+
     function read_file(file_key){
         $.ajax({
                 url: '/file/read_new_file',
@@ -160,11 +191,7 @@
         $(".group-div").eq(0).find('.people-id-address input').trigger('change');
         $(".group-div").eq(0).find('.people-birthday input').trigger('change');
         
-        //recount_left_family_panel();
     }
-    var members = [];
-    //var File_data_property = [];
-    //var File_data_income = [];
 
     function save_file(){
         members = [];
@@ -211,24 +238,14 @@
                     "note" : $(this).children(".proper-inc-div-5").val(),
                     "self_use" : $(this).children(".proper-inc-div-4").val()
                 }
-                    //property["interest_rate"] = $(this).children(".proper-inc-div-7").val(); 
                     member.property.push(property);
                 });
-
-
-                //$(this).find('.property-cont .proper-inc-div')
-                // var BD_str = $(this).find('.people-birthday input').val();
-                // console.log(BD_str);
-                // BD_str = BD_str.replace(/^\D+/g, '');
-                // console.log(BD_str);
-                // console.log(yyy_to_date(BD_str));
-
-                // members["birthday"] = yyy_to_date(BD_str);                
+             
 
                 members.push(member);
             }
         });
-        console.log(members);
+        //console.log(members);
 
         file_info = {
                 "key" :         $(".people_home").attr('file_id'),      //案件流水號
@@ -257,12 +274,12 @@
                 "need"  :       $("#PH-need").text(),           //月均所得總額
                 "level"  :      $("#PH-level").text()           //扶助等級
         };
-        console.log(file_info);
+        //console.log(file_info);
         file_json = JSON.stringify(file_info);
         members_json = JSON.stringify(members);
 
-        console.log('file_info json = ' + file_json);
-        console.log('members json = ' + members_json);
+        //console.log('file_info json = ' + file_json);
+        //console.log('members json = ' + members_json);
 
         $.ajax({
             url: '/family/set_members_file',
