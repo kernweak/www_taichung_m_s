@@ -29,9 +29,7 @@ class Family extends MY_Controller {
 	}
 
 	public function get_members_file(){
-		// $file_key = $this->input->post('file_key');
-		$file_key='3';
-
+		$file_key = $this->input->post('file_key');		
 		$members = $this->member_model->get_members_for_file($file_key);		
 		$files = $this->file_model->read_file($file_key);			
 
