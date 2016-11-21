@@ -56,4 +56,22 @@ class Property_model extends CI_Model {
 		$this->db->delete('family_mem_property');
 	}
 
+	public function get_properties_for_member($member_key){
+		$this->db->where('成員系統編號', $member_key);
+		$result = $this->db->get('family_mem_property')->result_array();	
+		$properties = [];
+		foreach ($result as $row){
+			$property = array(
+				'key' => $row['財產系統編號'],
+				'type' => $row['財產類別'],
+				'from' => $row['位於何處'],
+				'value' => $row['價值'],
+				'self_use' => $row['自用'],
+				'note' => $row['備註']
+			);
+			$properties[] = $property;
+		}
+		log_message('debug', 'properties = '.print_r($properties, true));
+		return $properties;
+	}
 }

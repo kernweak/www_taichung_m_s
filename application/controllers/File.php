@@ -106,7 +106,7 @@ class File extends MY_Controller {
 	public function read_new_file(){
 		$file_key = (int)$this->input->post('file_key');
 		$this->load->model('file_model');
-		$file_info = $this->file_model->read_new_file($file_key);
+		$file_info = $this->file_model->read_file($file_key);
 		//var_dump($file_key);
 		//var_dump($file_info);
 		echo json_encode($file_info[0]);

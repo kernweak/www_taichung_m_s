@@ -58,4 +58,23 @@ class Income_model extends CI_Model {
 		$this->db->delete('family_mem_income');
 	}
 
+	public function get_incomes_for_member($member_key){
+		$this->db->where('成員系統編號', $member_key);
+		$result = $this->db->get('family_mem_income')->result_array();	
+		$incomes = [];
+		foreach ($result as $row){
+			$income = array(
+				'key' => $row['所得系統編號'],
+				'type' => $row['所得類別'],
+				'from' => $row['來源'],
+				'm_or_y' => $row['年或月收入'],
+				'value' => $row['金額'],
+				'rate' => $row['利率'],
+				'note' => $row['備註']
+			);
+			$incomes[] = $income;
+		}
+		log_message('debug', 'incomes = '.print_r($incomes, true));
+		return $incomes;
+	}
 }

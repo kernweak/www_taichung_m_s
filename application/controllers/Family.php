@@ -2,7 +2,15 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Family extends MY_Controller {
-	
+
+	public function __construct() { 
+        parent::__construct(); 
+        $this->load->model('file_model');
+		$this->load->model('member_model');
+		$this->load->model('property_model');
+		$this->load->model('income_model');
+     } 
+
 
 	public function set_members_file(){
 		$members = json_decode($this->input->post('members'));
@@ -11,14 +19,31 @@ class Family extends MY_Controller {
 		log_message('debug', 'received post "file_info" ='.print_r($file_info, true));
 		log_message('debug', 'received post "members" ='.print_r($members, true));
 		$this->set_members($members, $file_key);
-		$this->update_file($file_info);
+		$this->file_model->update($file);
+		//TODO check if success??
+		$data= array(			
+			'Msg' => "success"
+			);
+
+		echo json_encode($data);
 	}
 
-	function set_members($members, $file_key){
-		$this->load->model('member_model');
-		$this->load->model('property_model');
-		$this->load->model('income_model');
-		
+	public function get_members_file(){
+		// $file_key = $this->input->post('file_key');
+		$file_key='3';
+
+		$members = $this->member_model->get_members_for_file($file_key);		
+		$files = $this->file_model->read_file($file_key);			
+
+		$data = array(
+			'file_info' => $files[0],
+			'members' => $members
+		);
+		log_message('debug', 'get_members_file return ='. print_r($data, true));
+		echo json_encode($data);
+	}
+
+	function set_members($members, $file_key){				
 		// 1. delete unlisted members
 		$this->clean_members($members, $file_key);
 
@@ -62,10 +87,6 @@ class Family extends MY_Controller {
 				}
 			}
 		}		
-	}
-
-	function update_file(){
-
 	}
 
 

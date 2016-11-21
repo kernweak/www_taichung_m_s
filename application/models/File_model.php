@@ -13,7 +13,37 @@ class File_model extends CI_Model {
 		$query = $this->db->get();
 		return $query;
 	}
+	public function update($file){
+		$data = array(
+			'存款本金總額' => $file->deposits,
+			'投資總額' => $file->investment,
+			'有價證券總額' => $file->securities,
+			'其他動產總額'=> $file->others_pro,
+			'總動產'=> $file->total_pro,
+			'房屋棟數'=> $file->houses,
+			'房屋總價'=>$file->houses_total,
+			'房屋列計棟數'=>$file->houses_num,
+			'房屋列計總價'=>$file->houses_listtotal,
+			'土地筆數'=>$file->land,
+			'土地總價'=>$file->land_total,
+			'土地列計筆數'=>$file->land_num,
+			'土地列計總價'=>$file->land_listtotal,
+			'不動產列計總額'=>$file->total_imm,
+			'薪資月所得'=>$file->salary,
+			'營利月所得'=>$file->profit,
+			'財產月所得'=>$file->property_inc,
+			'利息月所得'=>$file->bank_inc,
+			'股利月所得'=>$file->stock_inc,
+			'其他月所得'=>$file->others_inc,
+			'月總所得'=>$file->total_inc,
+			'總列計人口'=>$file->members,
+			'月所需'=>$file->need,			
+			'扶助級別'=>$file->level
+			);
 
+    	$this->db->where('案件流水號', $file->key);
+    	$this->db->update('files_info_table', $data);		
+	}
 	/*
 	*	add a 初審案件
 	*/
@@ -35,7 +65,7 @@ class File_model extends CI_Model {
 
 	}
 
-	public function read_new_file($file_key){
+	public function read_file($file_key){
 		//var_dump($file_key);
 		$this->db->select('*');
 		$this->db->from('files_info_table');
