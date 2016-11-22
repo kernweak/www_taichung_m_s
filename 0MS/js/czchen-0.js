@@ -1,5 +1,83 @@
 /*************************函式庫****************************************/    
     //找出所有img.svg，修改成嵌入式SVG碼，以便著色
+    function read_file_list_pending() {
+        $.ajax({
+            url: '/file/read_file_list_pending',
+            type: 'post',
+            dataType: 'json',
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            // console.log("success");
+            // miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
+            // area_town.Town_name//    <th style="width: 7em;">行政區</th>
+            // miliboy_table.役男姓名 //    <th style="width: 7em;">役男姓名</th>
+            // miliboy_table.身分證字號//    <th style="width: 7.5em;">役男證號</th>
+            // files_info_table.審批階段//      <th style="width: 12em;">案件進度</th>
+            // files_info_table.扶助級別//      <th style="width: 8em;">審查結果</th>
+            // files_info_table.建案日期//      <th style="width: 7em;">立案日期</th>
+            // files_info_table.修改人姓名//     <th style="width: 7em;">主要承辦人</th>
+            // files_info_table.案件流水號//    案件流水號
+            // files_info_table.可否編修//      可否編輯    --可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
+            // files_status_code.案件階段名稱//       作業類別
+            $("#table_id tbody").empty();
+            tbody = "";
+            $.each(responsive, function(index, file) {
+                 var progress = (file.審批階段)/6*100;
+                 tbody += "" +
+
+                    '<tr>' +   
+                        '<td>'+file.入伍日期+'</td>' +
+                        '<td>'+file.Town_name+'</td>' +
+                        '<td>'+file.役男姓名+'</td>' +
+                        '<td>'+file.身分證字號+'</td>' +
+                        '<td>' +
+                            '<div class="progress">' +
+                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+progress+'%;">' +
+                                    '<span style="display:none;">20</span>收案</div>' +
+                            '</div>' +
+                        '</td>' +
+                        '<td>審核中</td>' +
+                        '<td>103/05/29</td>' +
+                        '<td>朱元璋</td>' +
+                        '<td>案二弟有大學甄試入學錄取證明，目前為高中生</td>' +
+                    '</tr>';
+            });
+            $("#table_id tbody").html(tbody);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
+
+
+
     function svg_redraw(){
         jQuery('img.svg').each(function() {
             var $img = jQuery(this);

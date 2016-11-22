@@ -112,25 +112,37 @@ class File extends MY_Controller {
 		echo json_encode($file_info[0]);
 	}
 
-	public function read_file_list_pending(){
+	//列出此承辦人待處理之案件
+	public function read_file_list_pending(){	
 		$this->load->library('session');
-		var_dump($this->session);
-		$User_Level = $this->session->User_Level;
-		
+		//var_dump($this->session);
+		$user_level = $this->session->User_Level;
+		$user_organ = $this->session->organization;
+		$this->load->model('file_model');
+		$file_list = $this->file_model->read_file_list_pending($user_level, $user_organ);
+		//var_dump($file_list);
+		echo json_encode($file_list);
 		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
 		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
 		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
-		//
+		//LV 7 工程模式，全部狀態都能看到
 	}
 
-	// <th style="width: 8em;">入伍日期</th>
-   	//          <th style="width: 7em;">行政區</th>
-   	//          <th style="width: 7em;">役男姓名</th>
-   	//          <th style="width: 7.5em;">役男證號</th>
-   	//          <th style="width: 12em;">案件進度</th>
-   	//          <th style="width: 8em;">審查結果</th>
-   	//          <th style="width: 7em;">立案日期</th>
-   	//          <th style="width: 7em;">主要承辦人</th>
-   	//			案件流水號
-   	//          <th>備註</th>
+	//列出此公所已通過補助，役男尚未退役的之案件
+	public function read_file_list_supporting(){
+
+	}
+
+// miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
+// area_town.Town_name//   	<th style="width: 7em;">行政區</th>
+// miliboy_table.役男姓名 //   	<th style="width: 7em;">役男姓名</th>
+// miliboy_table.身分證字號//   	<th style="width: 7.5em;">役男證號</th>
+// files_info_table.審批階段//   	<th style="width: 12em;">案件進度</th>
+// files_info_table.扶助級別//   	<th style="width: 8em;">審查結果</th>
+// files_info_table.建案日期//   	<th style="width: 7em;">立案日期</th>
+// files_info_table.修改人姓名//   	<th style="width: 7em;">主要承辦人</th>
+// files_info_table.案件流水號//    案件流水號
+// files_info_table.可否編修//   	可否編輯	--可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
+// files_status_code.案件階段名稱//   	作業類別
+
 }

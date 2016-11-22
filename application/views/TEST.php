@@ -46,7 +46,7 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-files-empty icon"></span>案件 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#filelist-navcon" role="tab" data-toggle="tab">待辦案件</a></li>
+                                    <li><a href="#filelist-navcon" role="tab" data-toggle="tab" onclick="read_file_list_pending()">待辦案件</a></li>
                                     <li><a href="#">補助中</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">進階查詢</a></li>

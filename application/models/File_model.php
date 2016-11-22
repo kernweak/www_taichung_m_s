@@ -86,22 +86,59 @@ class File_model extends CI_Model {
 	}
 
 	public function read_file_list_pending($user_level, $user_organ){
-		$this->db->select('*');
+		$this->db->select("miliboy_table.入伍日期,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別,files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,files_info_table.可否編修,`files_status_code`.`案件階段名稱`");
 		$this->db->from('files_info_table');
-		$this->db->join('miliboy_table', 'miliboy_table.役男系統編號 = files_info_table.役男系統編號');
+		$this->db->join('miliboy_table', '`miliboy_table`.`役男系統編號` = `files_info_table`.`役男系統編號`');
 		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
-		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
-	}
+		$this->db->join('files_status_code', '`files_status_code`.`審批階段代號` = `files_info_table`.`審批階段`','left');
+		if($user_level <= 1){	
+			//區公所使用者登入，應該只能看到自己公所
+			$this->db->where('area_town.Town_name', $user_organ);
 
-// miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
-// area_town.Town_name//   	<th style="width: 7em;">行政區</th>
-// miliboy_table.役男姓名 //   	<th style="width: 7em;">役男姓名</th>
-// miliboy_table.身分證字號//   	<th style="width: 7.5em;">役男證號</th>
-// files_info_table.審批階段//   	<th style="width: 12em;">案件進度</th>
-// files_info_table.扶助級別//   	<th style="width: 8em;">審查結果</th>
-// files_info_table.建案日期//   	<th style="width: 7em;">立案日期</th>
-// files_info_table.主要承辦人//   	<th style="width: 7em;">主要承辦人</th>
-// files_info_table.案件流水號//    案件流水號
-// files_info_table.可否編修//   	可否編輯	--可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
-// files_status_code.案件階段名稱//   	作業類別
+			//LV1 承辦人可以，檢視，編輯，呈核
+			$this->db->where('files_status_code.審批階段代號', $user_level);
+			$this->db->or_where('files_status_code.審批階段代號', 0);
+
+
+		}
+		elseif($user_level <= 3){	
+			//區公所使用者登入，應該只能看到自己公所
+			$this->db->where('area_town.Town_name', $user_organ);
+
+
+			//LV2,3 主管可以檢視，加入意見，退回，呈核，但只能看到自己階段的檔案
+			$this->db->where('files_status_code.審批階段代號', $user_level);
+
+		}
+		elseif($user_level <= 6){	
+			//市府局處以上可觀看到所有區的檔案
+			//可以檢視，加入意見，退回，呈核，但只能看到自己階段的檔案
+			$this->db->where('files_status_code.審批階段代號', $user_level);
+
+
+		}
+		elseif($user_level == 7){	
+			//工程師模式-可完全瀏覽
+			//$this->db->where('files_status_code.審批階段代號', $user_level);
+
+
+		}
+
+
+
+		
+		//$this->db->where('files_info_table.案件流水號', $file_key);
+		
+
+
+		// ini_set('xdebug.var_display_max_depth', 5);
+		// ini_set('xdebug.var_display_max_children', 256);
+		// ini_set('xdebug.var_display_max_data', 1024);
+
+		$query = $this->db->get();
+		$result = $query->result_array();
+		return $result;
+		// var_dump($result);
+		// var_dump($this->db->last_query());
+	}
 }
