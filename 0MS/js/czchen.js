@@ -656,6 +656,8 @@ $(document).ready(function() {
         //     File_data_property.push(property);
         //     //console.log(File_data_property);
         // }
+        $('.proper-inc-div.selected').remove();
+        $('#confirm-delete-pro').modal('hide');
         var MDIV = $(".group-div.selected").eq(0);
         var IGContiv = $(".group-div.selected").find('.property-cont').eq(0);     //income-cont -> property-cont
         $(IGContiv).empty();
@@ -663,11 +665,10 @@ $(document).ready(function() {
         setTimeout(function(){
           recount_member_pro(MDIV);
           recount_left_family_panel();
-        }, 500);
+        }, 300);
         
 
-        $('.proper-inc-div.selected').remove();
-        $('#confirm-delete-pro').modal('hide');
+        
         
     });
     
@@ -761,29 +762,27 @@ $(document).ready(function() {
     $('#confirm-delete-inc').on('hidden.bs.modal', function (event) {   $('.proper-inc-div.selected').removeClass('selected');  });
 
     //右面板.所得.警告刪除所得提示板.點選確認觸發，刪除被selected的所得
-    $('#confirm-delete-inc').on('click', 'a.btn-ok', function(event) {
-        var income = [];
-        var PDIV = $('.proper-inc-div.selected').eq(0);
-        if($(PDIV).attr('code')=="new"){
-
-        }else{
-            income['code'] = $(PDIV).attr('code');
-            income['edit'] = "delete";
-            console.log(income);
-            File_data_income.push(income);
-            console.log(File_data_income);
-        }
-
-
-        $('.proper-inc-div.selected').remove();
-        $('#confirm-delete-pro').modal('hide');
-
-
-
+    $('#confirm-delete-inc').on('click', 'a.btn-ok', function(event) { 
+        
         $('.proper-inc-div.selected').remove();
         $('#confirm-delete-inc').modal('hide');
+        var MDIV = $(".group-div.selected").eq(0);
+        var IGContiv = $(".group-div.selected").find('.income-cont').eq(0);     //income-cont -> property-cont
+        $(IGContiv).empty();
+        $("#right_tab_income .inc-div-cont > div").clone().appendTo($(IGContiv));
+        setTimeout(function(){
+          recount_member_inc(MDIV);
+          recount_left_family_panel();
+        }, 300);
+
+
+
+
+
+
+        
         //total_count_incomes();
-        recount_left_family_panel();
+        //recount_left_family_panel();
     });
 
     //右面板.所得.輸入欄位有變動觸發，立即寫回成員隱藏面板，並更新此家屬所得總額(轉換為月收入)
@@ -847,17 +846,47 @@ $(document).ready(function() {
     $('#right_tab_membercomm').on('click', '.auto-comm', function(event) {
         $('#confirm-auto-comm').modal('toggle');
         //var Inc_Cycle   =   $(Idiv).find(".proper-inc-div-4 option:selected").text();
+        var title = $(".group-div.selected .people-title input").val();
+        var name =  $(".group-div.selected .people-name input").val();
+        var age =   $(".group-div.selected .people-birthday input").attr('age');
+        var job = $.trim($(".group-div.selected .people-job input").val());
+        job = job?job:'無';
+        var income = $.trim($(".group-div.selected .people-income-total-value").text());       
+        income = (income === '0')?'查無所得資料':'月均所得：$'+income;
 
-        $('#confirm-auto-comm .modal-body').html("");
+        var special = $(".group-div.selected .people-special select option:selected").val();
+        var status = $(".group-div.selected .people-special select option:selected").text();
+        var status_result =  $(".group-div.selected .people-special span").text();
+        var special_txt = '';
+        var description = '';
+        switch(special){
+            case '1,15':
+                description = title+'：'+name+'，歿。';
+                break;
+            case '0,0':
+            case '0,2':
+                description = title+'：'+name+'，'+age+'歲，職業：'+job+'，'+income+'。';                
+                break;
+            default:
+                special_txt = '，因其為'+status+'，故'+status_result+'。';
+                description = title+'：'+name+'，'+age+'歲，職業：'+job+'，'+income+special_txt;      
+        }        
+
+        $('#confirm-auto-comm .modal-body').html(description);
     });
     //自動成員敘述產生按鈕點擊.關閉時觸發
     $('#confirm-auto-comm').on('hidden.bs.modal', function (event) {
        //$('.proper-inc-div.selected').removeClass('selected');  
+
+
     });
 
     //自動成員敘述產生按鈕點擊.點選確認觸發，啟用自動成員家況敘述功能
     $('#confirm-auto-comm').on('click', 'a.btn-ok', function(event) {
-        
+        $('#confirm-auto-comm').modal('toggle');
+        var description = $('#confirm-auto-comm .modal-body').html();
+        $("#right_tab_membercomm textarea").val(description).trigger('change');
+
     });
 
 
