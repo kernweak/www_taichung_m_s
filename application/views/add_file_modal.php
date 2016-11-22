@@ -192,12 +192,13 @@
                     $("#MSG").text("連線成功，新增案件中...");
                 }
                 setTimeout(function(){
-                            
+                    $("#family-edit-nav").fadeIn('400');
                     $('#Add_file').modal('hide');
                     $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
                     read_file(responsive['file_key']);
                     setTimeout(function(){
                         empty_members();
+                        add_miliboy();
                     },1000);
                 },1000);
                 

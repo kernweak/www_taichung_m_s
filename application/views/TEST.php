@@ -37,32 +37,33 @@
                             <span class="icon-bar"></span>
                         </button>
                         <a class="navbar-brand" href="#"><img src="/0MS/images/Taichung_White_no_text.svg" style="height: 100%;display: inline-block;position: relative;top: -0.2em;">役男家屬生活扶助</a>
-                        <span class="navbar-brand"><?php echo $FullName ?></span>
+                        <span class="navbar-brand"><?php echo $organization."-".$FullName ?></span>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav" role="tablist">
 
-                            <li class="dropdown">
+                            <li class="dropdown" id="file-list-nav">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-files-empty icon"></span>案件 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#filelist-navcon" role="tab" data-toggle="tab" onclick="read_file_list_pending()">待辦案件</a></li>
-                                    <li><a href="#">補助中</a></li>
+                                    <li><a href="#">呈核中案件</a></li>
+                                    <li><a href="#">補助中案件</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">進階查詢</a></li>
                                 </ul>
                             </li>
                             <!--<li><a href="#filelist-navcon" role="tab" data-toggle="tab">案件列表 <span class="sr-only">(current)</span></a></li>-->
-                            <li class="dropdown" id="family-edit-nav">
+                            <li class="dropdown" id="family-edit-nav" style="display: none;">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-users icon"></span>案件編修 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                     <li><a href="#edit-home" role="tab" data-toggle="tab">整體家況</a></li>
                                     <li><a href="#edit-navcon" role="tab" data-toggle="tab">家屬編修</a></li>
-                                    <li><a href="#" onclick="empty_members()">清空</a></li>
-                                    <li><a href="#" onclick="add_miliboy()">加入役男</a></li>
+                                    <!--<li><a href="#" onclick="empty_members()">清空</a></li>
+                                    <li><a href="#" onclick="add_miliboy()">加入役男</a></li>-->
                                     <li><a href="#" onclick="save_file()">儲存</a></li>
-                                    <li><a href="#" onclick="read_file_test()">讀取檔案</a></li>
-                                    <li><a href="#">不儲存關閉</a></li>
+                                    <!--<li><a href="#" onclick="read_file_test()">讀取檔案</a></li>-->
+                                    <li><a href="#" onclick="close_file()">不儲存關閉</a></li>
                                 </ul>
                             </li>
                             <li><a href="#statistics" role="tab" data-toggle="tab"><span class="mif-chart-bars icon"></span>統計分析 </a></li>

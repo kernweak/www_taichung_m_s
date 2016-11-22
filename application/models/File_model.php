@@ -13,6 +13,28 @@ class File_model extends CI_Model {
 		$query = $this->db->get();
 		return $query;
 	}
+
+	public function progress_file($file_key, $oper){
+		$this->db->select('審批階段');
+		$this->db->from('files_info_table');
+		$this->db->where('案件流水號', $file_key);
+		$query = $this->db->get();
+		$result = $query->result();
+		//var_dump($result);
+
+		if ($oper == "+"){
+			$data = array(
+			'審批階段' => ($result[0]->審批階段 + 1)
+			);
+		}elseif($oper == "1"){
+			$data = array(
+			'審批階段' => 1
+			);
+		}
+		$this->db->where('案件流水號', $file_key);
+    	$this->db->update('files_info_table', $data);
+    	//var_dump($this->db->last_query());
+	}
 	public function update($file){
 		$data = array(
 			'存款本金總額' => $file->deposits,
@@ -47,7 +69,8 @@ class File_model extends CI_Model {
 	/*
 	*	add a 初審案件
 	*/
-	public function add_new_file($today, $id, $county, $town, $village, $address){
+	public function add_new_file($today, $id, $county, $town, $village, $address, $FullName, $organization, $department){
+		//$organization 機關先不寫
 		$data = array(
 			'作業類別' => 1,
 			'建案日期' => $today,
@@ -55,7 +78,11 @@ class File_model extends CI_Model {
 			'county'=> (int)$county,
 			'town'=> (int)$town,
 			'village' => (int)$village,
-			'戶籍地址' => $address
+			'戶籍地址' => $address,
+			'修改人姓名' => $FullName,
+			'修改人單位' => $department,
+			'修改人編號' => $organization,
+			'審批階段' => 1
 			);
 		$this->db->insert('files_info_table', $data);
 		$index = $this->db->insert_id();
@@ -86,11 +113,12 @@ class File_model extends CI_Model {
 	}
 
 	public function read_file_list_pending($user_level, $user_organ){
-		$this->db->select("miliboy_table.入伍日期,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別,files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,files_info_table.可否編修,`files_status_code`.`案件階段名稱`");
+		$this->db->select("miliboy_table.入伍日期,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別,files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,files_info_table.可否編修,`files_status_code`.`案件階段名稱`,files_type.作業類別名稱");
 		$this->db->from('files_info_table');
 		$this->db->join('miliboy_table', '`miliboy_table`.`役男系統編號` = `files_info_table`.`役男系統編號`');
 		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
 		$this->db->join('files_status_code', '`files_status_code`.`審批階段代號` = `files_info_table`.`審批階段`','left');
+		$this->db->join('files_type', 'files_type.作業類別 = files_info_table.作業類別','left');
 		if($user_level <= 1){	
 			//區公所使用者登入，應該只能看到自己公所
 			$this->db->where('area_town.Town_name', $user_organ);

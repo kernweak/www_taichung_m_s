@@ -22,10 +22,39 @@
             // files_info_table.案件流水號//    案件流水號
             // files_info_table.可否編修//      可否編輯    --可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
             // files_status_code.案件階段名稱//       作業類別
+
             $("#table_id tbody").empty();
             tbody = "";
             $.each(responsive, function(index, file) {
-                 var progress = (file.審批階段)/6*100;
+                var edit_button = "";
+                if(file.審批階段 <= 1){
+                    edit_button = '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-success" onclick="read_file_test('+file.案件流水號+')">編輯</button>'+
+                  '</div>';
+                }else{
+                    edit_button = "";
+                }
+
+                //檢視.編輯.意見.退回.呈核
+                var Button_str = 
+                '<div class="btn-group" role="group" aria-label="...">'+
+                  '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-primary">檢視</button>'+
+                  '</div>'+
+                  edit_button+
+                  // '<div class="btn-group" role="group">'+
+                  //   '<button type="button" class="btn btn-info">意見</button>'+
+                  // '</div>'+
+                  '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-warning" onclick="progress_back('+file.案件流水號+')">退回</button>'+
+                  '</div>'+
+                  '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-danger" onclick="progress_next('+file.案件流水號+')">呈核</button>'+
+                  '</div>'+
+                '</div>';
+
+                //console.log(file.審批階段);
+                 var progress = (file.審批階段/6)*100;
                  tbody += "" +
 
                     '<tr>' +   
@@ -36,13 +65,15 @@
                         '<td>' +
                             '<div class="progress">' +
                                 '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+progress+'%;">' +
-                                    '<span style="display:none;">20</span>收案</div>' +
+                                    '<span style="display:none;">20</span>'+file.案件階段名稱+'</div>' +
                             '</div>' +
                         '</td>' +
-                        '<td>審核中</td>' +
-                        '<td>103/05/29</td>' +
-                        '<td>朱元璋</td>' +
-                        '<td>案二弟有大學甄試入學錄取證明，目前為高中生</td>' +
+                        '<td>'+file.扶助級別+'</td>' +
+                        '<td>'+file.建案日期+'</td>' +
+                        '<td>'+file.修改人姓名+'</td>' +
+                        '<td>'+file.作業類別名稱+'</td>' +
+                        '<td style="min-width: 190px;">'+Button_str+'</td>' +
+
                     '</tr>';
             });
             $("#table_id tbody").html(tbody);
@@ -50,9 +81,9 @@
 
 
 
+            
 
-
-
+            
 
 
 
@@ -75,7 +106,13 @@
         });
     }
 
-
+    function close_file(){
+                    $("#family-edit-nav").fadeOut('400');
+                    $("#file-list-nav > ul > li:nth-child(1) > a").tab('show');
+                    setTimeout(function(){
+                        empty_members();
+                    },1000);
+    }
 
 
     function svg_redraw(){
@@ -244,7 +281,7 @@
             type: 'post',
             dataType: 'json',
             data: {
-                file_key        : 4,
+                file_key        : file_key,
             },
         })
         .always(function() {
@@ -252,6 +289,12 @@
         })
         .done(function(responsive) {
             console.log("success");
+            setTimeout(function(){
+                    $("#family-edit-nav").fadeIn('400');
+                    //$('#Add_file').modal('hide');
+                    $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
+                    //read_file(responsive['file_key']);
+            },300);
             empty_members();
             //console.log(responsive);
             $.each(responsive.members, function(index, member) {
@@ -428,7 +471,7 @@
                 DIV_propertys +
                 // '<div class="income-cont"></div>' +
                 // '<div class="property-cont"></div>' +
-                '<textarea class="comm-cont"></textarea>' +
+                '<textarea class="comm-cont">'+ member.comm +'</textarea>' +
             '</div>' +
         '</div>' ;
         return member_str;
@@ -734,6 +777,49 @@
         })
         .done(function(responsive) {
             console.log("success");
+            read_file_test($(".people_home").attr('file_id'));
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
+    function progress_next(file_key){
+        $.ajax({
+            url: '/file/progress_next',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : file_key
+            },
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            console.log("success");
+            read_file_list_pending();
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
+    function progress_back(file_key){
+        $.ajax({
+            url: '/file/progress_back',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : file_key
+            },
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            console.log("success");
+            read_file_list_pending();
         })
         .fail(function() {
             console.log("error");

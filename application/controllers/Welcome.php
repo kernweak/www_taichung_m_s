@@ -35,6 +35,7 @@ class Welcome extends MY_Controller {
 			$User_Level = $this->session->userdata('User_Level');
 			$this->load->view('TEST', Array(
 				'FullName' 		=> 	$FullName,
+				'organization' 		=> 	$organization,
 			));
 		}
 		else{

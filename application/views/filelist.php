@@ -2,15 +2,16 @@
 <table id="table_id" class="table table-condensed table-hover">
     <thead>
         <tr>
-            <th style="width: 8em;">入伍日期</th>
-            <th style="width: 7em;">行政區</th>
-            <th style="width: 7em;">役男姓名</th>
-            <th style="width: 7.5em;">役男證號</th>
-            <th style="width: 12em;">案件進度</th>
-            <th style="width: 8em;">審查結果</th>
-            <th style="width: 7em;">立案日期</th>
-            <th style="width: 7em;">主要承辦人</th>
+            <th>入伍日期</th>
+            <th>行政區</th>
+            <th>役男姓名</th>
+            <th>役男證號</th>
+            <th>案件進度</th>
+            <th>審查結果</th>
+            <th>立案日期</th>
+            <th>主要承辦人</th>
             <th>作業類別</th>
+            <th style="width: 14em;">可選用操作</th>
         </tr>
     </thead>
     <tbody>
@@ -31,6 +32,7 @@
             <td>103/05/29</td>
             <td>朱元璋</td>
             <td>案二弟有大學甄試入學錄取證明，目前為高中生</td>
+            <td>朱元璋</td>
         </tr>
         <tr>
             
@@ -49,6 +51,7 @@
             <td>103/05/27</td>
             <td>荊軻</td>
             <td></td>
+            <td>朱元璋</td>
         </tr>
         <tr onclick="$('#myModal').modal('toggle')">
             
@@ -68,6 +71,7 @@
             <td>103/05/25</td>
             <td>張三豐</td>
             <td>案父車禍住院中, 04/13入院, 有附診斷證明</td>
+            <td>朱元璋</td>
         </tr>
         <tr>
             
@@ -86,6 +90,7 @@
             <td>103/05/29</td>
             <td>韋小寶</td>
             <td></td>
+            <td>朱元璋</td>
         </tr>
         <tr>
             
@@ -104,6 +109,7 @@
             <td>103/06/27</td>
             <td>詹天佑</td>
             <td></td>
+            <td>朱元璋</td>
         </tr>
     </tbody>
 </table>

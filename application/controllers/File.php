@@ -72,6 +72,14 @@ class File extends MY_Controller {
 	*/
 	public function add_new_boy_file(){
 		// create a new boy record
+		$this->load->library('session');
+		//var_dump($this->session);
+		$FullName = $this->session->FullName;
+ 		$organization  = $this->session->organization;
+      	$department  = $this->session->department;
+
+
+
 		$this->load->model('boy_model');
 		$name = $this->input->post('ADF_name');
 		$id = $this->input->post('ADF_code');
@@ -91,7 +99,7 @@ class File extends MY_Controller {
 		$today = date("Y-m-d H:i:s");
 		log_message('debug', print_r($today, true));
 
-		$file_key = $this->file_model->add_new_file($today, $boy_key, $county, $town, $village, $address);
+		$file_key = $this->file_model->add_new_file($today, $boy_key, $county, $town, $village, $address, $FullName, $organization, $department);
 		
 		$this->boy_model->update_new_boy_file_link($boy_key, $file_key);
 		$data= array(
@@ -131,6 +139,21 @@ class File extends MY_Controller {
 	//列出此公所已通過補助，役男尚未退役的之案件
 	public function read_file_list_supporting(){
 
+	}
+
+
+	public function progress_next(){
+		$file_key = (int)$this->input->post('file_key');
+		$this->load->model('file_model');
+		$file_info = $this->file_model->progress_file($file_key,"+");
+		echo json_encode("Success");
+	}
+
+	public function progress_back(){
+		$file_key = (int)$this->input->post('file_key');
+		$this->load->model('file_model');
+		$file_info = $this->file_model->progress_file($file_key,"1");
+		echo json_encode("Success");
 	}
 
 // miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>

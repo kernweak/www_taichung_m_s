@@ -75,7 +75,8 @@ $(document).ready(function() {
     //全畫面縮放倍率初始化
      $("body").css('zoom', $("#body-zoom").val());
      //啟用"案件編輯"下拉選單 (最終... 必須要開啟案件/新增案件 才能觸發 "案件編輯" )
-     $("#family-edit-nav").fadeIn(400)
+     //$("#family-edit-nav").fadeIn(400);
+
 /*************************全網站通用      TEST.php****************************************/
     //全畫面縮放倍率變化時
     $("#body-zoom").change(function(event) {    $("body").css('zoom', $("#body-zoom").val());    });
@@ -97,20 +98,23 @@ $(document).ready(function() {
         $("#bs-example-navbar-collapse-1 > ul:nth-child(1) > li:nth-child(2) > a").tab('show')
     });
 
-
+    read_file_list_pending();
     //案件列表，轉換為可排序可分頁之dataTable
-    $('#table_id').dataTable({
-        "lengthMenu": [100, 75, 50, 25, 10, 1],
-        "language": {
-            "paginate": {
-                "previous": "前頁",
-                "next": "後頁"
-            },
-            "lengthMenu": "每頁顯示 _MENU_ 筆",
-            "info": "第 _PAGE_ / _PAGES_ 頁",
-            "search": "粗搜索:"
-        }
-    });
+
+    setTimeout(function(){
+        $('#table_id').dataTable({
+            "lengthMenu": [100, 75, 50, 25, 10, 1],
+            "language": {
+                "paginate": {
+                    "previous": "前頁",
+                    "next": "後頁"
+                },
+                "lengthMenu": "每頁顯示 _MENU_ 筆",
+                "info": "第 _PAGE_ / _PAGES_ 頁",
+                "search": "粗搜索:"
+            }
+        });
+    }, 1000);  
     
     //版本列表，轉換為可排序可分頁之dataTable
     $('#Stock_table').dataTable({
