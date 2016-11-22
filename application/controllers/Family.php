@@ -19,7 +19,7 @@ class Family extends MY_Controller {
 		log_message('debug', 'received post "file_info" ='.print_r($file_info, true));
 		log_message('debug', 'received post "members" ='.print_r($members, true));
 		$this->set_members($members, $file_key);
-		$this->file_model->update($file);
+		$this->file_model->update($file_info);
 		//TODO check if success??
 		$data= array(			
 			'Msg' => "success"

@@ -59,6 +59,7 @@
                                     <li><a href="#edit-home" role="tab" data-toggle="tab">整體家況</a></li>
                                     <li><a href="#edit-navcon" role="tab" data-toggle="tab">家屬編修</a></li>
                                     <li><a href="#" onclick="empty_members()">清空</a></li>
+                                    <li><a href="#" onclick="add_miliboy()">加入役男</a></li>
                                     <li><a href="#" onclick="save_file()">儲存</a></li>
                                     <li><a href="#" onclick="read_file_test()">讀取檔案</a></li>
                                     <li><a href="#">不儲存關閉</a></li>

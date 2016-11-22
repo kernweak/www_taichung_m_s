@@ -84,4 +84,24 @@ class File_model extends CI_Model {
 		//var_dump($result);
 		return $result;
 	}
+
+	public function read_file_list_pending($user_level, $user_organ){
+		$this->db->select('*');
+		$this->db->from('files_info_table');
+		$this->db->join('miliboy_table', 'miliboy_table.役男系統編號 = files_info_table.役男系統編號');
+		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
+		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
+	}
+
+// miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
+// area_town.Town_name//   	<th style="width: 7em;">行政區</th>
+// miliboy_table.役男姓名 //   	<th style="width: 7em;">役男姓名</th>
+// miliboy_table.身分證字號//   	<th style="width: 7.5em;">役男證號</th>
+// files_info_table.審批階段//   	<th style="width: 12em;">案件進度</th>
+// files_info_table.扶助級別//   	<th style="width: 8em;">審查結果</th>
+// files_info_table.建案日期//   	<th style="width: 7em;">立案日期</th>
+// files_info_table.主要承辦人//   	<th style="width: 7em;">主要承辦人</th>
+// files_info_table.案件流水號//    案件流水號
+// files_info_table.可否編修//   	可否編輯	--可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
+// files_status_code.案件階段名稱//   	作業類別
 }

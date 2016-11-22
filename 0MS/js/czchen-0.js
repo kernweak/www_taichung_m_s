@@ -70,7 +70,136 @@
       return Math.min.apply(null, this);
     };
 
+    //計算目前歲數
+    function _calculateAge(birthday) { // birthday is a date
+        var ageDifMs = Date.now() - birthday.getTime();
+        var ageDate = new Date(ageDifMs); // miliseconds from epoch
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
+
+    //將檔案路徑轉換成只有檔名
+    function baseName(str)
+    {
+       var base = new String(str).substring(str.lastIndexOf('/') + 1); 
+        if(base.lastIndexOf(".") != -1)       
+            base = base.substring(0, base.lastIndexOf("."));
+       return base;
+    }
+
+    function numberWithCommas(x) {  //numberWithCommas  轉換成有千分號的數字字串
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function recount_member_inc(MDIV){      //重新計算成員面板上的所得數字
+        var IGContiv = $(MDIV).find('.income-cont').eq(0);     //income-cont -> property-cont
+        var IGCD = $(IGContiv).children('div');
+        var Inc_Title   =  "";
+        var Inc_Value   =  "";
+        var Inc_from    =  "";
+        var Inc_Cycle   =  "";
+        var Income = 0;
+        for (i=0;i<IGCD.length;i++){
+            Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
+            Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
+            Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
+            Inc_Cycle   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
+            if(Inc_Cycle == "年收"){
+                Income += parseInt(Inc_Value)/12;
+            }else{
+                Income += parseInt(Inc_Value);
+            }
+            // console.log(Inc_Title);
+            // console.log(Inc_Value);
+            // console.log(Inc_from);
+            // console.log(Inc_Cycle);
+        }
+        Income = parseInt(Income);
+        // console.log(Income);
+        $(MDIV).find('.people-income-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
+        svg_redraw();
+    }
+
+    function recount_member_pro(MDIV){      //重新計算成員面板上的財產數字
+        var IGContiv = $(MDIV).find('.property-cont').eq(0);     //income-cont -> property-cont
+        var IGCD = $(IGContiv).children('div');
+        // console.log(IGCD);
+        var Inc_Title   =  "";
+        var Inc_Value   =  "";
+        var Inc_from    =  "";
+        var Inc_self   =  "";
+        var Inc_area   =  "";
+        var Income = 0;
+        for (i=0;i<IGCD.length;i++){
+            Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
+            Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
+            Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
+            Inc_self   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
+            Inc_area   =   $(IGCD).eq(i).find(".proper-inc-div-6 option:selected").text();
+            
+                if(Inc_Title == '房屋' || Inc_Title == '土地' ){
+                    if(Inc_self == "自住"){
+                        Income += parseInt(0);
+                    }else{
+                        Income += parseInt(Inc_Value);
+                    }
+                }else{
+                    Income += parseInt(Inc_Value);
+                }
+            // console.log(Inc_Title);
+            // console.log(Inc_Value);
+            // console.log(Inc_from);
+            // console.log(Inc_self);
+        }
+        Income = parseInt(Income);
+        // console.log(Income);
+        $(MDIV).find('.people-property-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
+        svg_redraw();
+    }
+
+
     function read_file_test(file_key){
+
+
+
+        $.ajax({
+            url: '/family/get_members_file',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : 4,
+            },
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            console.log("success");
+            empty_members();
+            //console.log(responsive);
+            $.each(responsive.members, function(index, member) {
+                 /* iterate through array or object */
+                // console.log(member);
+                var GROUP_DIV = rf_member(member);
+                $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
+                svg_redraw();
+                var this_index = $(".group-div").length - 2 ;
+                var MDIV = $(".group-div").eq(this_index);
+                $(MDIV).find('.people-special select').val(member.specials).trigger('change');
+                $(MDIV).find('.people-birthday input').trigger('change');
+                $(MDIV).find('.people-marriage input').trigger('change');
+                $(MDIV).find('.people-marriage2 input').trigger('change');
+                recount_member_pro($(MDIV));
+                recount_member_inc($(MDIV));
+            });
+
+            rf_file_info(responsive.file_info);
+
+
+        })
+        .fail(function() {
+            console.log("error");
+        });
+
         //ajax read data
         //read file_info
         //read members
@@ -81,10 +210,10 @@
         //console.log(rf_mem_property(propertys));
         //console.log(rf_mem_income(incomes));
 
-        var GROUP_DIV = rf_member();
+        // var GROUP_DIV = rf_member();
 
-        $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
-        svg_redraw();
+        // $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
+        // svg_redraw();
 
         // property.type
         // property.value                
@@ -93,53 +222,60 @@
         // property.self_use
     }
 
-    function rf_file_info(file_key){
+    function rf_file_info(responsive){
+        console.log(responsive);
+        $("#PH-filetype").text(responsive['作業類別名稱']);
+        $("#PH-name").text(responsive['役男姓名']);
+        $("#PH-code").text(responsive['身分證字號']);
+        $("#PH-birthday").text(responsive['役男生日']);
+        $("#PH-milidate").text(responsive['入伍日期']);
+        $("#PH-type").text(responsive['服役軍種']);
+        $("#PH-status").text(responsive['服役狀態']);
+        $("#PH-fulladdress").text(responsive['County_name']+responsive['Town_name']+responsive['Village_name']+responsive['戶籍地址']);
+        
+        $("#PH-members").text(responsive['總列計人口']);
+        $("#PH-need").text(responsive['月所需']);
 
+
+        $("#PH-Deposits").text(responsive['存款本金總額']);
+        $("#PH-Investment").text(responsive['投資總額']);
+        $("#PH-Securities").text(responsive['有價證券總額']);
+        $("#PH-others-Pro").text(responsive['其他動產總額']);
+        $("#PH-total-pro").text(responsive['總動產']);
+
+        $("#PH-Salary").text(responsive['薪資月所得']);
+        $("#PH-Profit").text(responsive['營利月所得']);
+        $("#PH-Property-int").text(responsive['財產月所得']);
+        $("#PH-Bank-int").text(responsive['利息月所得']);
+        $("#PH-Stock-int").text(responsive['股利月所得']);
+        $("#PH-others-int").text(responsive['其他月所得']);
+        $("#PH-total-inc").text(responsive['月總所得']);
+        
+        $("#PH-Houses").text(responsive['房屋棟數']);
+        $("#PH-Houses-total").text(responsive['房屋總價']);
+        $("#PH-Houses-num").text(responsive['房屋非自用棟數']);
+        $("#PH-Houses-listtotal").text(responsive['房屋列計總價']);
+        $("#PH-Land").text(responsive['土地筆數']);
+        $("#PH-Land-total").text(responsive['土地總價']);
+        $("#PH-Land-num").text(responsive['土地非自用筆數']);
+        $("#PH-Land-listtotal").text(responsive['土地列計總價']);
+        $("#PH-total-imm").text(responsive['不動產列計總額']);
+
+        $(".people_home").attr('file_id', responsive['案件流水號']);
+        $(".people_home").attr('boy_id', responsive['役男系統編號']);
+        
+        //File_data = [];
+        
     }
 
     function rf_member(member){
-        var propertys =[{
-            key : 132,
-            type : "儲蓄存款",
-            value: 200000,
-            from: "台灣銀行",
-            note: "備註資料",
-            self_use: "m"
 
-        },
-        {
-            key : 133,
-            type : "房屋",
-            value: 500000,
-            from: "高雄某處",
-            note: "備註資料",
-            self_use: "y"
-
-        }];
-        var incomes =[{
-            key : 132,
-            type : "存款利息",
-            value: 200000,
-            from: "台灣銀行",
-            note: "備註資料",
-            m_or_y: "m",
-            rate: 0.01355
-
-        },
-        {
-            key : 133,
-            type : "房屋",
-            value: 500000,
-            from: "高雄某處",
-            note: "備註資料",
-            m_or_y: "y",
-            rate: 0
-
-        }];
+        //console.log(member.income)
+        //console.log(member.property)
         //console.log(rf_mem_property(propertys));
         //console.log(rf_mem_income(incomes));
-        DIV_propertys = rf_mem_property(propertys);
-        DIV_incomes = rf_mem_income(incomes);
+        DIV_propertys = rf_mem_property(member.property);
+        DIV_incomes = rf_mem_income(member.income);
 
 
                 // var member = {
@@ -161,23 +297,23 @@
                 //     "property" : []
                 // };
 
-
-
+        //console.log(date_to_yyy(member.birthday));        
+        //console.log(member.birthday);
 
         member_str = '' +
-        '<div class="group-div">' +
+        '<div class="group-div" code="' + member.key + '">' +
             '<button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-people" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button>' +
             '<div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="0MS/images/people/custom/man-avatar.svg" /></div>' +
             '<div class="income-total"><div>所得</div><div class="people-income-total-value">22766<img class="svg social-link NTD" src="0MS/images/NTD.svg"></div></div>' +
             '<div class="property-total"><div>財產</div><div class="people-property-total-value">19600<img class="svg social-link NTD" src="0MS/images/NTD.svg"></div></div>' +
-            '<div class="people-job"><input class="people-input-left" placeholder="所得職業" value="工讀生"></div>' +
-            '<div class="people-title"><input class="people-input-center" value="二妹"></div>' +
-            '<div class="people-name"><input class="people-input-left" value="王菲"></div>' +
-            '<div class="people-id"><input class="people-input-left" value="L203578956"></div>' +
-            '<div class="people-id-address"><input class="people-input-left" value="臺中市西屯區惠來路三段XXX號XXX巷XX樓之XX號"></div>' +
-            '<div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div>' +
-            '<div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div>' +
-            '<div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="86年07月13日" style="width: 7em;">　　<span>(19歲)</span></div>' +
+            '<div class="people-job"><input class="people-input-left" placeholder="所得職業" value="' + member.job + '"></div>' +
+            '<div class="people-title"><input class="people-input-center" value="' + member.title + '"></div>' +
+            '<div class="people-name"><input class="people-input-left" value="' + member.name + '"></div>' +
+            '<div class="people-id"><input class="people-input-left" value="' + member.code + '"></div>' +
+            '<div class="people-id-address"><input class="people-input-left" value="' + member.address + '"></div>' +
+            '<div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="' + member.marriage + '"></div>' +
+            '<div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="' + member.marriage_ex + '"></div>' +
+            '<div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="' + date_to_yyy(member.birthday) + '" style="width: 7em;">　　<span></span></div>' +
             '<div class="people-special">身分：<span style="color: #a47523;">一般</span>' +
                 '<div style="width: 7.5em;position: relative;left: 1em;display: inline-block;">' +
                     '<select class="people-input-left">' +
@@ -209,7 +345,7 @@
                 '</div>' +
             '</div>' +
             '<div class=hidden-info>' +
-                '<input type="hidden" name="" class="member_area" value="臺中市" area-index=3>' +
+                '<input type="hidden" name="" class="member_area" value="' + member.area + '" area-index=' + member.area_key + '>' +
                 DIV_incomes +
                 DIV_propertys +
                 // '<div class="income-cont"></div>' +
@@ -233,7 +369,7 @@
             // console.log(property.note);
             // console.log(property.self_use);
             var D_none = "", SD = "" , SS = "", SI = "", SH = "", SL = "", SO = "", SY = "", SM = "";
-            if (property.type == "房屋" || property.type == "土地"){
+            if (property.type != "房屋" && property.type != "土地"){
                 D_none = 'style="display: none;"';
             }
             if(property.type == "儲蓄存款"){ SD = 'selected="selected"'; };
@@ -352,7 +488,7 @@
                 $("#PH-fulladdress").text(responsive['County_name']+responsive['Town_name']+responsive['Village_name']+responsive['戶籍地址']);
                 
                 $("#PH-members").text(responsive['總列計人口']);
-                $("#PH-need").text(responsive['列計全年支出']);
+                $("#PH-need").text(responsive['月所需']);
 
 
                 $("#PH-Deposits").text(responsive['存款本金總額']);
@@ -361,13 +497,13 @@
                 $("#PH-others-Pro").text(responsive['其他動產總額']);
                 $("#PH-total-pro").text(responsive['總動產']);
 
-                $("#PH-Salary").text(responsive['薪資年所得']);
-                $("#PH-Profit").text(responsive['營利年所得']);
-                $("#PH-Property-int").text(responsive['財產年所得']);
-                $("#PH-Bank-int").text(responsive['利息年所得']);
-                $("#PH-Stock-int").text(responsive['股利年所得']);
-                $("#PH-others-int").text(responsive['其他年所得']);
-                $("#PH-total-inc").text(responsive['全年總所得']);
+                $("#PH-Salary").text(responsive['薪資月所得']);
+                $("#PH-Profit").text(responsive['營利月所得']);
+                $("#PH-Property-int").text(responsive['財產月所得']);
+                $("#PH-Bank-int").text(responsive['利息月所得']);
+                $("#PH-Stock-int").text(responsive['股利月所得']);
+                $("#PH-others-int").text(responsive['其他月所得']);
+                $("#PH-total-inc").text(responsive['月總所得']);
                 
                 $("#PH-Houses").text(responsive['房屋棟數']);
                 $("#PH-Houses-total").text(responsive['房屋總價']);
@@ -382,7 +518,7 @@
                 $(".people_home").attr('file_id', file_key);
                 $(".people_home").attr('boy_id', responsive['役男系統編號']);
                 
-                File_data = [];
+                //File_data = [];
                 empty_members();
                 console.log("success");
             })
@@ -405,15 +541,17 @@
                 $(this).remove();
             }
         });
-        File_data = [];
         //console.log($("#PH-birthday").text());
         //console.log(date_to_yyy($("#PH-birthday").text()));
+        
+    }
+
+    function add_miliboy(){
         var GROUP_DIV = '<div class="group-div" code=new edit=new><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/captain.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value="役男"></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value="'+$("#PH-name").text()+'"></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value="'+$("#PH-code").text()+'"></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="'+date_to_yyy($("#PH-birthday").text())+'" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">不列口數</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0">一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1" selected>服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="2,30">55歲以上,16歲以下無收入</option><option value="2,31">身心障礙、重大傷病</option><option value="2,32">3個月內之重大傷病</option><option value="2,33">學生</option><option value="2,34">孕婦</option><option value="2,35">獨自照顧直系老幼親屬</option><option value="2,36">獨自照顧重大傷病親屬</option><option value="2,37">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
         $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
         svg_redraw();
         $(".group-div").eq(0).find('.people-id-address input').trigger('change');
         $(".group-div").eq(0).find('.people-birthday input').trigger('change');
-        
     }
 
     function save_file(){

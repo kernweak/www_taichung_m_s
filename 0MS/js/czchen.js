@@ -645,21 +645,30 @@ $(document).ready(function() {
 
     //右面板.財產.警告刪除財產提示板.點選確認觸發，刪除被selected的財產
     $('#confirm-delete-pro').on('click', 'a.btn-ok', function(event) {
-        var property = [];
-        var PDIV = $('.proper-inc-div.selected').eq(0);
-        if($(PDIV).attr('code')=="new"){
+        //var property = [];
+        //var PDIV = $('.proper-inc-div.selected').eq(0);
+        // if($(PDIV).attr('code')=="new"){
 
-        }else{
-            property['code'] = $(PDIV).attr('code');
-            property['edit'] = "delete";
-            //console.log(property);
-            File_data_property.push(property);
-            //console.log(File_data_property);
-        }
+        // }else{
+        //     property['code'] = $(PDIV).attr('code');
+        //     property['edit'] = "delete";
+        //     //console.log(property);
+        //     File_data_property.push(property);
+        //     //console.log(File_data_property);
+        // }
+        var MDIV = $(".group-div.selected").eq(0);
+        var IGContiv = $(".group-div.selected").find('.property-cont').eq(0);     //income-cont -> property-cont
+        $(IGContiv).empty();
+        $("#right_tab_property .pro-div-cont > div").clone().appendTo($(IGContiv));
+        setTimeout(function(){
+          recount_member_pro(MDIV);
+          recount_left_family_panel();
+        }, 500);
+        
 
         $('.proper-inc-div.selected').remove();
         $('#confirm-delete-pro').modal('hide');
-        recount_left_family_panel();
+        
     });
     
     //右面板.財產.輸入欄位有變動觸發，立即寫回成員隱藏面板，並更新此家屬財產總額
@@ -682,44 +691,45 @@ $(document).ready(function() {
             }
         }
         //複製回成員隱藏面板
+        var MDIV = $(".group-div.selected").eq(0);
         var IGContiv = $(".group-div.selected").find('.property-cont').eq(0);     //income-cont -> property-cont
         $(IGContiv).empty();
         $("#right_tab_property .pro-div-cont > div").clone().appendTo($(IGContiv));
         //更新此家屬面板財產
-        var IGCD = $(IGContiv).children('div');
-        var Inc_Title   =  "";
-        var Inc_Value   =  "";
-        var Inc_from    =  "";
-        var Inc_self   =  "";
-        var Inc_area   =  "";
-        var Income = 0;
-        for (i=0;i<IGCD.length;i++){
-            Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
-            Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
-            Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
-            Inc_self   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
-            Inc_area   =   $(IGCD).eq(i).find(".proper-inc-div-6 option:selected").text();
+        // var IGCD = $(IGContiv).children('div');
+        // var Inc_Title   =  "";
+        // var Inc_Value   =  "";
+        // var Inc_from    =  "";
+        // var Inc_self   =  "";
+        // var Inc_area   =  "";
+        // var Income = 0;
+        // for (i=0;i<IGCD.length;i++){
+        //     Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
+        //     Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
+        //     Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
+        //     Inc_self   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
+        //     Inc_area   =   $(IGCD).eq(i).find(".proper-inc-div-6 option:selected").text();
             
-                if(Inc_Title == '房屋' || Inc_Title == '土地' ){
-                    if(Inc_self == "自住"){
-                        Income += parseInt(0);
-                    }else{
-                        Income += parseInt(Inc_Value);
-                    }
-                }else{
-                    Income += parseInt(Inc_Value);
-                }
-            // console.log(Inc_Title);
-            // console.log(Inc_Value);
-            // console.log(Inc_from);
-            // console.log(Inc_self);
-        }
-        Income = parseInt(Income);
-        // console.log(Income);
-        $(".group-div.selected").find('.people-property-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
-        svg_redraw();
+        //         if(Inc_Title == '房屋' || Inc_Title == '土地' ){
+        //             if(Inc_self == "自住"){
+        //                 Income += parseInt(0);
+        //             }else{
+        //                 Income += parseInt(Inc_Value);
+        //             }
+        //         }else{
+        //             Income += parseInt(Inc_Value);
+        //         }
+        // }
+        // Income = parseInt(Income);
+        // $(".group-div.selected").find('.people-property-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
+        // svg_redraw();
+
+
+        recount_member_pro(MDIV);
         recount_left_family_panel();
     });
+
+
 
     //右面板.所得.新增所得按鈕被點擊後
     $("#right_tab_income .add-proper-inc").click(function(event) {
@@ -791,7 +801,8 @@ $(document).ready(function() {
             }
         }
         //複製回成員隱藏面板
-        var IGContiv = $(".group-div.selected").find('.income-cont').eq(0);
+        var MDIV = $(".group-div.selected").eq(0);
+        var IGContiv = $(MDIV).find('.income-cont').eq(0);
         $(IGContiv).empty();
         $("#right_tab_income .inc-div-cont > div").clone().appendTo($(IGContiv));
         //更新成員面板所得月薪
@@ -820,9 +831,11 @@ $(document).ready(function() {
         console.log(Income);
         $(".group-div.selected").find('.people-income-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
         svg_redraw();
+        recount_member_inc(MDIV);
         //total_count_incomes();
         recount_left_family_panel();
     }); 
+
     //右面板.敘述欄位有變動觸發，立即寫回成員隱藏面板，並更新此家屬所得總額(轉換為月收入)
     $('#right_tab_membercomm').on('change', 'textarea', function(event) {
         //event.preventDefault();
@@ -1036,29 +1049,6 @@ $(document).ready(function() {
     });
 
 
-
-    
-
-
-    //計算目前歲數
-    function _calculateAge(birthday) { // birthday is a date
-        var ageDifMs = Date.now() - birthday.getTime();
-        var ageDate = new Date(ageDifMs); // miliseconds from epoch
-        return Math.abs(ageDate.getUTCFullYear() - 1970);
-    }
-
-    //將檔案路徑轉換成只有檔名
-    function baseName(str)
-    {
-       var base = new String(str).substring(str.lastIndexOf('/') + 1); 
-        if(base.lastIndexOf(".") != -1)       
-            base = base.substring(0, base.lastIndexOf("."));
-       return base;
-    }
-
-    function numberWithCommas(x) {  //numberWithCommas  轉換成有千分號的數字字串
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
 
     //統計頁面，範圍起始日期，選擇器初始化        
     $('#datetimepicker1').datetimepicker({

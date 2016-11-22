@@ -2,16 +2,15 @@
 <table id="table_id" class="table table-condensed table-hover">
     <thead>
         <tr>
-            
-            <th style="width: 8em;">案件文號</th>
-            <th style="width: 7em;">承辦機關</th>
+            <th style="width: 8em;">入伍日期</th>
+            <th style="width: 7em;">行政區</th>
             <th style="width: 7em;">役男姓名</th>
             <th style="width: 7.5em;">役男證號</th>
             <th style="width: 12em;">案件進度</th>
             <th style="width: 8em;">審查結果</th>
             <th style="width: 7em;">立案日期</th>
             <th style="width: 7em;">主要承辦人</th>
-            <th>備註</th>
+            <th>作業類別</th>
         </tr>
     </thead>
     <tbody>

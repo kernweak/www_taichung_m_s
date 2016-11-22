@@ -111,4 +111,26 @@ class File extends MY_Controller {
 		//var_dump($file_info);
 		echo json_encode($file_info[0]);
 	}
+
+	public function read_file_list_pending(){
+		$this->load->library('session');
+		var_dump($this->session);
+		$User_Level = $this->session->User_Level;
+		
+		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
+		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
+		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
+		//
+	}
+
+	// <th style="width: 8em;">入伍日期</th>
+   	//          <th style="width: 7em;">行政區</th>
+   	//          <th style="width: 7em;">役男姓名</th>
+   	//          <th style="width: 7.5em;">役男證號</th>
+   	//          <th style="width: 12em;">案件進度</th>
+   	//          <th style="width: 8em;">審查結果</th>
+   	//          <th style="width: 7em;">立案日期</th>
+   	//          <th style="width: 7em;">主要承辦人</th>
+   	//			案件流水號
+   	//          <th>備註</th>
 }
