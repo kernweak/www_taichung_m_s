@@ -51,14 +51,9 @@ class File extends MY_Controller {
 
 	public function check_boy_exist()		//檢查此役男是否存在
 	{	
-		$this->load->model('boy_model');
-		//$ADF_name = $this->input->post('ADF_name');
-		$ADF_code = $this->input->post('ADF_code');
-		// $ADF_birthday = $this->input->post('ADF_birthday');
-		// $ADF_milidate = $this->input->post('ADF_milidate');
-		// $ADF_type = $this->input->post('ADF_type');
-		// $ADF_status = $this->input->post('ADF_status');
-		 $query = $this->boy_model->read_row_by_code($ADF_code);
+		$this->load->model('boy_model');		
+		$ADF_code = $this->input->post('ADF_code');		
+		$query = $this->boy_model->read_row_by_code($ADF_code);
 		 	if ($query->num_rows() == 1){				//若抓到相同使用者成功
 				echo json_encode("已存在");
 			}
