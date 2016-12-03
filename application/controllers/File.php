@@ -54,7 +54,7 @@ class File extends MY_Controller {
 		$this->load->model('boy_model');		
 		$ADF_code = $this->input->post('ADF_code');		
 		$query = $this->boy_model->read_row_by_code($ADF_code);
-		 	if ($query->num_rows() == 1){				//若抓到相同使用者成功
+		 	if ($query->num_rows() >= 1){				//若抓到相同使用者成功
 				echo json_encode("已存在");
 			}
 			else{
