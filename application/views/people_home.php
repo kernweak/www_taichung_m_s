@@ -78,14 +78,15 @@
 		<td><span id="PH-level">甲</span></td></tr>
 	</table>
 	<hr class="thin"/>
-	<button>帶入家況</button>
-	<button>更新資料</button>
-	<hr class="thin"/>
-	<div style="width: 45%;">
-		<textarea style="width: 45%;"></textarea>
-	</div>
-	<div>
-		<textarea  style="width: 45%;" disabled>打字測試，不能修改的文字</textarea>
+	
+	
+	<!--<hr class="thin"/>-->
+	<div style="width: 50%; display: inline-block;">
+		<label style="width: 20em;"><h3>整體家況敘述-區公所</h3></label><button>帶入自動家況</button>
+		<textarea style="width: 90%;"></textarea>
+	</div><div style="width: 50%; display: inline-block;">
+		<label style="width: 20em;"><h3>整體家況敘述確認-市政府</h3></label><button>帶入公所家況敘述</button>
+		<textarea  style="width: 90%;" disabled></textarea>
 	</div>
 </div>
 <div>
