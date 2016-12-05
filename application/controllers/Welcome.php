@@ -36,6 +36,7 @@ class Welcome extends MY_Controller {
 			$this->load->view('TEST', Array(
 				'FullName' 		=> 	$FullName,
 				'organization' 		=> 	$organization,
+				'User_Level' 		=> 	$User_Level,
 			));
 		}
 		else{

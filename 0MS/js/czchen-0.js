@@ -27,30 +27,49 @@
             tbody = "";
             $.each(responsive, function(index, file) {
                 var edit_button = "";
-                if(file.審批階段 <= 1){
+                if(file.審批階段 <= 1 || file.審批階段 == 8){
                     edit_button = '<div class="btn-group" role="group">'+
                     '<button type="button" class="btn btn-success" onclick="read_file_test('+file.案件流水號+')">編輯</button>'+
                   '</div>';
-                }else{
+                }
+                else{
                     edit_button = "";
+                }
+                if(User_Level >= 4){
+                    edit_button2 = '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-info" onclick="progress_p_patch('+file.案件流水號+',this)">補件</button>'+
+                  '</div>';
+                }else{
+                    edit_button2 = "";
                 }
 
                 //檢視.編輯.意見.退回.呈核
                 var Button_str = 
                 '<div class="btn-group" role="group" aria-label="...">'+
                   '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-primary">檢視</button>'+
+                    '<button type="button" class="btn btn-primary" onclick="progress_view('+file.案件流水號+',this)">檢視</button>'+
                   '</div>'+
                   edit_button+
                   // '<div class="btn-group" role="group">'+
                   //   '<button type="button" class="btn btn-info">意見</button>'+
                   // '</div>'+
                   '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-warning" onclick="progress_back('+file.案件流水號+')">退回</button>'+
-                  '</div>'+
-                  '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-danger" onclick="progress_next('+file.案件流水號+')">呈核</button>'+
-                  '</div>'+
+                    '<button type="button" class="btn btn-warning" onclick="progress_p_back('+file.案件流水號+',this)">退回</button>'+
+                  '</div>';
+                  if(file.審批階段 == 8){
+                    edit_button3 = '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-info" onclick="progress_p_patch_re('+file.案件流水號+',this)">補件</button>'+
+                  '</div>';
+                  }else{
+                    edit_button3 = 
+                    '<div class="btn-group" role="group">'+
+                        '<button type="button" class="btn btn-danger" onclick="progress_p_next('+file.案件流水號+',this)">呈核</button>'+
+                    '</div>';
+                  }
+
+
+
+                  Button_str = Button_str + edit_button3 + edit_button2 +
                 '</div>';
 
                 //console.log(file.審批階段);
@@ -58,7 +77,7 @@
                  tbody += "" +
 
                     '<tr>' +   
-                        '<td>'+file.入伍日期+'</td>' +
+                        '<td>'+ yyy_dash(date_to_yyy(file.入伍日期)) +'</td>' +
                         '<td>'+file.Town_name+'</td>' +
                         '<td>'+file.役男姓名+'</td>' +
                         '<td>'+file.身分證字號+'</td>' +
@@ -69,7 +88,7 @@
                             '</div>' +
                         '</td>' +
                         '<td>'+file.扶助級別+'</td>' +
-                        '<td>'+file.建案日期+'</td>' +
+                        '<td>'+yyy_dash(date_to_yyy(file.建案日期))+'</td>' +
                         '<td>'+file.修改人姓名+'</td>' +
                         '<td>'+file.作業類別名稱+'</td>' +
                         '<td style="min-width: 190px;">'+Button_str+'</td>' +
@@ -169,6 +188,13 @@
         }
         //console.log(yyyy_date);
         return yyyy_date;
+    }
+
+    function yyy_dash(date_string){  //民國6/7碼轉西元日期
+        //date_string = "1040310";
+        date_string += "";
+        date_string = date_string.substring(0,3) + "-" + date_string.substring(3,5) + "-" + date_string.substring(5);
+        return date_string;
     }
 
     if (!String.prototype.trimall) {            //去除所有空白
@@ -348,8 +374,8 @@
         $("#PH-filetype").text(responsive['作業類別名稱']);
         $("#PH-name").text(responsive['役男姓名']);
         $("#PH-code").text(responsive['身分證字號']);
-        $("#PH-birthday").text(responsive['役男生日']);
-        $("#PH-milidate").text(responsive['入伍日期']);
+        $("#PH-birthday").text(yyy_dash(date_to_yyy(responsive['役男生日'])));
+        $("#PH-milidate").text(yyy_dash(date_to_yyy(responsive['入伍日期'])));
         $("#PH-type").text(responsive['服役軍種']);
         $("#PH-status").text(responsive['服役狀態']);
         $("#PH-fulladdress").text(responsive['County_name']+responsive['Town_name']+responsive['Village_name']+responsive['戶籍地址']);
@@ -454,14 +480,15 @@
                       '<option value="1,12">父母離異而分離之兄弟姊妹</option>' +
                       '<option value="1,13">無國籍</option>' +
                       '<option value="1,14">不列口數：其他</option>' +
-                      '<option value="2,30">55歲以上,16歲以下無收入</option>' +
-                      '<option value="2,31">身心障礙、重大傷病</option>' +
-                      '<option value="2,32">3個月內之重大傷病</option>' +
-                      '<option value="2,33">學生</option>' +
-                      '<option value="2,34">孕婦</option>' +
-                      '<option value="2,35">獨自照顧直系老幼親屬</option>' +
-                      '<option value="2,36">獨自照顧重大傷病親屬</option>' +
-                      '<option value="2,37">不計收入：其他</option>' +
+                      '<option value="3,30">55歲以上,16歲以下無收入</option>' +
+                      '<option value="3,31">身心障礙、重大傷病</option>' +
+                      '<option value="3,32">3個月內之重大傷病</option>' +
+                      '<option value="3,33">學生</option>' +
+                      '<option value="3,34">孕婦</option>' +
+                      '<option value="3,35">獨自照顧直系老幼親屬</option>' +
+                      '<option value="3,36">獨自照顧重大傷病親屬</option>' +
+                      '<option value="3,37">依實際收入：其他</option>' +
+                      '<option value="2,38">不計收入：其他</option>' +
                     '</select>' +
                 '</div>' +
             '</div>' +
@@ -668,7 +695,7 @@
     }
 
     function add_miliboy(){
-        var GROUP_DIV = '<div class="group-div" code=new edit=new><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/captain.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value="役男"></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value="'+$("#PH-name").text()+'"></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value="'+$("#PH-code").text()+'"></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="'+date_to_yyy($("#PH-birthday").text())+'" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">不列口數</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0">一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1" selected>服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="2,30">55歲以上,16歲以下無收入</option><option value="2,31">身心障礙、重大傷病</option><option value="2,32">3個月內之重大傷病</option><option value="2,33">學生</option><option value="2,34">孕婦</option><option value="2,35">獨自照顧直系老幼親屬</option><option value="2,36">獨自照顧重大傷病親屬</option><option value="2,37">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
+        var GROUP_DIV = '<div class="group-div" code=new edit=new><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/captain.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value="役男"></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value="'+$("#PH-name").text()+'"></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value="'+$("#PH-code").text()+'"></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="'+date_to_yyy($("#PH-birthday").text())+'" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">不列口數</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0">一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1" selected>服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="3,30">55歲以上,16歲以下無收入</option><option value="3,31">身心障礙、重大傷病</option><option value="3,32">3個月內之重大傷病</option><option value="3,33">學生</option><option value="3,34">孕婦</option><option value="3,35">獨自照顧直系老幼親屬</option><option value="3,36">獨自照顧重大傷病親屬</option><option value="3,37">不計收入：其他</option><option value="2,38">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
         $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
         svg_redraw();
         $(".group-div").eq(0).find('.people-id-address input').trigger('change');
@@ -784,13 +811,47 @@
         });
     }
 
+    function read_file_progerss_log(file_key){
+        $.ajax({
+            url: '/file/read_file_progerss_log',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : file_key
+            },
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            console.log("success");
+            console.log(responsive);
+            $("#view_log_comment tbody").empty();
+            tbody = "";
+            $.each(responsive, function(index, file) {
+                tbody += "<tr>" +
+                "<td>"+file.日期時間+"</td>" +
+                "<td>"+ file.動作者機關 + "-" + file.動作者單位 + "-" + file.動作者 + "(" + file.動作者職級 + ")</td>" +
+                "<td>"+file.動作名稱+"</td>" +
+                "<td>"+file.動作後案件流程層級+"</td>" +
+                "<td>"+file.動作者意見+"</td>" + 
+                "</tr>";
+            });
+            $("#view_log_comment tbody").html(tbody);
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
     function progress_next(file_key){
         $.ajax({
             url: '/file/progress_next',
             type: 'post',
             dataType: 'json',
             data: {
-                file_key        : file_key
+                file_key        : file_key,
+                log_comment     : $("#log_comment").val()
             },
         })
         .always(function() {
@@ -805,13 +866,162 @@
         });
     }
 
+    function progress_patch(file_key){
+        $.ajax({
+            url: '/file/progress_patch',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : file_key,
+                log_comment     : $("#log_comment").val()
+            },
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            console.log("success");
+            read_file_list_pending();
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
+    function progress_patch_re(file_key){
+        $.ajax({
+            url: '/file/progress_patch_re',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : file_key,
+                log_comment     : $("#log_comment").val()
+            },
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            console.log("success");
+            read_file_list_pending();
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
+    //onclick="$('#myModal').modal('toggle')"
+
+    var file_list_pointer = 0;
+    var file_list_action_pointer = "";
+            // 日期</th>
+            // <th>行政區</th>
+            // <th>役男姓名</th>
+            // <th>役男證號</th>
+            // <th>案件進度</th>
+            // <th>審查結果</th>
+            // <th>立案日期</th>
+            // <th>主要承辦人</th>
+            // <th>作業類別</th>
+    function update_myModal(tr){
+        $(tr).children('td').eq(0).text();
+        $('#myModal .modal-body tbody tr').children('td').eq(0).html($(tr).children('td').eq(0).text());
+        $('#myModal .modal-body tbody tr').children('td').eq(1).html($(tr).children('td').eq(1).text());
+        $('#myModal .modal-body tbody tr').children('td').eq(2).html($(tr).children('td').eq(2).text());
+        $('#myModal .modal-body tbody tr').children('td').eq(3).html($(tr).children('td').eq(3).text());
+        $('#myModal .modal-body tbody tr').children('td').eq(4).html($(tr).children('td').eq(4).text());
+        $('#myModal .modal-body tbody tr').children('td').eq(5).html($(tr).children('td').eq(5).text());
+        $('#myModal .modal-body tbody tr').children('td').eq(6).html($(tr).children('td').eq(6).text());
+        $('#myModal .modal-body tbody tr').children('td').eq(7).html($(tr).children('td').eq(7).text());
+        $('#myModal .modal-body tbody tr').children('td').eq(8).html($(tr).children('td').eq(8).text());
+
+    }
+
+    function progress_p_back(file_key,event){
+        file_list_pointer = file_key;
+        file_list_action_pointer = "back";
+        $('#myModal').modal('show');
+        $('#myModalLabel').text('退回給承辦人');
+        var tr = $(event).parents("tr").get(0);
+        update_myModal(tr);
+    }
+    function progress_p_patch_re(file_key,event){
+        file_list_pointer = file_key;
+        file_list_action_pointer = "patch_re";
+        $('#myModal').modal('show');
+        $('#myModalLabel').text('補件後重送');
+        var tr = $(event).parents("tr").get(0);
+        update_myModal(tr);
+
+    }
+    function progress_p_patch(file_key,event){
+        file_list_pointer = file_key;
+        file_list_action_pointer = "patch";
+        $('#myModal').modal('show');
+        $('#myModalLabel').text('補件要求-給承辦人');
+        var tr = $(event).parents("tr").get(0);
+        update_myModal(tr);
+
+    }
+    function progress_p_next(file_key,event){
+        file_list_pointer = file_key;
+        file_list_action_pointer = "next";
+        $('#myModal').modal('show');
+        $('#myModalLabel').text('向上級呈核');
+        var tr = $(event).parents("tr").get(0);
+        update_myModal(tr);
+    }
+
+    function progress_view(file_key,event){
+        file_list_pointer = file_key;
+        file_list_action_pointer = "next";
+        $('#File_list_View_Modal').modal('show');
+        $('#File_list_View_ModalLabel').html('<h3>案件檢視</h3>');
+        var tr = $(event).parents("tr").get(0);
+        update_File_list_View_Modal(tr);
+        read_file_progerss_log(file_key);
+    }
+
+    function update_File_list_View_Modal(tr){
+        $(tr).children('td').eq(0).text();
+        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(0).html($(tr).children('td').eq(0).text());
+        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(1).html($(tr).children('td').eq(1).text());
+        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(2).html($(tr).children('td').eq(2).text());
+        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(3).html($(tr).children('td').eq(3).text());
+        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(4).html($(tr).children('td').eq(4).text());
+        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(5).html($(tr).children('td').eq(5).text());
+        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(6).html($(tr).children('td').eq(6).text());
+        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(7).html($(tr).children('td').eq(7).text());
+        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(8).html($(tr).children('td').eq(8).text());
+    }
+
+
+$(document).ready(function() {
+    $("#filelist-navcon").on('click', '#myModal button.btn.btn-primary',function(event) {
+        event.preventDefault();
+        //console.log("click");
+
+        if (file_list_action_pointer == "back"){
+            progress_back(file_list_pointer);
+        }else if(file_list_action_pointer == "next"){
+            progress_next(file_list_pointer);
+        }else if(file_list_action_pointer == "patch"){
+            progress_patch(file_list_pointer);
+        }else if(file_list_action_pointer == "patch_re"){
+            progress_patch_re(file_list_pointer);
+        }
+        $('#myModal').modal('hide');
+        /* Act on the event */
+    });
+});
     function progress_back(file_key){
         $.ajax({
             url: '/file/progress_back',
             type: 'post',
             dataType: 'json',
             data: {
-                file_key        : file_key
+                file_key        : file_key,
+                log_comment     : $("#log_comment").val()
             },
         })
         .always(function() {

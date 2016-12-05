@@ -190,6 +190,24 @@ $(document).ready(function() {
                 if (area_ex_flag ==0){
                     members_area_array.push([area,1]);
                 }
+            }else if (arr1[0] == '3'){    //-------------------依實際所得-----------------------------------------------------------------------------------------    
+
+                list_members_num++;
+                var area = $(GDIV).eq(i).find(".member_area").val();
+                var area_income_limit_index = parseInt($(GDIV).eq(i).find(".member_area").attr('area-index'));
+                limit_income += Property_limit[area_income_limit_index][2];
+                
+                var area_ex_flag = 0;
+                for(j=0;j<members_area_array.length;j++){
+                    if(members_area_array[j][0] == area){
+                        members_area_array[j][1] +=1;
+                        area_ex_flag = 1;
+                    }
+                }
+                if (area_ex_flag ==0){
+                    members_area_array.push([area,1]);
+                }
+
             }
         }
         //console.log(members_area_array);
@@ -228,7 +246,7 @@ $(document).ready(function() {
                 continue;
             }
             var arr1= Special.split(',');
-            if (arr1[0] == '0'){    //-------------------一般-----------------------------------------------------------------------------------------    
+            if (arr1[0] == '0' || arr1[0] == '3'){    //-------------------一般&依實際所得-----------------------------------------------------------------------------------------    
                 //console.log(arr1[0]);
                 
                 for(j=0;j<$(Income_Div).length;j++){
@@ -390,7 +408,7 @@ $(document).ready(function() {
             // }
             var arr1= Special.split(',');
             var title = $(GDIV).eq(i).find(".people-title input").val();
-            if (arr1[0] == '0' || arr1[0] == '2' || title == "役男"){    //-------------------一般&不計收入-----------------------------------------------------------------------------------------    
+            if (arr1[0] == '0' || arr1[0] == '2' || title == "役男" || arr1[0] == '3'){    //-------------------一般&依實際所得&不計收入-----------------------------------------------------------------------------------------    
                 if(title != "役男"){total_members_count++;}//列計人數+1
                   
                 var area = $(GDIV).eq(i).find(".member_area").attr('area-index');
@@ -962,6 +980,8 @@ $(document).ready(function() {
             $(this).parents('.people-special').children('span').text('不列口數');
         }else if(arr1[0] == 2){
             $(this).parents('.people-special').children('span').text('不計收入');
+        }else if(arr1[0] == 3){
+            $(this).parents('.people-special').children('span').text('實際所得');
         }
 
         var Title = $(this).parents('.group-div').find('.people-title .people-input-center').val();
@@ -1045,7 +1065,7 @@ $(document).ready(function() {
     //中面板.家屬.新增家屬按鈕被點擊
     $(".center-total-count").on('click', '.add-people', function(event) {
         //event.preventDefault();
-        var GROUP_DIV = '<div class="group-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-people" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/man-avatar.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value=""></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value=""></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value=""></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">一般</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0" selected>一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1">服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="2,30">55歲以上,16歲以下無收入</option><option value="2,31">身心障礙、重大傷病</option><option value="2,32">3個月內之重大傷病</option><option value="2,33">學生</option><option value="2,34">孕婦</option><option value="2,35">獨自照顧直系老幼親屬</option><option value="2,36">獨自照顧重大傷病親屬</option><option value="2,37">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
+        var GROUP_DIV = '<div class="group-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-people" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/man-avatar.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value=""></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value=""></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value=""></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">一般</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0" selected>一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1">服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="3,30">55歲以上,16歲以下無收入</option><option value="3,31">身心障礙、重大傷病</option><option value="3,32">3個月內之重大傷病</option><option value="3,33">學生</option><option value="3,34">孕婦</option><option value="3,35">獨自照顧直系老幼親屬</option><option value="3,36">獨自照顧重大傷病親屬</option><option value="3,37">依實際所得：其他</option><option value="2,38">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
         $(GROUP_DIV).insertBefore($(this).parent());
         svg_redraw();
         var index_g = $(".group-div").length - 2;

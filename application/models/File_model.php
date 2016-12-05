@@ -30,11 +30,51 @@ class File_model extends CI_Model {
 			$data = array(
 			'審批階段' => 1
 			);
+		}elseif($oper == "p"){
+			$data = array(
+			'審批階段' => 8
+			);
+		}elseif($oper == "r"){
+			$data = array(
+			'審批階段' => 4
+			);
 		}
 		$this->db->where('案件流水號', $file_key);
     	$this->db->update('files_info_table', $data);
+
+    	if ($oper == "+"){
+			return $result[0]->審批階段 + 1;
+		}elseif($oper == "1"){
+			return 1;
+		}elseif($oper == "p"){
+			return 8;
+		}elseif($oper == "r"){
+			return 4;
+		}
+
     	//var_dump($this->db->last_query());
 	}
+
+	public function progress_log($file_key,$log_comment, $progress_name, $progress_level,$organization,$department,$FullName,$User_Level,$datetime){
+		$data = array(
+			'案件流水號' => $file_key,
+			'動作者意見' => $log_comment,
+			'動作名稱' => $progress_name,
+			'動作後案件流程層級' => $progress_level,
+			'動作者' => $FullName,
+			'動作者單位' => $department,
+			'動作者機關' => $organization,
+			'動作者職級' => $User_Level,
+			'日期時間' => $datetime
+			);
+		$this->db->insert('files_process_log', $data);
+		$index = $this->db->insert_id();
+		log_message('debug', 'file table insert_id = '. $index);
+
+		return $index;
+
+	}
+
 	public function update($file){
 		$data = array(
 			'存款本金總額' => $file->deposits,
@@ -126,6 +166,7 @@ class File_model extends CI_Model {
 			//LV1 承辦人可以，檢視，編輯，呈核
 			$this->db->where('files_status_code.審批階段代號', $user_level);
 			$this->db->or_where('files_status_code.審批階段代號', 0);
+			$this->db->or_where('files_status_code.審批階段代號', 8);
 
 
 		}
@@ -145,7 +186,61 @@ class File_model extends CI_Model {
 
 
 		}
-		elseif($user_level == 7){	
+		elseif($user_level <= 7){	
+			//工程師模式-可完全瀏覽
+			//$this->db->where('files_status_code.審批階段代號', $user_level);
+
+
+		}
+
+
+
+		
+		//$this->db->where('files_info_table.案件流水號', $file_key);
+		
+
+
+		// ini_set('xdebug.var_display_max_depth', 5);
+		// ini_set('xdebug.var_display_max_children', 256);
+		// ini_set('xdebug.var_display_max_data', 1024);
+
+		$query = $this->db->get();
+		$result = $query->result_array();
+		return $result;
+		// var_dump($result);
+		// var_dump($this->db->last_query());
+	}
+
+	public function read_file_progerss_log($user_level, $user_organ,$file_key){
+		$this->db->select("files_process_log.日期時間,files_process_log.動作者機關,files_process_log.動作者單位,files_process_log.動作者,files_process_log.動作者職級,files_process_log.動作名稱,files_process_log.動作後案件流程層級,files_process_log.動作者意見");
+		$this->db->from('files_process_log');
+		$this->db->join('files_info_table', 'files_info_table.案件流水號 = files_process_log.案件流水號');
+		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
+		$this->db->where('files_process_log.案件流水號', $file_key);
+		if($user_level <= 1){	
+			//區公所使用者登入，應該只能看到自己公所
+			$this->db->where('area_town.Town_name', $user_organ);
+			
+
+			//LV1 承辦人可以，檢視，編輯，呈核
+		}
+		elseif($user_level <= 3){	
+			//區公所使用者登入，應該只能看到自己公所
+			$this->db->where('area_town.Town_name', $user_organ);
+
+
+			//LV2,3 主管可以檢視，加入意見，退回，呈核，但只能看到自己階段的檔案
+			//$this->db->where('files_status_code.審批階段代號', $user_level);
+
+		}
+		elseif($user_level <= 6){	
+			//市府局處以上可觀看到所有區的檔案
+			//可以檢視，加入意見，退回，呈核，但只能看到自己階段的檔案
+			//$this->db->where('files_status_code.審批階段代號', $user_level);
+
+
+		}
+		elseif($user_level <= 7){	
 			//工程師模式-可完全瀏覽
 			//$this->db->where('files_status_code.審批階段代號', $user_level);
 

@@ -136,6 +136,27 @@ class File extends MY_Controller {
 		//LV 7 工程模式，全部狀態都能看到
 	}
 
+	public function read_file_progerss_log(){	
+		$this->load->library('session');
+		$file_key = (int)$this->input->post('file_key');
+		$user_level = $this->session->User_Level;
+		$user_organ = $this->session->organization;
+		$this->load->model('file_model');
+		$file_list = $this->file_model->read_file_progerss_log($user_level, $user_organ, $file_key);
+		//var_dump($file_list);
+		echo json_encode($file_list);
+		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
+		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
+		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
+		//LV 7 工程模式，全部狀態都能看到
+	}
+
+
+
+
+
+	
+
 	//列出此公所已通過補助，役男尚未退役的之案件
 	public function read_file_list_supporting(){
 
@@ -144,16 +165,58 @@ class File extends MY_Controller {
 
 	public function progress_next(){
 		$file_key = (int)$this->input->post('file_key');
+		$log_comment = $this->input->post('log_comment');
 		$this->load->model('file_model');
 		$file_info = $this->file_model->progress_file($file_key,"+");
+		$this->progress_log($file_key, $log_comment, "向上呈核",$file_info);
 		echo json_encode("Success");
 	}
 
+	public function progress_patch(){
+		$file_key = (int)$this->input->post('file_key');
+		$log_comment = $this->input->post('log_comment');
+		$this->load->model('file_model');
+		$file_info = $this->file_model->progress_file($file_key,"p");
+		$this->progress_log($file_key, $log_comment, "要求補件",$file_info);
+		echo json_encode("Success");
+	}
+
+	public function progress_patch_re(){
+		$file_key = (int)$this->input->post('file_key');
+		$log_comment = $this->input->post('log_comment');
+		$this->load->model('file_model');
+		$file_info = $this->file_model->progress_file($file_key,"r");
+		$this->progress_log($file_key, $log_comment, "補件重送",$file_info);
+		echo json_encode("Success");
+	}
+	
+
+
 	public function progress_back(){
 		$file_key = (int)$this->input->post('file_key');
+		$log_comment = $this->input->post('log_comment');
 		$this->load->model('file_model');
 		$file_info = $this->file_model->progress_file($file_key,"1");
+		$this->progress_log($file_key, $log_comment, "退回承辦",$file_info);
 		echo json_encode("Success");
+	}
+
+	public function progress_log($file_key, $log_comment, $progress_name, $progress_level){
+		date_default_timezone_set('Asia/Taipei');
+		$this->load->model('file_model');
+		$this->load->library('session');
+		$Login_ID = $this->session->userdata('Login_ID');
+		$FullName = $this->session->userdata('FullName');
+		$organization = $this->session->userdata('organization');
+		$department = $this->session->userdata('department');
+		$User_Level = $this->session->userdata('User_Level');
+		$datetime = date ("Y-m-d H:i:s"); 
+
+
+
+
+		$this->file_model->progress_log($file_key,$log_comment, $progress_name, $progress_level,$organization,$department,$FullName,$User_Level,$datetime);
+		//echo json_encode("Success");
 	}
 
 // miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
@@ -167,5 +230,15 @@ class File extends MY_Controller {
 // files_info_table.案件流水號//    案件流水號
 // files_info_table.可否編修//   	可否編輯	--可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
 // files_status_code.案件階段名稱//   	作業類別
+
+// 案件流水號
+// 案件流程名稱
+// 日期時間
+// 動作者單位
+// 動作者
+// 動作名稱
+// 動作者職級
+// 動作後案件流程層級
+// 動作者意見
 
 }

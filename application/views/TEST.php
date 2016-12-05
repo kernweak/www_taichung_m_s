@@ -21,6 +21,9 @@
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
     <script src="/0MS/js/jquery-3.1.0.min.js"></script>
     <script src="/0MS/js/czchen-0.js"></script>
+    <script>
+        var User_Level = <?php echo $User_Level ?>;
+    </script>
 </head>
 
 <body style="overflow: hidden;">

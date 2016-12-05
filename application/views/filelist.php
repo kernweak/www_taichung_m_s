@@ -11,486 +11,190 @@
             <th>立案日期</th>
             <th>主要承辦人</th>
             <th>作業類別</th>
-            <th style="width: 14em;">可選用操作</th>
+            <th style="width: 18em; min-width: 17em;">可選用操作</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            
-            <td>1030000137</td>
-            <td>西屯區公所</td>
-            <td>歐陽鋒</td>
-            <td>A323456789</td>
-            <td>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
-                        <span style="display:none;">20</span>收案
-                    </div>
-                </div>
-            </td>
-            <td>審核中</td>
-            <td>103/05/29</td>
-            <td>朱元璋</td>
-            <td>案二弟有大學甄試入學錄取證明，目前為高中生</td>
-            <td>朱元璋</td>
-        </tr>
-        <tr>
-            
-            <td>1030000139</td>
-            <td>大里區公所</td>
-            <td>廖添丁</td>
-            <td>S223456789</td>
-            <td>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-                        <span style="display:none;">40</span>公所初審
-                    </div>
-                </div>
-            </td>
-            <td>審核中</td>
-            <td>103/05/27</td>
-            <td>荊軻</td>
-            <td></td>
-            <td>朱元璋</td>
-        </tr>
-        <tr onclick="$('#myModal').modal('toggle')">
-            
-            <td>1030000140
-            </td>
-            <td>豐原區公所</td>
-            <td>王大陸</td>
-            <td>L123456789</td>
-            <td>
-                <div class="progress">
-                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                        <span style="display:none;">60</span>民政局複審
-                    </div>
-                </div>
-            </td>
-            <td>初審-乙級4口</td>
-            <td>103/05/25</td>
-            <td>張三豐</td>
-            <td>案父車禍住院中, 04/13入院, 有附診斷證明</td>
-            <td>朱元璋</td>
-        </tr>
-        <tr>
-            
-            <td>1030000142</td>
-            <td>神岡區公所</td>
-            <td>林平之</td>
-            <td>L323456789</td>
-            <td>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                        <span style="display:none;">100</span>結案
-                    </div>
-                </div>
-            </td>
-            <td>甲級4口</td>
-            <td>103/05/29</td>
-            <td>韋小寶</td>
-            <td></td>
-            <td>朱元璋</td>
-        </tr>
-        <tr>
-            
-            <td>1030000145</td>
-            <td>潭子區公所</td>
-            <td>黃飛鴻</td>
-            <td>L328656789</td>
-            <td>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                        <span style="display:none;">100</span>結案
-                    </div>
-                </div>
-            </td>
-            <td>丙級6口</td>
-            <td>103/06/27</td>
-            <td>詹天佑</td>
-            <td></td>
-            <td>朱元璋</td>
-        </tr>
+
     </tbody>
 </table>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document" style="min-width: 80em;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel"><span>1030000137</span></span><span>初審-乙級4口</span><span>王大陸</span><span>L123456789</span><span class="modal-cite" style="margin: 0; font-size: 0.8em; color: #666;">豐原區公所，承辦：<cite title="Source Title">聶隱娘</cite></span>
-                        </h4>
+                <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
             <div class="modal-body">
-                <div>
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">版本紀錄</a></li>
-                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">最新詳資</a></li>
-                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-                        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-                    </ul>
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="home">
-                            <h4><p style="font-size: 0.8em; text-align: right;"><ins>立案時間:103-05-07 10:33:29</ins></p> </h4>
-                            <hr>
-                            <div style="max-height: 55vh; overflow-y: scroll;">
-                                <table id="myModal-table_id" class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th style="">版號</th>
-                                            <th style="">開啟</th>
-                                            <th style="">源號</th>
-                                            <th style="width: 25%;">進度</th>
-                                            <th style="">編修日期</th>
-                                            <th style="">編修機關/人</th>
-                                            <th style="">審查結果</th>
-                                            <th style="">備註</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">14</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>11
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
-                                                        <span style="display:none;">60</span>民政局複審
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td>影像上傳</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">13</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>11
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                                        <span style="display:none;">60</span>民政局複審
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">12</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>11
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                                        <span style="display:none;">60</span>民政局複審
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">11</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>10
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                                        <span style="display:none;">60</span>民政局複審
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">10</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>9
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                                        <span style="display:none;">60</span>民政局複審
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">9</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>8
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
-                                                        <span style="display:none;">50</span>區所初審
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td></td>
-                                            <td>補上母親房產資料</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">8</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>5
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
-                                                        <span style="display:none;">50</span>區所初審
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>民政局
-                                                <br>張無忌</td>
-                                            <td></td>
-                                            <td>家屬財產資料請補齊</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">7</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>3
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
-                                                        <span style="display:none;">50</span>區所初審
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td>稅籍資料補上</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">6</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>4
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-                                                        <span style="display:none;">40</span>區所編案
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td>稅籍資料補上</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">5</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>4
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-                                                        <span style="display:none;">40</span>區所編案
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td>稅籍資料補上</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">4</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>3
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-                                                        <span style="display:none;">40</span>區所編案
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td>稅籍資料補上</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>2
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-                                                        <span style="display:none;">40</span>區所編案
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-03-02
-                                                <br>14:23:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td>初審-乙級4口</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>1
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
-                                                        <span style="display:none;">40</span>區所編案
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-02-26
-                                                <br>11:13:07</td>
-                                            <td>豐原區公所
-                                                <br>滅絕師太</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>
-                                                <button type="button" class="btn btn-sm glyphicon glyphicon-folder-open" style="" />
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                                <div class="progress">
-                                                    <div class="progress-bar  progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
-                                                        <span style="display:none;">20</span>收件
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>2014-02-25
-                                                <br>10:05:35</td>
-                                            <td>豐原區公所
-                                                <br>張三豐</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="profile">
-                            <h4>詳細資訊</h4>
-                            <table id="myModal-table_id" class="table table-condensed table-hover">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 2.8em;">#</th>
-                                        <th style="width: 8em;">案件文號</th>
-                                        <th style="width: 7em;">承辦機關</th>
-                                        <th style="width: 7em;">役男姓名</th>
-                                        <th style="width: 7.5em;">役男證號</th>
-                                        <th style="width: 8em;">審查結果</th>
-                                        <th style="width: 7em;">立案日期</th>
-                                        <th style="width: 7em;">主要承辦人</th>
-                                        <th>備註</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>1030000137
-                                        </td>
-                                        <td>豐原區公所</td>
-                                        <td>張三豐</td>
-                                        <td>L123456789</td>
-                                        <td>初審-乙級4口</td>
-                                        <td>103/05/25</td>
-                                        <td>聶隱娘</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <hr>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="messages">...</div>
-                        <div role="tabpanel" class="tab-pane" id="settings">...</div>
-                    </div>
-                </div>
+                <br><br><br><br>
+                <table style="width: 100%;">
+                <thead>
+                <tr style="border-bottom: 1px solid black;">
+                <th>入伍日期</th>
+                <th>行政區</th>
+                <th>役男姓名</th>
+                <th>役男證號</th>
+                <th>案件進度</th>
+                <th>審查結果</th>
+                <th>立案日期</th>
+                <th>主要承辦人</th>
+                <th>作業類別</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr role="row" class="odd">
+                <td class="sorting_1">103-07-05</td>
+                <td>中區</td>
+                <td>陳韋帆</td>
+                <td>S222</td>
+                <td></td>
+                <td>丙級2口</td><td>105-11-20 15:26:09</td>
+                <td>陳宗儒</td>
+                <td>初審</td>
+                </tr></tbody></table>
+                <br><br><br>
+                <label for="log_comment">意見批註</label>
+
+                <textarea name="log_comment" id="log_comment" style="width: 100%;height: 15em;"></textarea>
+
+
+
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">送出</button>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="File_list_View_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="min-width: 95%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="File_list_View_ModalLabel"></h4>
+            </div>
+            <div class="modal-body" style="height: 70vh;overflow: auto;">
+                <table style="width: 80%;">
+                <thead>
+                <tr style="border-bottom: 1px solid #c5c5c5;">
+                <th>入伍日期</th>
+                <th>行政區</th>
+                <th>役男姓名</th>
+                <th>役男證號</th>
+                <th>案件進度</th>
+                <th>審查結果</th>
+                <th>立案日期</th>
+                <th>主要承辦人</th>
+                <th>作業類別</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr role="row" class="odd">
+                <td class="sorting_1">103-07-05</td>
+                <td>中區</td>
+                <td>陳韋帆</td>
+                <td>S222</td>
+                <td></td>
+                <td>丙級2口</td><td>105-11-20 15:26:09</td>
+                <td>陳宗儒</td>
+                <td>初審</td>
+                </tr></tbody></table>
+                <br>
+                <label for="view_log_comment"><h3>批核歷程</h3></label>
+                <table name="view_log_comment" id="view_log_comment" style="width: 80%;">
+                <thead>
+                <tr style="border-bottom: 1px solid #c5c5c5;">
+                <th>日期時間</th>
+                <th>批核者</th>
+                <th>動作名稱</th>
+                <th>批核後案件進度</th>
+                <th>批核意見</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+
+                </table>
+        <br>
+        <label for="view_log_comment"><h3>家庭概況</h3></label>
+        <table border="1" style="text-align: center;">
+        <tbody><tr>
+        <td colspan="2" style="background-color: #ced790;">動產</td>
+        <td colspan="4" style="background-color: #90c5d7;">不動產</td>
+        <td colspan="3" style="background-color: #d79b90;">所得</td>
+        <td style="background-color: #d490d7;">全戶</td>
+        </tr>
+        <tr>
+        <td>存款Deposits</td>
+        <td>投資Investment</td>
+        <td>房屋棟數Houses</td>
+        <td>房屋總價Houses-total</td>
+        <td>列計棟數Houses-num</td>
+        <td>列計價值Houses-listtotal</td>
+        <td>薪資Salary</td>
+        <td>營利Profit</td>
+        <td>財產Property-int</td>
+        <td>列計人口members</td>
+        </tr>
+        <tr>
+        <td>$<span id="PH-Deposits">0</span></td>
+        <td>$<span id="PH-Investment">0</span></td>
+        <td><span id="PH-Houses">0</span>棟</td>
+        <td>$<span id="PH-Houses-total">0</span></td>
+        <td><span id="PH-Houses-num">0</span>棟</td>
+        <td>$<span id="PH-Houses-listtotal">0</span></td>
+        <td>$<span id="PH-Salary">0</span></td>
+        <td>$<span id="PH-Profit">0</span></td>
+        <td>$<span id="PH-Property-int">0</span></td>
+        <td><span id="PH-members">1</span>人</td>
+        </tr>
+        <tr>
+        <td>證券Securities</td>
+        <td>其他others-Pro</td>
+        <td>土地筆數Land</td>
+        <td>土地總值Land-total</td>
+        <td>列計筆數Land-num</td>
+        <td>列計價值Land-listtotal</td>
+        <td>利息Bank-int</td>
+        <td>股利Stock-int</td>
+        <td>其他others-int</td>
+        <td>生活所需need</td>
+        </tr>
+        <tr>
+        <td>$<span id="PH-Securities">0</span></td>
+        <td>$<span id="PH-others-Pro">0</span></td>
+        <td><span id="PH-Land">0</span>筆</td>
+        <td>$<span id="PH-Land-total">0</span></td>
+        <td><span id="PH-Land-num">0</span>筆</td>
+        <td>$<span id="PH-Land-listtotal">0</span></td>
+        <td>$<span id="PH-Bank-int">0</span></td>
+        <td>$<span id="PH-Stock-int">0</span></td>
+        <td>$<span id="PH-others-int">0</span></td>
+        <td>$<span id="PH-need">19626</span></td>
+        </tr>
+        <tr>
+        <td colspan="2">動產列計總額total-pro</td>
+        <td colspan="4">不動產列計總額total-imm</td>
+        <td colspan="3">月均所得總額total-inc</td>
+        <td>扶助等級</td>
+        </tr>
+        <tr>
+        <td colspan="2">$<span id="PH-total-pro">0</span></td>
+        <td colspan="4">$<span id="PH-total-imm">0</span></td>
+        <td colspan="3">$<span id="PH-total-inc">0</span></td>
+        <td><span id="PH-level">甲級1口</span></td></tr>
+    </tbody></table>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">送出</button>
+            </div>
+        </div>
+    </div>
+</div>
+

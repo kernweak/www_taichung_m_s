@@ -81,7 +81,12 @@
 	<button>帶入家況</button>
 	<button>更新資料</button>
 	<hr class="thin"/>
-	<textarea></textarea><textarea disabled>打字測試，不能修改的文字</textarea>
+	<div style="width: 45%;">
+		<textarea style="width: 45%;"></textarea>
+	</div>
+	<div>
+		<textarea  style="width: 45%;" disabled>打字測試，不能修改的文字</textarea>
+	</div>
 </div>
 <div>
 	
