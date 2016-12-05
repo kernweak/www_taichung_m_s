@@ -225,6 +225,10 @@
     .people-special>div>select > option:nth-child(24){
         background-color: #dfe0aa;
     }
+
+    .people-special >span {
+        width:4em;
+    }
     
     
     

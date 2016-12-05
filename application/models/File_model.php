@@ -100,7 +100,9 @@ class File_model extends CI_Model {
 			'月總所得'=>$file->total_inc,
 			'總列計人口'=>$file->members,
 			'月所需'=>$file->need,			
-			'扶助級別'=>$file->level
+			'扶助級別'=>$file->level,
+			'整體家況敘述-公所'=>$file->file_comm_1,
+			'整體家況敘述-局處'=>$file->file_comm_2
 			);
 
     	$this->db->where('案件流水號', $file->key);

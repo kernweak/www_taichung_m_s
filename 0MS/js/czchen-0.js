@@ -27,7 +27,7 @@
             tbody = "";
             $.each(responsive, function(index, file) {
                 var edit_button = "";
-                if(file.審批階段 <= 1 || file.審批階段 == 8){
+                if(file.審批階段 <= 1 || file.審批階段 == 8 || file.審批階段 == 4){
                     edit_button = '<div class="btn-group" role="group">'+
                     '<button type="button" class="btn btn-success" onclick="read_file_test('+file.案件流水號+')">編輯</button>'+
                   '</div>';
@@ -407,6 +407,10 @@
         $("#PH-Land-num").text(responsive['土地非自用筆數']);
         $("#PH-Land-listtotal").text(responsive['土地列計總價']);
         $("#PH-total-imm").text(responsive['不動產列計總額']);
+        $("#PH-file_comm_1").val("");
+        $("#PH-file_comm_2").val("");
+        $("#PH-file_comm_1").val(responsive['整體家況敘述-公所']);
+        $("#PH-file_comm_2").val(responsive['整體家況敘述-局處']);
 
         $(".people_home").attr('file_id', responsive['案件流水號']);
         $(".people_home").attr('boy_id', responsive['役男系統編號']);
@@ -781,7 +785,9 @@
                 "total_inc"  :  $("#PH-total-inc").text(),      //月均所得總額
                 "members"  :    $("#PH-members").text(),        //列計人口 
                 "need"  :       $("#PH-need").text(),           //生活所需-月
-                "level"  :      $("#PH-level").text()           //扶助等級
+                "level"  :      $("#PH-level").text(),           //扶助等級
+                "file_comm_1"  :$("#PH-file_comm_1").val(),           //整體家況敘述-公所
+                "file_comm_2"  :$("#PH-file_comm_2").val()           //整體家況敘述-局處
         };
         //console.log(file_info);
         file_json = JSON.stringify(file_info);
@@ -1013,7 +1019,75 @@ $(document).ready(function() {
         $('#myModal').modal('hide');
         /* Act on the event */
     });
+
+    $("#PH-file_comm_1_button").on('click', function(event) {
+        //User_Level
+        event.preventDefault();
+        //console.log("帶入自動家況");
+        var HomeStr = "";
+        HomeStr = "本戶扶助等級為" + $("#PH-level").text() + "，全戶月均所得為" + $("#PH-total-inc").text() + "元整，所得支出比為" + Math.floor(parseInt($("#PH-total-inc").text())/parseInt($("#PH-need").text())*100) + "%；";
+        HomeStr += "其動產總額為" + $("#PH-total-pro").text() + "元整，不動產列計總額為" + $("#PH-total-imm").text() + "元整。\n"
+
+
+
+        $('.group-div').find(".comm-cont").each(function(index, el) {
+            HomeStr += $(this).val() + "\n";
+        });
+
+        $("#PH-file_comm_1").val(HomeStr);
+        //console.log(HomeStr);
+        
+        /* Act on the event */
+    });
+
+    $("#PH-file_comm_2_button").on('click', function(event) {
+        //User_Level
+        event.preventDefault();
+        //console.log("帶入自動家況");
+
+        $("#PH-file_comm_2").val($("#PH-file_comm_1").val());
+        //console.log(HomeStr);
+        
+        /* Act on the event */
+    });
+
+    if(User_Level == 1){
+        $("#PH-file_comm_1_button").fadeIn('fast');
+        $("#PH-file_comm_2_button").fadeOut('fast');
+        $("#PH-file_comm_2").attr('disabled', 'disabled');
+        $("#PH-file_comm_1").removeAttr('disabled');
+
+
+    }else if(User_Level <= 3){
+        $("#PH-file_comm_1_button").fadeOut('fast');
+        $("#PH-file_comm_2_button").fadeOut('fast');
+        $("#PH-file_comm_2").attr('disabled', 'disabled');
+        $("#PH-file_comm_1").attr('disabled', 'disabled');
+
+    }else if(User_Level <= 4){
+        $("#PH-file_comm_1_button").fadeOut('fast');
+        $("#PH-file_comm_2_button").fadeIn('fast');
+        $("#PH-file_comm_1").attr('disabled', 'disabled');
+        $("#PH-file_comm_2").removeAttr('disabled');
+    }else if(User_Level <= 6){
+        $("#PH-file_comm_1_button").fadeOut('fast');
+        $("#PH-file_comm_2_button").fadeOut('fast');
+        $("#PH-file_comm_2").attr('disabled', 'disabled');
+        $("#PH-file_comm_1").attr('disabled', 'disabled');
+    }else{
+        $("#PH-file_comm_1_button").fadeIn('fast');
+        $("#PH-file_comm_2_button").fadeIn('fast');
+        $("#PH-file_comm_2").removeAttr('disabled');
+        $("#PH-file_comm_1").removeAttr('disabled');
+    }
+
+
+
 });
+
+
+
+
     function progress_back(file_key){
         $.ajax({
             url: '/file/progress_back',

@@ -881,6 +881,9 @@ $(document).ready(function() {
         var status_result =  $(".group-div.selected .people-special span").text();
         var special_txt = '';
         var description = '';
+        if(status_result == "實際所得"){
+            status_result = "依實際所得計算";
+        }
         switch(special){
             case '1,15':
                 description = title+'：'+name+'，歿。';
@@ -1117,7 +1120,8 @@ $(document).ready(function() {
     });
 
 
-
+    
+    //
 
 
 

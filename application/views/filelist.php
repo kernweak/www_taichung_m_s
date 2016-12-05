@@ -138,16 +138,16 @@
         <td>列計人口members</td>
         </tr>
         <tr>
-        <td>$<span id="PH-Deposits">0</span></td>
-        <td>$<span id="PH-Investment">0</span></td>
-        <td><span id="PH-Houses">0</span>棟</td>
-        <td>$<span id="PH-Houses-total">0</span></td>
-        <td><span id="PH-Houses-num">0</span>棟</td>
-        <td>$<span id="PH-Houses-listtotal">0</span></td>
-        <td>$<span id="PH-Salary">0</span></td>
-        <td>$<span id="PH-Profit">0</span></td>
-        <td>$<span id="PH-Property-int">0</span></td>
-        <td><span id="PH-members">1</span>人</td>
+        <td>$<span id="FView-PH-Deposits">0</span></td>
+        <td>$<span id="FView-PH-Investment">0</span></td>
+        <td><span id="FView-PH-Houses">0</span>棟</td>
+        <td>$<span id="FView-PH-Houses-total">0</span></td>
+        <td><span id="FView-PH-Houses-num">0</span>棟</td>
+        <td>$<span id="FView-PH-Houses-listtotal">0</span></td>
+        <td>$<span id="FView-PH-Salary">0</span></td>
+        <td>$<span id="FView-PH-Profit">0</span></td>
+        <td>$<span id="FView-PH-Property-int">0</span></td>
+        <td><span id="FView-PH-members">1</span>人</td>
         </tr>
         <tr>
         <td>證券Securities</td>
@@ -162,16 +162,16 @@
         <td>生活所需need</td>
         </tr>
         <tr>
-        <td>$<span id="PH-Securities">0</span></td>
-        <td>$<span id="PH-others-Pro">0</span></td>
-        <td><span id="PH-Land">0</span>筆</td>
-        <td>$<span id="PH-Land-total">0</span></td>
-        <td><span id="PH-Land-num">0</span>筆</td>
-        <td>$<span id="PH-Land-listtotal">0</span></td>
-        <td>$<span id="PH-Bank-int">0</span></td>
-        <td>$<span id="PH-Stock-int">0</span></td>
-        <td>$<span id="PH-others-int">0</span></td>
-        <td>$<span id="PH-need">19626</span></td>
+        <td>$<span id="FView-PH-Securities">0</span></td>
+        <td>$<span id="FView-PH-others-Pro">0</span></td>
+        <td><span id="FView-PH-Land">0</span>筆</td>
+        <td>$<span id="FView-PH-Land-total">0</span></td>
+        <td><span id="FView-PH-Land-num">0</span>筆</td>
+        <td>$<span id="FView-PH-Land-listtotal">0</span></td>
+        <td>$<span id="FView-PH-Bank-int">0</span></td>
+        <td>$<span id="FView-PH-Stock-int">0</span></td>
+        <td>$<span id="FView-PH-others-int">0</span></td>
+        <td>$<span id="FView-PH-need">19626</span></td>
         </tr>
         <tr>
         <td colspan="2">動產列計總額total-pro</td>
@@ -180,10 +180,10 @@
         <td>扶助等級</td>
         </tr>
         <tr>
-        <td colspan="2">$<span id="PH-total-pro">0</span></td>
-        <td colspan="4">$<span id="PH-total-imm">0</span></td>
-        <td colspan="3">$<span id="PH-total-inc">0</span></td>
-        <td><span id="PH-level">甲級1口</span></td></tr>
+        <td colspan="2">$<span id="FView-PH-total-pro">0</span></td>
+        <td colspan="4">$<span id="FView-PH-total-imm">0</span></td>
+        <td colspan="3">$<span id="FView-PH-total-inc">0</span></td>
+        <td><span id="FView-PH-level">甲級1口</span></td></tr>
     </tbody></table>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
