@@ -108,7 +108,7 @@
             <div id="filelist-navcon" role="tabpanel" class="tab-pane active fade in nav-container">
                 <?php include('filelist.php');?>
             </div>
-            <div id="edit-home" role="tabpanel" class="tab-pane fade nav-container">
+            <div id="edit-home" role="tabpanel" class="tab-pane fade nav-container" style="overflow-y: scroll;height: 100vh;">
                 <?php include('people_home.php');?>
             </div>
             <div id="edit-navcon" role="tabpanel" class="tab-pane fade nav-container">

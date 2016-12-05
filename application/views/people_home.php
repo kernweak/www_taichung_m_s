@@ -88,6 +88,60 @@
 		<label style="width: 20em;"><h3>整體家況敘述確認-市政府</h3></label><button id="PH-file_comm_2_button">帶入公所家況敘述</button>
 		<textarea  style="width: 90%;height: 10em;"  id="PH-file_comm_2" disabled></textarea>
 	</div>
+	<br/>
+	<hr class="thin"/>
+	<div>
+		<div class="upload_div">
+			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
+
+				<label for="filetype">戶口名簿</label>
+				<br/><a>0122456.pdf</a>
+				<hr class="thin"/>
+				<input type="file" name="userfile" size="20" />
+				<input type="submit" value="上傳" />
+			</form>
+		</div>
+		<div class="upload_div">
+			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
+
+				<label for="filetype">所得</label>
+				<br/><a>0122456.pdf</a>
+				<hr class="thin"/>
+				<input type="file" name="userfile" size="20" />
+				<input type="submit" value="上傳" />
+			</form>
+		</div>
+		<div class="upload_div">
+			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
+
+				<label for="filetype">財產</label>
+				<br/><a>0122456.pdf</a>
+				<hr class="thin"/>
+				<input type="file" name="userfile" size="20" />
+				<input type="submit" value="上傳" />
+			</form>
+		</div>
+		<div class="upload_div">
+			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
+
+				<label for="filetype" style="width: 8em;">學生證/醫療證明</label>
+				<br/><a>0122456.pdf</a>
+				<hr class="thin"/>
+				<input type="file" name="userfile" size="20" />
+				<input type="submit" value="上傳" />
+			</form>
+		</div>
+		<div class="upload_div">
+			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
+
+				<label for="filetype">其他</label>
+				<br/><a>0122456.pdf</a>
+				<hr class="thin"/>
+				<input type="file" name="userfile" size="20" />
+				<input type="submit" value="上傳" />
+			</form>
+		</div>
+	</div>
 </div>
 <div>
 	

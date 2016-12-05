@@ -621,3 +621,14 @@
     vertical-align: top;
     height: 1.8em;
 }
+
+.upload_div{
+    display: inline-block;
+    border: 0.1em solid gray;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    background-color: #ffee76;
+    box-shadow: 0.05em 0.05em 0.05em 0.05em;
+    margin-right: 0.5em;
+    width: 13.5em;
+}
