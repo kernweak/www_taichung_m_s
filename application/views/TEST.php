@@ -50,8 +50,9 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-files-empty icon"></span>案件 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#filelist-navcon" role="tab" data-toggle="tab" onclick="read_file_list_pending()">待辦案件</a></li>
-                                    <li><a href="#">呈核中案件</a></li>
-                                    <li><a href="#">補助中案件</a></li>
+                                    <li><a href="#filelist-progress" role="tab" data-toggle="tab" onclick="read_file_list_progress()">呈核中案件</a></li>
+                                    <li><a href="#filelist-supporting" role="tab" data-toggle="tab" onclick="read_file_list_supporting()">補助中案件</a></li>
+                                    <li><a href="#">已結案案件</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">進階查詢</a></li>
                                 </ul>
@@ -108,6 +109,16 @@
             <div id="filelist-navcon" role="tabpanel" class="tab-pane active fade in nav-container">
                 <?php include('filelist.php');?>
             </div>
+            <div id="filelist-progress" role="tabpanel" class="tab-pane fade nav-container">
+                <?php include('filelist_in_progress.php');?>
+            </div>
+            <div id="filelist-supporting" role="tabpanel" class="tab-pane fade nav-container">
+                <?php include('filelist_supporting.php');?>
+            </div>
+
+
+
+            
             <div id="edit-home" role="tabpanel" class="tab-pane fade nav-container" style="overflow-y: scroll;height: 100vh;">
                 <?php include('people_home.php');?>
             </div>
@@ -120,6 +131,7 @@
             <div role="tabpanel" class="tab-pane fade" id="project_edit">編輯</div>
             <div role="tabpanel" class="tab-pane fade" id="project_progress">進度</div>
             <div role="tabpanel" class="tab-pane fade" id="project_search">進階搜尋</div>
+            <?php include('filelist_modal.php');?>
         </div>
     </div>
     
