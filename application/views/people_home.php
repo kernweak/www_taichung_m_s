@@ -91,58 +91,98 @@
 	<br/>
 	<hr class="thin"/>
 	<div>
-		<div class="upload_div">
-			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
-
-				<label for="filetype">戶口名簿</label>
+		<div class="upload_div">		
+				<label>戶口名簿</label>
 				<br/><a>0122456.pdf</a>
-				<hr class="thin"/>
-				<input type="file" name="userfile" size="20" />
-				<input type="submit" value="上傳" />
-			</form>
+				<hr class="thin"/>				
+				<input type="hidden" value="0"/>
+				<input type="file" name="file"/>
+				<p class="alert"></p>
+				<button class="upload">上傳</button>
+				<p class="msg"></p>			
 		</div>
-		<div class="upload_div">
-			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
-
-				<label for="filetype">所得</label>
+		<div class="upload_div">			
+				<label>所得</label>
 				<br/><a>0122456.pdf</a>
 				<hr class="thin"/>
-				<input type="file" name="userfile" size="20" />
-				<input type="submit" value="上傳" />
-			</form>
+				<input type="hidden" value="1"/>
+				<input type="file" name="file"/>
+				<p class="alert"></p>
+				<button class="upload">上傳</button>
+				<p class="msg"></p>
 		</div>
-		<div class="upload_div">
-			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
-
-				<label for="filetype">財產</label>
+		<div class="upload_div">	
+				<label>財產</label>
 				<br/><a>0122456.pdf</a>
 				<hr class="thin"/>
-				<input type="file" name="userfile" size="20" />
-				<input type="submit" value="上傳" />
-			</form>
+				<input type="hidden" value="2"/>
+				<input type="file" name="file"/>
+				<p class="alert"></p>
+				<button class="upload">上傳</button>			
+				<p class="msg"></p>
 		</div>
-		<div class="upload_div">
-			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
-
-				<label for="filetype" style="width: 8em;">學生證/醫療證明</label>
+		<div class="upload_div">			
+				<label style="width: 8em;">學生證/醫療證明</label>
 				<br/><a>0122456.pdf</a>
 				<hr class="thin"/>
-				<input type="file" name="userfile" size="20" />
-				<input type="submit" value="上傳" />
-			</form>
+				<input type="hidden" value="3"/>
+				<input type="file" name="file"/>
+				<p class="alert"></p>
+				<button class="upload">上傳</button>
+				<p class="msg"></p>
 		</div>
-		<div class="upload_div">
-			<form method="post" action="/index.php/upload/do_upload" enctype="multipart/form-data">
-
-				<label for="filetype">其他</label>
+		<div class="upload_div">			
+				<label>其他</label>
 				<br/><a>0122456.pdf</a>
 				<hr class="thin"/>
-				<input type="file" name="userfile" size="20" />
-				<input type="submit" value="上傳" />
-			</form>
+				<input type="hidden" value="4"/>
+				<input type="file" name="file"/>				
+				<p class="alert"></p>
+				<button class="upload">上傳</button>
+				<p class="msg"></p>
 		</div>
 	</div>
 </div>
 <div>
 	
 </div>
+
+<script>
+$('input[type=file]').on('change', function(e){
+	var file = e.currentTarget.files[0];
+	if (file.size > 4096){ //max file size is 4096KB(4MB)		
+		$(this).next('.alert').html('檔案必須小於4MB');
+		// $(this).siblings('button').fadeOut('slow');
+		$(this).siblings('button').prop('disabled', true);		
+	}else{
+		$(this).next('.alert').html('');
+		// $(this).siblings('button').fadeIn('slow');		
+		$(this).siblings('button').prop('disabled', false);		
+	}
+});
+
+        $('.upload').on('click', function () {
+                    // var file_data = $('#file').prop('files')[0];
+                    var file_data = $(this).siblings('input[type=file]').prop('files')[0];
+                    var file_category = $(this).siblings('input[type=hidden]').val();
+                    var form_data = new FormData();
+                    var msg = $(this).siblings('.msg').get(0);
+                    form_data.append('file', file_data);
+                    form_data.append('category', file_category);
+                    $.ajax({
+                        url: '/index.php/upload/upload_file', // point to server-side controller method
+                        dataType: 'text', // what to expect back from the server
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: form_data,
+                        type: 'post',
+                        success: function (response) {
+                            $(msg).html(response); // display success response from the server
+                        },
+                        error: function (response) {
+                            $(msg).html(response); // display error response from the server
+                        }
+                    });
+        });
+</script>

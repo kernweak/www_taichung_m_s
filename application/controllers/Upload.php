@@ -9,7 +9,6 @@ class Upload extends MY_Controller {
 	}
 
 	public function do_upload(){
-
                 $config['upload_path']          = './uploads/';
                 $config['allowed_types']        = 'gif|jpg|png|pdf';
                 //$config['max_size']             = 100;
@@ -31,10 +30,43 @@ class Upload extends MY_Controller {
                         	'upload_data' => $this->upload->data()
                         	);
 
-                        var_dump($data);
+                        //var_dump($data);
                         $this->load->view('upload_form', $data);
                 }		
 	}
+
+
+        public function upload_file(){
+        //upload file
+        $config['upload_path'] = 'uploads/';
+        $config['allowed_types'] = '*';
+        // $config['max_filename'] = '255';
+        // $config['encrypt_name'] = TRUE;
+        $config['max_size'] = '4064'; //4 MB
+
+        log_message('debug', ' FILES = '.print_r($_FILES, true));
+        $category = $this->input->post('category');
+        log_message('debug', ' category = '.$category);
+
+        if (isset($_FILES['file']['name'])) {
+            if (0 < $_FILES['file']['error']) {
+                echo 'Error during file upload' . $_FILES['file']['error'];
+            } else {
+                if (file_exists('uploads/' . $_FILES['file']['name'])) {
+                    echo '檔案已經存在 : ' . $_FILES['file']['name'];
+                } else {
+                    $this->load->library('upload', $config);
+                    if (!$this->upload->do_upload('file')) {
+                        echo $this->upload->display_errors();
+                    } else {
+                        echo '上傳成功: ' . $_FILES['file']['name'];
+                    }
+                }
+            }
+        } else {
+            echo '請選擇一個檔案';
+        }                
+        }
 }
 
 // array (size=2)
