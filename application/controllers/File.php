@@ -131,6 +131,23 @@ class File extends MY_Controller {
 		//LV 7 工程模式，全部狀態都能看到
 	}
 
+	public function read_file_list_progress(){	
+		$this->load->library('session');
+		//var_dump($this->session);
+		$user_level = $this->session->User_Level;
+		$user_organ = $this->session->organization;
+		$this->load->model('file_model');
+		$file_list = $this->file_model->read_file_list_progress($user_level, $user_organ);
+		//var_dump($file_list);
+		echo json_encode($file_list);
+		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
+		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
+		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
+		//LV 7 工程模式，全部狀態都能看到
+	}
+
+	
+
 	public function read_file_progerss_log(){	
 		$this->load->library('session');
 		$file_key = (int)$this->input->post('file_key');
@@ -154,7 +171,18 @@ class File extends MY_Controller {
 
 	//列出此公所已通過補助，役男尚未退役的之案件
 	public function read_file_list_supporting(){
-
+		$this->load->library('session');
+		//var_dump($this->session);
+		$user_level = $this->session->User_Level;
+		$user_organ = $this->session->organization;
+		$this->load->model('file_model');
+		$file_list = $this->file_model->read_file_list_supporting($user_level, $user_organ);
+		//var_dump($file_list);
+		echo json_encode($file_list);
+		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
+		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
+		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
+		//LV 7 工程模式，全部狀態都能看到
 	}
 
 

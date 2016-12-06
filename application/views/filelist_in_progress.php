@@ -1,5 +1,4 @@
-<a type="button" class="btn btn-warning btn-sm" style="margin-bottom: 2em;" href="#" onclick="$('#Add_file').modal('toggle')">新增案件</a>
-<table id="table_id" class="table table-condensed table-hover">
+<table id="table_progress" class="table table-condensed table-hover">
     <thead>
         <tr>
             <th>入伍日期</th>
@@ -11,7 +10,7 @@
             <th>立案日期</th>
             <th>主要承辦人</th>
             <th>作業類別</th>
-            <th style="width: 18em; min-width: 17em;">可選用操作</th>
+            <th style="width: 5em; min-width: 5em;">可選用操作</th>
         </tr>
     </thead>
     <tbody>

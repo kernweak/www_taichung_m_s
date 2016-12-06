@@ -1,5 +1,182 @@
 /*************************函式庫****************************************/    
     //找出所有img.svg，修改成嵌入式SVG碼，以便著色
+
+    function read_file_list_supporting() {
+        $.ajax({
+            url: '/file/read_file_list_supporting',
+            type: 'post',
+            dataType: 'json',
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            // console.log("success");
+            // miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
+            // area_town.Town_name//    <th style="width: 7em;">行政區</th>
+            // miliboy_table.役男姓名 //    <th style="width: 7em;">役男姓名</th>
+            // miliboy_table.身分證字號//    <th style="width: 7.5em;">役男證號</th>
+            // files_info_table.審批階段//      <th style="width: 12em;">案件進度</th>
+            // files_info_table.扶助級別//      <th style="width: 8em;">審查結果</th>
+            // files_info_table.建案日期//      <th style="width: 7em;">立案日期</th>
+            // files_info_table.修改人姓名//     <th style="width: 7em;">主要承辦人</th>
+            // files_info_table.案件流水號//    案件流水號
+            // files_info_table.可否編修//      可否編輯    --可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
+            // files_status_code.案件階段名稱//       作業類別
+
+            $("#table_supporting tbody").empty();
+            tbody = "";
+            $.each(responsive, function(index, file) {
+                //檢視.編輯.意見.退回.呈核
+                
+
+                //console.log(file.審批階段);
+                 //var progress = (file.審批階段/6)*100;
+                var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                var firstDate = new Date(file.入伍日期);
+                var secondDate = new Date();
+                var birthDay = new Date(file.役男生日);
+                var birthDay83 = new Date("1994-01-01");
+                var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay))); //已服役天數
+                var period = 365;
+                var color = "";
+                var bar_color = "";
+                var Button_mid = "";
+                if((birthDay - birthDay83) >= 0){
+                    period = 120;
+                    bar_color = "success";
+                    color = "green";
+
+                }else{
+                    period = 365;
+                    bar_color = "danger";
+                    color = "black";
+                    Button_mid = '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-info" onclick="progress_view('+file.案件流水號+',this)">春節</button>'+
+                  '</div>'+
+                  '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-info" onclick="progress_view('+file.案件流水號+',this)">端午</button>'+
+                  '</div>'+
+                  '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-info" onclick="progress_view('+file.案件流水號+',this)">中秋</button>'+
+                  '</div>';
+
+                }
+
+
+
+                var Button_str = 
+                '<div class="btn-group" role="group" aria-label="...">'+
+                  '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-primary" onclick="progress_view('+file.案件流水號+',this)">檢視</button>'+
+                  '</div>'+
+                  Button_mid
+                  +
+                  '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-warning" onclick="progress_view('+file.案件流水號+',this)">複查</button>'+
+                  '</div>'+
+                  '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-danger" onclick="progress_view('+file.案件流水號+',this)">退役</button>'+
+                  '</div>'+
+                '</div>';
+
+
+
+                progress = diffDays/period*100;
+                //console.log(diffDays);
+                 tbody += "" +
+
+                    '<tr>' +   
+                        '<td>'+ yyy_dash(date_to_yyy(file.入伍日期)) +'</td>' +
+                        '<td>'+file.Town_name+'</td>' +
+                        '<td>'+file.役男姓名+'</td>' +
+                        '<td style="color: '+color+';">'+ yyy_dash(date_to_yyy(file.役男生日)) + '</td>' +
+                        '<td>'+file.身分證字號+'</td>' +
+                        '<td>'+file.扶助級別+'</td>' +
+                        '<td style="padding-right: 1em;">'+
+                            '<div class="progress">' +
+                                '<div class="progress-bar progress-bar-'+bar_color+'" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+progress+'%;">' +
+                                    +diffDays+'</div>' +
+                            '</div>' +
+                        '</td>' +
+                        '<td>'+file.修改人姓名+'</td>' +
+                        '<td>'+file.作業類別名稱+'</td>' +
+                        '<td>'+Button_str+'</td>' +
+
+                    '</tr>';
+            });
+            $("#table_supporting tbody").html(tbody);
+
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
+    function read_file_list_progress() {
+        $.ajax({
+            url: '/file/read_file_list_progress',
+            type: 'post',
+            dataType: 'json',
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            // console.log("success");
+            // miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
+            // area_town.Town_name//    <th style="width: 7em;">行政區</th>
+            // miliboy_table.役男姓名 //    <th style="width: 7em;">役男姓名</th>
+            // miliboy_table.身分證字號//    <th style="width: 7.5em;">役男證號</th>
+            // files_info_table.審批階段//      <th style="width: 12em;">案件進度</th>
+            // files_info_table.扶助級別//      <th style="width: 8em;">審查結果</th>
+            // files_info_table.建案日期//      <th style="width: 7em;">立案日期</th>
+            // files_info_table.修改人姓名//     <th style="width: 7em;">主要承辦人</th>
+            // files_info_table.案件流水號//    案件流水號
+            // files_info_table.可否編修//      可否編輯    --可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
+            // files_status_code.案件階段名稱//       作業類別
+
+            $("#table_progress tbody").empty();
+            tbody = "";
+            $.each(responsive, function(index, file) {
+                //檢視.編輯.意見.退回.呈核
+                var Button_str = 
+                '<div class="btn-group" role="group" aria-label="...">'+
+                  '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-primary" onclick="progress_view('+file.案件流水號+',this)">檢視</button>'+
+                  '</div></div>';
+
+                //console.log(file.審批階段);
+                 var progress = (file.審批階段/6)*100;
+                 tbody += "" +
+
+                    '<tr>' +   
+                        '<td>'+ yyy_dash(date_to_yyy(file.入伍日期)) +'</td>' +
+                        '<td>'+file.Town_name+'</td>' +
+                        '<td>'+file.役男姓名+'</td>' +
+                        '<td>'+file.身分證字號+'</td>' +
+                        '<td>' +
+                            '<div class="progress">' +
+                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+progress+'%;">' +
+                                    '<span style="display:none;">20</span>'+file.案件階段名稱+'</div>' +
+                            '</div>' +
+                        '</td>' +
+                        '<td>'+file.扶助級別+'</td>' +
+                        '<td>'+yyy_dash(date_to_yyy(file.建案日期))+'</td>' +
+                        '<td>'+file.修改人姓名+'</td>' +
+                        '<td>'+file.作業類別名稱+'</td>' +
+                        '<td style="min-width: 190px;">'+Button_str+'</td>' +
+
+                    '</tr>';
+            });
+            $("#table_progress tbody").html(tbody);
+
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
     function read_file_list_pending() {
         $.ajax({
             url: '/file/read_file_list_pending',
@@ -60,14 +237,16 @@
                     edit_button3 = '<div class="btn-group" role="group">'+
                     '<button type="button" class="btn btn-info" onclick="progress_p_patch_re('+file.案件流水號+',this)">補件</button>'+
                   '</div>';
+                  }else if(file.審批階段 == 5){
+                    edit_button3 = '<div class="btn-group" role="group">'+
+                    '<button type="button" class="btn btn-info" onclick="progress_p_next('+file.案件流水號+',this)">結案</button>'+
+                  '</div>';
                   }else{
                     edit_button3 = 
                     '<div class="btn-group" role="group">'+
                         '<button type="button" class="btn btn-danger" onclick="progress_p_next('+file.案件流水號+',this)">呈核</button>'+
                     '</div>';
                   }
-
-
 
                   Button_str = Button_str + edit_button3 + edit_button2 +
                 '</div>';
@@ -97,28 +276,6 @@
             });
             $("#table_id tbody").html(tbody);
 
-
-
-
-            
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         })
         .fail(function() {
             console.log("error");
@@ -128,6 +285,7 @@
     function close_file(){
                     $("#family-edit-nav").fadeOut('400');
                     $("#file-list-nav > ul > li:nth-child(1) > a").tab('show');
+                    read_file_list_pending();
                     setTimeout(function(){
                         empty_members();
                     },1000);
@@ -1003,7 +1161,7 @@
 
 
 $(document).ready(function() {
-    $("#filelist-navcon").on('click', '#myModal button.btn.btn-primary',function(event) {
+    $("#Home_root").on('click', '#myModal button.btn.btn-primary',function(event) {
         event.preventDefault();
         //console.log("click");
 

@@ -114,7 +114,37 @@ $(document).ready(function() {
                 "search": "粗搜索:"
             }
         });
-    }, 1000);  
+    }, 1000); /*
+    setTimeout(function(){
+        $('#table_progress').dataTable({
+            "lengthMenu": [100, 75, 50, 25, 10, 1],
+            "language": {
+                "paginate": {
+                    "previous": "前頁",
+                    "next": "後頁"
+                },
+                "lengthMenu": "每頁顯示 _MENU_ 筆",
+                "info": "第 _PAGE_ / _PAGES_ 頁",
+                "search": "粗搜索:"
+            }
+        });
+    }, 1000);
+    setTimeout(function(){
+        $('#table_supporting').dataTable({
+            "lengthMenu": [100, 75, 50, 25, 10, 1],
+            "language": {
+                "paginate": {
+                    "previous": "前頁",
+                    "next": "後頁"
+                },
+                "lengthMenu": "每頁顯示 _MENU_ 筆",
+                "info": "第 _PAGE_ / _PAGES_ 頁",
+                "search": "粗搜索:"
+            }
+        });
+    }, 1000);*/
+
+    
     
     //版本列表，轉換為可排序可分頁之dataTable
     $('#Stock_table').dataTable({
