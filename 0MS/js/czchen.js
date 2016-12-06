@@ -895,7 +895,71 @@ $(document).ready(function() {
             default:
                 special_txt = '，因其為'+status+'，故'+status_result+'。';
                 description = title+'：'+name+'，'+age+'歲，職業：'+job+'，'+income+special_txt;      
-        }        
+        }
+        //財產
+        var properties = $(".group-div.selected .property-cont").children('.proper-inc-div');
+        var self_house_count = 0;
+        var self_land_count = 0;
+        var house_count = 0;    //非自用房屋數
+        var land_count = 0;     //菲自用土地數
+        var house_land_value =0 //非自用房屋+菲自用土地 總額
+        var saving_count = 0;   // 儲蓄存款 筆數
+        var security_count = 0; //有價證券 筆數
+        var investment_count = 0; // 投資 筆數
+        var others_count = 0; //其他 筆數
+        var movable_value = 0 //動產總額
+        for( var i= 0; i<properties.length; i++){
+            var pType = properties.eq(i).find(".proper-inc-div-1 option:selected").text();
+            var pValue = parseInt(properties.eq(i).find(".proper-inc-div-2").val());
+            var pSelf = properties.eq(i).find(".proper-inc-div-4 option:selected").text();
+            switch(pType){
+                case '房屋':                    
+                    if (pSelf === '自住'){
+                        self_house_count++;
+                    }else{
+                        house_count++;
+                        house_land_value+= pValue;
+                    }
+                    break;
+                case '土地':                    
+                    if (pSelf === '自住'){
+                        self_land_count++;
+                    }else{
+                        land_count++;
+                        house_land_value+= pValue;
+                    }
+                    break;
+                case '儲蓄存款':
+                    saving_count++;
+                    movable_value += pValue;
+                    break;
+                case '有價證券':
+                    security_count++;
+                    movable_value += pValue;
+                    break;
+                case '投資':
+                    investment_count++;
+                    movable_value += pValue;
+                    break;
+                case '其他':
+                    others_count++;
+                    movable_value += pValue;
+                    break;
+            }
+        }
+
+        var real_estate = (self_house_count>0)?'自用房屋 '+self_house_count+'筆；':'';
+        real_estate += (self_land_count>0)? '自用土地 '+self_land_count+'筆；':'';
+        real_estate += (house_count>0)? '非自用房屋 '+house_count+'筆；':'';
+        real_estate += (land_count>0)? '非自用土地 '+land_count+'筆；':'';
+        real_estate = (real_estate ==='')?'':'名下有不動產：'+real_estate+'列計總額共 $'+house_land_value+'元整。';
+        
+        var movable = (saving_count>0)?'儲蓄存款 '+saving_count+'筆；':'';
+        movable += (security_count>0)?'有價證券 '+security_count+'筆；':'';
+        movable += (investment_count>0)?'投資 '+investment_count+'筆；':'';
+        movable += (others_count>0)?'其他 '+others_count+'筆；':'';
+        movable = (movable === '')?'':'名下有動產：'+movable+'共 $'+movable_value+'元整。';
+        description = description +'\n' +real_estate+'\n' +movable;
 
         $('#confirm-auto-comm .modal-body').html(description);
     });
