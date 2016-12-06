@@ -15,24 +15,39 @@ class File_model extends CI_Model {
 	}
 
 	public function progress_file($file_key, $oper){
+		$this->db->select('役男系統編號');
+		$this->db->from('files_info_table');
+		$this->db->where('案件流水號', $file_key);
+		
+		$query = $this->db->get();
+		$result = $query->result();
+		$boy_key = $result[0]->役男系統編號;
+		//var_dump($result[0]);
+		//log_message('debug', '役男系統編號 = '. $result[0]->役男系統編號);
+
 		$this->db->select('審批階段,扶助級別');
 		$this->db->from('files_info_table');
 		$this->db->where('案件流水號', $file_key);
 		$query = $this->db->get();
 		$result = $query->result();
 		//var_dump($result);
-
+		$update_boy_table_flag = 0;
 		if ($oper == "+"){
 			if( $result[0]->審批階段 == 5 || $result[0]->審批階段 == 6){
+				$update_boy_table_flag = 1;
 				if( $result[0]->扶助級別 == "資格不符"){
 					$data = array(
-					'審批階段' => ($result[0]->審批階段 + 1),
-					'是否扶助' => false
+						'審批階段' => ($result[0]->審批階段 + 1),
+						'是否扶助' => false
 					);
+					// $data2 = array(
+					// 	'最新案件流水號' => false
+					// );
+
 				}else{
 					$data = array(
-					'審批階段' => ($result[0]->審批階段 + 1),
-					'是否扶助' => true
+						'審批階段' => ($result[0]->審批階段 + 1),
+						'是否扶助' => true
 					);
 				}
 			}else{
@@ -58,6 +73,20 @@ class File_model extends CI_Model {
 		}
 		$this->db->where('案件流水號', $file_key);
     	$this->db->update('files_info_table', $data);
+
+    	//每次案件結案，要把案件流水號寫入miliboy table。這樣，如果是複查案，就能連結到最新的複查案。
+    	if($update_boy_table_flag == 1){ 
+			$data = array(
+				'最新案件流水號' => $file_key
+			);
+
+	    	$this->db->where('役男系統編號', $boy_key);
+	    	$this->db->update('miliboy_table', $data);	
+    	}
+
+
+
+
 
     	if ($oper == "+"){
 			return $result[0]->審批階段 + 1;
@@ -148,8 +177,49 @@ class File_model extends CI_Model {
 		log_message('debug', 'file table insert_id = '. $index);
 
 		return $index;
-
 	}
+
+	public function clone_file_info($file_key, $act2){
+		$Qstring = "INSERT `files_info_table` (`作業類別`, `案件編號`, `案件版本號`, `源版本號`, `審批階段`, `建案日期`, `役男系統編號`, `town`, `county`, `village`, `戶籍地址`, `email`, `聯絡電話1`, `聯絡電話2`, `聯絡電話3`, `總列計人口`, `月所需`, `月總所得`, `薪資月所得`, `營利月所得`, `利息月所得`, `股利月所得`, `財產月所得`, `其他月所得`, `總動產`, `存款本金總額`, `投資總額`, `有價證券總額`, `其他動產總額`, `房屋棟數`, `房屋總價`, `房屋列計棟數`, `房屋列計總價`, `土地筆數`, `土地總價`, `土地列計筆數`, `土地列計總價`, `不動產列計總額`, `是否扶助`, `扶助級別`, `扶助用語`, `整體家況敘述-公所`, `整體家況敘述-局處`, `備註`, `修改人編號`, `修改人單位`, `修改人姓名`, `可否編修`) SELECT `作業類別`, `案件編號`, `案件版本號`, `源版本號`, `審批階段`, `建案日期`, `役男系統編號`, `town`, `county`, `village`, `戶籍地址`, `email`, `聯絡電話1`, `聯絡電話2`, `聯絡電話3`, `總列計人口`, `月所需`, `月總所得`, `薪資月所得`, `營利月所得`, `利息月所得`, `股利月所得`, `財產月所得`, `其他月所得`, `總動產`, `存款本金總額`, `投資總額`, `有價證券總額`, `其他動產總額`, `房屋棟數`, `房屋總價`, `房屋列計棟數`, `房屋列計總價`, `土地筆數`, `土地總價`, `土地列計筆數`, `土地列計總價`, `不動產列計總額`, `是否扶助`, `扶助級別`, `扶助用語`, `整體家況敘述-公所`, `整體家況敘述-局處`, `備註`, `修改人編號`, `修改人單位`, `修改人姓名`, `可否編修` FROM `files_info_table` WHERE `案件流水號` = ".$file_key ;
+		//var_dump($Qstring);
+		$query = $this->db->query($Qstring);
+		$new_file_key = $this->db->insert_id();
+		date_default_timezone_set('Asia/Taipei');
+		$data = array(
+			'作業類別' => $act2,
+			'審批階段' => 1,
+			'是否扶助' => null,
+			'建案日期' => date("Y-m-d H:i:s")
+		);
+
+    	$this->db->where('案件流水號', $new_file_key);
+    	$this->db->update('files_info_table', $data);
+
+		$this->db->select('役男系統編號');
+		$this->db->from('files_info_table');
+		$this->db->where('案件流水號', $file_key);
+
+		$query = $this->db->get();
+		$result = $query->result();
+		$boy_key = $result[0]->役男系統編號;
+
+		$data = array(
+			'最新案件流水號' => $new_file_key
+		);
+
+		$this->db->where('役男系統編號', $boy_key);
+		$this->db->update('miliboy_table', $data);
+
+
+
+
+
+
+
+    	return $new_file_key;
+	}
+
+
 
 	public function read_file($file_key){
 		//var_dump($file_key);
@@ -216,19 +286,22 @@ class File_model extends CI_Model {
 
 
 	public function read_file_list_supporting($user_level, $user_organ){
-		$this->db->select("miliboy_table.入伍日期,miliboy_table.役男生日,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別,files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,files_info_table.可否編修,`files_status_code`.`案件階段名稱`,files_type.作業類別名稱");
-		$this->db->from('files_info_table');
-		$this->db->join('miliboy_table', '`miliboy_table`.`役男系統編號` = `files_info_table`.`役男系統編號`');
-		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
-		$this->db->join('files_status_code', '`files_status_code`.`審批階段代號` = `files_info_table`.`審批階段`','left');
-		$this->db->join('files_type', 'files_type.作業類別 = files_info_table.作業類別','left');
-		$this->db->where('是否扶助', true);
-		$this->db->where('miliboy_table.退伍日期', null);
+		// $this->db->select("miliboy_table.入伍日期,miliboy_table.役男生日,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別,files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,files_info_table.可否編修,`files_status_code`.`案件階段名稱`,files_type.作業類別名稱,miliboy_table.最新案件流水號");
+		// $this->db->from('files_info_table');
+		// $this->db->join('miliboy_table', '`miliboy_table`.`役男系統編號` = `files_info_table`.`役男系統編號`');
+		// $this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
+		// $this->db->join('files_status_code', '`files_status_code`.`審批階段代號` = `files_info_table`.`審批階段`','left');
+		// $this->db->join('files_type', 'files_type.作業類別 = files_info_table.作業類別','left');
+		// $this->db->where('是否扶助', true);
+		// $this->db->where('miliboy_table.退伍日期', null);
 
 		//若扶助有資料，
+		$if_town = "";
+
 		if($user_level <= 3){	
 			//區公所使用者登入，應該只能看到自己公所
-			$this->db->where('area_town.Town_name', $user_organ);
+			//$this->db->where('area_town.Town_name', $user_organ);
+			$if_town = "`Town_name` = '"+$user_organ+"'";
 		}
 		elseif($user_level <= 6){	
 
@@ -242,6 +315,10 @@ class File_model extends CI_Model {
 
 		}
 
+			// $Qstring = "SELECT * FROM (SELECT `miliboy_table`.`入伍日期`, `miliboy_table`.`役男生日`, `area_town`.`Town_name`, `miliboy_table`.`役男姓名`, `miliboy_table`.`身分證字號`, `files_info_table`.`審批階段`, `files_info_table`.`扶助級別`, `files_info_table`.`建案日期`, `files_info_table`.`是否扶助`, `miliboy_table`.`退伍日期`, `files_info_table`.`修改人姓名`, `files_info_table`.`案件流水號`, `files_info_table`.`可否編修`, `files_status_code`.`案件階段名稱`, `files_type`.`作業類別名稱`, `miliboy_table`.`最新案件流水號` FROM `files_info_table` JOIN `miliboy_table` ON `miliboy_table`.`役男系統編號` = `files_info_table`.`役男系統編號` JOIN `area_town` ON `area_town`.`Town_code` = `files_info_table`.`town` LEFT JOIN `files_status_code` ON `files_status_code`.`審批階段代號` = `files_info_table`.`審批階段` LEFT JOIN `files_type` ON `files_type`.`作業類別` = `files_info_table`.`作業類別` order by `files_info_table`.`建案日期` asc) as `test` WHERE `test`.`是否扶助` = 1 AND `test`.`退伍日期` IS NULL ".$if_town." group by `身分證字號`";
+
+			$Qstring = "SELECT ps.案件流水號, ps.建案日期, ps.役男系統編號, `miliboy_table`.`入伍日期`, `miliboy_table`.`役男生日`, `area_town`.`Town_name`, `miliboy_table`.`役男姓名`, `miliboy_table`.`身分證字號`, ps.`審批階段`, ps.`扶助級別`, ps.`建案日期`, ps.`是否扶助`, `miliboy_table`.`退伍日期`, ps.`修改人姓名`, ps.`案件流水號`, ps.`可否編修`, `files_status_code`.`案件階段名稱`, `files_type`.`作業類別名稱`, `miliboy_table`.`最新案件流水號` FROM ( SELECT MAX(建案日期) as 建案日期, 役男系統編號 FROM files_info_table GROUP BY 役男系統編號) ps2 LEFT JOIN files_info_table ps USING (役男系統編號) JOIN `miliboy_table` ON `miliboy_table`.`役男系統編號` = `ps`.`役男系統編號` JOIN `area_town` ON `area_town`.`Town_code` = `ps`.`town` LEFT JOIN `files_status_code` ON `files_status_code`.`審批階段代號` = `ps`.`審批階段` LEFT JOIN `files_type` ON `files_type`.`作業類別` = `ps`.`作業類別` WHERE ps.建案日期 = ps2.建案日期 AND `ps`.`是否扶助` = 1 AND `miliboy_table`.`退伍日期` IS NULL ".$if_town." GROUP BY ps.役男系統編號";
+
 
 
 		
@@ -251,10 +328,12 @@ class File_model extends CI_Model {
 
 		// ini_set('xdebug.var_display_max_depth', 5);
 		// ini_set('xdebug.var_display_max_children', 256);
-		// ini_set('xdebug.var_display_max_data', 1024);
+		// ini_set('xdebug.var_display_max_data', 4096);
 
-		$query = $this->db->get();
+		//$query = $this->db->get();
+		$query = $this->db->query($Qstring);
 		$result = $query->result_array();
+		//var_dump($this->db->last_query());
 		return $result;
 		// var_dump($result);
 		// var_dump($this->db->last_query());

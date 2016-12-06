@@ -1,5 +1,54 @@
 /*************************函式庫****************************************/    
     //找出所有img.svg，修改成嵌入式SVG碼，以便著色
+    var file_list_refile_pointer = "";
+
+    function rebuildfile(file_key){
+        $.ajax({
+            url: '/file/rebuildfile',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : file_key,
+                act             : file_list_action_pointer,
+                log_comment     : "啟動複查程序，新增複查案："+file_list_refile_pointer
+            },
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            console.log("success");
+            read_file_list_supporting();
+            read_file_list_progress();
+            read_file_list_pending();
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
+    function refile(file_key,event,act){
+        file_list_pointer = file_key;
+        file_list_action_pointer = act;
+        //console.log(file_list_action_pointer);
+        $('#RefileModal').modal('show');
+        $('#RefileModalLabel').text("新增複查案："+act);
+        var tr = $(event).parents("tr").get(0);
+        update_RefileModal(tr);
+    }
+
+    function update_RefileModal(tr){
+        $(tr).children('td').eq(0).text();
+        $('#RefileModal .modal-body tbody tr').children('td').eq(0).html($(tr).children('td').eq(0).html());
+        $('#RefileModal .modal-body tbody tr').children('td').eq(1).html($(tr).children('td').eq(1).html());
+        $('#RefileModal .modal-body tbody tr').children('td').eq(2).html($(tr).children('td').eq(2).html());
+        $('#RefileModal .modal-body tbody tr').children('td').eq(3).html($(tr).children('td').eq(3).html());
+        $('#RefileModal .modal-body tbody tr').children('td').eq(4).html($(tr).children('td').eq(4).html());
+        $('#RefileModal .modal-body tbody tr').children('td').eq(5).html($(tr).children('td').eq(5).html());
+        $('#RefileModal .modal-body tbody tr').children('td').eq(6).html($(tr).children('td').eq(6).html());
+        $('#RefileModal .modal-body tbody tr').children('td').eq(7).html($(tr).children('td').eq(7).html());
+        $('#RefileModal .modal-body tbody tr').children('td').eq(8).html($(tr).children('td').eq(8).html());
+    }
 
     function read_file_list_supporting() {
         $.ajax({
@@ -11,28 +60,10 @@
             console.log("complete");
         })
         .done(function(responsive) {
-            // console.log("success");
-            // miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
-            // area_town.Town_name//    <th style="width: 7em;">行政區</th>
-            // miliboy_table.役男姓名 //    <th style="width: 7em;">役男姓名</th>
-            // miliboy_table.身分證字號//    <th style="width: 7.5em;">役男證號</th>
-            // files_info_table.審批階段//      <th style="width: 12em;">案件進度</th>
-            // files_info_table.扶助級別//      <th style="width: 8em;">審查結果</th>
-            // files_info_table.建案日期//      <th style="width: 7em;">立案日期</th>
-            // files_info_table.修改人姓名//     <th style="width: 7em;">主要承辦人</th>
-            // files_info_table.案件流水號//    案件流水號
-            // files_info_table.可否編修//      可否編輯    --可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
-            // files_status_code.案件階段名稱//       作業類別
-
             $("#table_supporting tbody").empty();
             tbody = "";
             $.each(responsive, function(index, file) {
-                //檢視.編輯.意見.退回.呈核
-                
-
-                //console.log(file.審批階段);
-                 //var progress = (file.審批階段/6)*100;
-                var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                var oneDay = 24*60*60*1000;
                 var firstDate = new Date(file.入伍日期);
                 var secondDate = new Date();
                 var birthDay = new Date(file.役男生日);
@@ -52,33 +83,43 @@
                     bar_color = "danger";
                     color = "black";
                     Button_mid = '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-info" onclick="progress_view('+file.案件流水號+',this)">春節</button>'+
+                    '<button type="button" class="btn btn-info" onclick="refile('+file.案件流水號+',this,\'春節複查\')">春節</button>'+
                   '</div>'+
                   '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-info" onclick="progress_view('+file.案件流水號+',this)">端午</button>'+
+                    '<button type="button" class="btn btn-info" onclick="refile('+file.案件流水號+',this,\'端午複查\')">端午</button>'+
                   '</div>'+
                   '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-info" onclick="progress_view('+file.案件流水號+',this)">中秋</button>'+
+                    '<button type="button" class="btn btn-info" onclick="refile('+file.案件流水號+',this,\'中秋複查\')">中秋</button>'+
                   '</div>';
 
                 }
 
 
+                if(file.案件流水號 == file.最新案件流水號){
+                    var Button_str = 
+                        '<div class="btn-group" role="group" aria-label="...">'+
+                          '<div class="btn-group" role="group">'+
+                            '<button type="button" class="btn btn-primary" onclick="progress_view('+file.案件流水號+',this)">檢視</button>'+
+                          '</div>'+
+                          Button_mid
+                          +
+                          '<div class="btn-group" role="group">'+
+                            '<button type="button" class="btn btn-warning" onclick="refile('+file.案件流水號+',this,\'複查\')">複查</button>'+
+                          '</div>'+
+                          '<div class="btn-group" role="group">'+
+                            '<button type="button" class="btn btn-danger" onclick="refile('+file.案件流水號+',this,\'退役\')">退役</button>'+
+                          '</div>'+
+                        '</div>';
+                }else{
+                    var Button_str = 
+                        '<div class="btn-group" role="group" aria-label="...">'+
+                          '<div class="btn-group" role="group">'+
+                            '<button type="button" class="btn btn-primary" onclick="progress_view('+file.案件流水號+',this)">檢視</button>'+
+                          '</div>'+
+                        '</div><span style="position: relative;top: 0.2em;">　有複查案進行中</span>';
+                }
 
-                var Button_str = 
-                '<div class="btn-group" role="group" aria-label="...">'+
-                  '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-primary" onclick="progress_view('+file.案件流水號+',this)">檢視</button>'+
-                  '</div>'+
-                  Button_mid
-                  +
-                  '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-warning" onclick="progress_view('+file.案件流水號+',this)">複查</button>'+
-                  '</div>'+
-                  '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-danger" onclick="progress_view('+file.案件流水號+',this)">退役</button>'+
-                  '</div>'+
-                '</div>';
+                
 
 
 
@@ -989,7 +1030,7 @@
         })
         .done(function(responsive) {
             console.log("success");
-            console.log(responsive);
+            //console.log(responsive);
             $("#view_log_comment tbody").empty();
             tbody = "";
             $.each(responsive, function(index, file) {
@@ -1098,7 +1139,6 @@
         $('#myModal .modal-body tbody tr').children('td').eq(6).html($(tr).children('td').eq(6).text());
         $('#myModal .modal-body tbody tr').children('td').eq(7).html($(tr).children('td').eq(7).text());
         $('#myModal .modal-body tbody tr').children('td').eq(8).html($(tr).children('td').eq(8).text());
-
     }
 
     function progress_p_back(file_key,event){
@@ -1140,10 +1180,122 @@
         file_list_pointer = file_key;
         file_list_action_pointer = "next";
         $('#File_list_View_Modal').modal('show');
-        $('#File_list_View_ModalLabel').html('<h3>案件檢視</h3>');
+        $('#File_list_View_ModalLabel').html('案件檢視');
         var tr = $(event).parents("tr").get(0);
         update_File_list_View_Modal(tr);
         read_file_progerss_log(file_key);
+
+        //讀檔
+
+
+
+
+        $.ajax({
+            url: '/family/get_members_file',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : file_key,
+            },
+        })
+        .always(function() {
+            console.log("complete");
+        })
+        .done(function(responsive) {
+            console.log("success");
+            //console.log(responsive);
+            $.each(responsive.members, function(index, member) {
+                 /* iterate through array or object */
+                // console.log(member);
+                // var GROUP_DIV = rf_member(member);
+                // $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
+                // svg_redraw();
+                // var this_index = $(".group-div").length - 2 ;
+                // var MDIV = $(".group-div").eq(this_index);
+                // $(MDIV).find('.people-special select').val(member.specials).trigger('change');
+                // $(MDIV).find('.people-birthday input').trigger('change');
+                // $(MDIV).find('.people-marriage input').trigger('change');
+                // $(MDIV).find('.people-marriage2 input').trigger('change');
+                // recount_member_pro($(MDIV));
+                // recount_member_inc($(MDIV));
+            });
+
+            progress_view_rf_file_info(responsive.file_info);
+            //console.log(responsive.file_info);
+
+
+        })
+        .fail(function() {
+            console.log("error");
+        });
+
+        //ajax read data
+        //read file_info
+        //read members
+        //          read property
+        //          read income
+        
+
+        //console.log(rf_mem_property(propertys));
+        //console.log(rf_mem_income(incomes));
+
+        // var GROUP_DIV = rf_member();
+
+        // $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
+        // svg_redraw();
+
+        // property.type
+        // property.value                
+        // property.from
+        // property.note
+        // property.self_use
+    }
+
+    function progress_view_rf_file_info(responsive){
+        console.log(responsive);
+        $("#FView-PH-filetype").text(responsive['作業類別名稱']);
+        $("#FView-PH-name").text(responsive['役男姓名']);
+        $("#FView-PH-code").text(responsive['身分證字號']);
+        $("#FView-PH-birthday").text(yyy_dash(date_to_yyy(responsive['役男生日'])));
+        $("#FView-PH-milidate").text(yyy_dash(date_to_yyy(responsive['入伍日期'])));
+        $("#FView-PH-type").text(responsive['服役軍種']);
+        $("#FView-PH-status").text(responsive['服役狀態']);
+        $("#FView-PH-fulladdress").text(responsive['County_name']+responsive['Town_name']+responsive['Village_name']+responsive['戶籍地址']);
+        
+        $("#FView-PH-members").text(responsive['總列計人口']);
+        $("#FView-PH-need").text(responsive['月所需']);
+
+
+        $("#FView-PH-Deposits").text(responsive['存款本金總額']);
+        $("#FView-PH-Investment").text(responsive['投資總額']);
+        $("#FView-PH-Securities").text(responsive['有價證券總額']);
+        $("#FView-PH-others-Pro").text(responsive['其他動產總額']);
+        $("#FView-PH-total-pro").text(responsive['總動產']);
+
+        $("#FView-PH-Salary").text(responsive['薪資月所得']);
+        $("#FView-PH-Profit").text(responsive['營利月所得']);
+        $("#FView-PH-Property-int").text(responsive['財產月所得']);
+        $("#FView-PH-Bank-int").text(responsive['利息月所得']);
+        $("#FView-PH-Stock-int").text(responsive['股利月所得']);
+        $("#FView-PH-others-int").text(responsive['其他月所得']);
+        $("#FView-PH-total-inc").text(responsive['月總所得']);
+        
+        $("#FView-PH-Houses").text(responsive['房屋棟數']);
+        $("#FView-PH-Houses-total").text(responsive['房屋總價']);
+        $("#FView-PH-Houses-num").text(responsive['房屋非自用棟數']);
+        $("#FView-PH-Houses-listtotal").text(responsive['房屋列計總價']);
+        $("#FView-PH-Land").text(responsive['土地筆數']);
+        $("#FView-PH-Land-total").text(responsive['土地總價']);
+        $("#FView-PH-Land-num").text(responsive['土地非自用筆數']);
+        $("#FView-PH-Land-listtotal").text(responsive['土地列計總價']);
+        $("#FView-PH-total-imm").text(responsive['不動產列計總額']);
+        $("#FView-PH-file_comm_1").val("");
+        $("#FView-PH-file_comm_2").val("");
+        $("#FView-PH-file_comm_1").val(responsive['整體家況敘述-公所']);
+        $("#FView-PH-file_comm_2").val(responsive['整體家況敘述-局處']);
+
+        //$(".people_home").attr('file_id', responsive['案件流水號']);
+        //$(".people_home").attr('boy_id', responsive['役男系統編號']);
     }
 
     function update_File_list_View_Modal(tr){
@@ -1175,6 +1327,23 @@ $(document).ready(function() {
             progress_patch_re(file_list_pointer);
         }
         $('#myModal').modal('hide');
+        /* Act on the event */
+    });
+
+    $("#Home_root").on('click', '#RefileModal button.btn.btn-primary',function(event) {
+        event.preventDefault();
+        //console.log("click");
+        rebuildfile(file_list_pointer);
+        // if (file_list_action_pointer == "back"){
+        //     progress_back(file_list_pointer);
+        // }else if(file_list_action_pointer == "next"){
+        //     progress_next(file_list_pointer);
+        // }else if(file_list_action_pointer == "patch"){
+        //     progress_patch(file_list_pointer);
+        // }else if(file_list_action_pointer == "patch_re"){
+        //     progress_patch_re(file_list_pointer);
+        // }
+        $('#RefileModal').modal('hide');
         /* Act on the event */
     });
 

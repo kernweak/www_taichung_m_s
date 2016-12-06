@@ -22,6 +22,14 @@ class File extends MY_Controller {
 	//{
 	//	$this->load->view('welcome_message');
 	//}
+	public function __construct() { 
+        parent::__construct(); 
+        $this->load->model('file_model');
+		$this->load->model('member_model');
+		$this->load->model('property_model');
+		$this->load->model('income_model');
+    } 
+
 	public function index()
 	{
 		$this->load->library('session');
@@ -66,6 +74,7 @@ class File extends MY_Controller {
 	* create a new military boy record, and initialize his subsidy file
 	*/
 	public function add_new_boy_file(){
+		date_default_timezone_set('Asia/Taipei');
 		// create a new boy record
 		$this->load->library('session');
 		//var_dump($this->session);
@@ -185,6 +194,34 @@ class File extends MY_Controller {
 		//LV 7 工程模式，全部狀態都能看到
 	}
 
+	//新增複查檔案 + 退役處理
+	public function rebuildfile(){
+		$file_key = (int)$this->input->post('file_key');
+		$act = $this->input->post('act');
+		$log_comment = $this->input->post('log_comment');
+
+		switch ($act) {
+		    case "複查":
+		        $act2 = 2;
+		        break;
+		    case "春節複查":
+		        $act2 = 3;
+		        break;
+		    case "端午複查":
+		        $act2 = 4;
+		        break;
+		    case "中秋複查":
+		        $act2 = 5;
+		        break;
+		}
+		var_dump($act2);
+		$new_file_key = $this->file_model->clone_file_info($file_key, $act2);
+
+		//$file_info = $this->file_model->progress_file($file_key,"+");
+
+		$this->progress_log($new_file_key, $log_comment, "新增複查案", 1);
+		echo json_encode("Success");
+	}
 
 	public function progress_next(){
 		$file_key = (int)$this->input->post('file_key');

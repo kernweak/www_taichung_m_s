@@ -112,7 +112,8 @@ $(document).ready(function() {
                 "lengthMenu": "每頁顯示 _MENU_ 筆",
                 "info": "第 _PAGE_ / _PAGES_ 頁",
                 "search": "粗搜索:"
-            }
+            },
+            "order": [[ 7, "desc" ]]
         });
     }, 1000); /*
     setTimeout(function(){
