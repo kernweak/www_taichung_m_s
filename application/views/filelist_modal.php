@@ -169,7 +169,7 @@
     
     
     <!--<hr class="thin"/>-->
-    <div style="width: 40vw; display: inline-block;vertical-align: top;">
+    <div style="width: 39vw; display: inline-block;vertical-align: top;">
         <div style="width: 100%;">
             <label style="width: 20em;"><h3 style="margin-top: 0px;">整體家況敘述-區公所</h3></label>
             <textarea style="width: 96%;height: 30em;" id="FView-PH-file_comm_1" disabled></textarea>

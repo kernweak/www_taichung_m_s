@@ -199,6 +199,8 @@
                     setTimeout(function(){
                         empty_members();
                         add_miliboy();
+                        $("#PH-file_comm_1").val("");
+                        $("#PH-file_comm_2").val("");
                     },1000);
                 },1000);
                 

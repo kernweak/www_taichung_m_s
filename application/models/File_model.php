@@ -301,7 +301,7 @@ class File_model extends CI_Model {
 		if($user_level <= 3){	
 			//區公所使用者登入，應該只能看到自己公所
 			//$this->db->where('area_town.Town_name', $user_organ);
-			$if_town = "`Town_name` = '"+$user_organ+"'";
+			$if_town = "AND `Town_name` = '".$user_organ."'";
 		}
 		elseif($user_level <= 6){	
 
@@ -333,7 +333,8 @@ class File_model extends CI_Model {
 		//$query = $this->db->get();
 		$query = $this->db->query($Qstring);
 		$result = $query->result_array();
-		//var_dump($this->db->last_query());
+		// var_dump($this->db->last_query());
+		// echo $this->db->last_query();
 		return $result;
 		// var_dump($result);
 		// var_dump($this->db->last_query());
