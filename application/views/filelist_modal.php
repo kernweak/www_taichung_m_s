@@ -105,16 +105,16 @@
         <td style="background-color: #d490d7;">全戶</td>
         </tr>
         <tr>
-        <td>存款Deposits</td>
-        <td>投資Investment</td>
-        <td>房屋棟數Houses</td>
-        <td>房屋總價Houses-total</td>
-        <td>列計棟數Houses-num</td>
-        <td>列計價值Houses-listtotal</td>
-        <td>薪資Salary</td>
-        <td>營利Profit</td>
-        <td>財產Property-int</td>
-        <td>列計人口members</td>
+        <td>存款</td>
+        <td>投資</td>
+        <td>房屋棟數</td>
+        <td>房屋總價</td>
+        <td>列計棟數</td>
+        <td>列計價值</td>
+        <td>薪資</td>
+        <td>營利</td>
+        <td>財產</td>
+        <td>列計人口</td>
         </tr>
         <tr>
         <td>$<span id="FView-PH-Deposits">0</span></td>
@@ -129,16 +129,16 @@
         <td><span id="FView-PH-members">1</span>人</td>
         </tr>
         <tr>
-        <td>證券Securities</td>
-        <td>其他others-Pro</td>
-        <td>土地筆數Land</td>
-        <td>土地總值Land-total</td>
-        <td>列計筆數Land-num</td>
-        <td>列計價值Land-listtotal</td>
-        <td>利息Bank-int</td>
-        <td>股利Stock-int</td>
-        <td>其他others-int</td>
-        <td>生活所需need</td>
+        <td>證券</td>
+        <td>其他</td>
+        <td>土地筆數</td>
+        <td>土地總值</td>
+        <td>列計筆數</td>
+        <td>列計價值</td>
+        <td>利息</td>
+        <td>股利</td>
+        <td>其他</td>
+        <td>生活所需</td>
         </tr>
         <tr>
         <td>$<span id="FView-PH-Securities">0</span></td>
@@ -153,9 +153,9 @@
         <td>$<span id="FView-PH-need">19626</span></td>
         </tr>
         <tr>
-        <td colspan="2">動產列計總額total-pro</td>
-        <td colspan="4">不動產列計總額total-imm</td>
-        <td colspan="3">月均所得總額total-inc</td>
+        <td colspan="2">動產列計總額</td>
+        <td colspan="4">不動產列計總額</td>
+        <td colspan="3">月均所得總額</td>
         <td>扶助等級</td>
         </tr>
         <tr>
