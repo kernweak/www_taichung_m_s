@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen.css">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
     <script src="/0MS/js/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="/0MS/js/czchen-0.js"></script>
     <script>
         var User_Level = <?php echo $User_Level ?>;
@@ -125,7 +126,7 @@
             <div id="edit-navcon" role="tabpanel" class="tab-pane fade nav-container">
                 <?php include('people_basic.php');?>
             </div>
-            <div id="statistics" role="tabpanel" class="tab-pane fade nav-container" >
+            <div id="statistics" role="tabpanel" class="tab-pane fade nav-container" style="overflow-y: scroll;height: 100vh;background-color: #4280bf;">
                 <?php include('statistics.php');?>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="project_edit">編輯</div>

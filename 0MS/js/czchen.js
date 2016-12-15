@@ -1023,27 +1023,29 @@ $(document).ready(function() {
       
 /*************************統計分析          statistics.php****************************************/
     //測試chart.js 圖表
-    window.onload = function(){
-        var ctx = document.getElementById("chart-area").getContext("2d");
-        new Chart(ctx, {
-            type: "bar",
-            data: data,
-            // Boolean - whether or not the chart should be responsive and resize when the browser does.
-            responsive: true,
-            // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-            maintainAspectRatio: false,
-            options: {
-                scales: {
-                    xAxes: [{
-                        stacked: true
-                    }],
-                    yAxes: [{
-                        stacked: true
-                    }]
-                }
-            }
-        });
-    };
+    
+    // window.onload = function(){
+    //     var ctx = document.getElementById("chart-area").getContext("2d");
+    //     new Chart(ctx, {
+    //         type: "bar",
+    //         data: data,
+    //         // Boolean - whether or not the chart should be responsive and resize when the browser does.
+    //         responsive: true,
+    //         // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+    //         maintainAspectRatio: false,
+    //         options: {
+    //             scales: {
+    //                 xAxes: [{
+    //                     stacked: true
+    //                 }],
+    //                 yAxes: [{
+    //                     stacked: true
+    //                 }]
+    //             }
+    //         }
+    //     });
+    // };
+
     //---------------------------------------------------------------財產------------------------------------------------------------------------------------
 
 
