@@ -154,6 +154,46 @@ class File_model extends CI_Model {
     	$this->db->where('案件流水號', $file->key);
     	$this->db->update('files_info_table', $data);		
 	}
+
+	public function update_attach($file_key, $attach_category, $attach_name){
+		$column = '';
+		switch($attach_category){
+			case '0':
+				$column = 'attach_household'; //戶口名簿
+				break;
+			case '1':
+				$column = 'attach_income'; //所得
+				break;
+			case '2':
+				$column = 'attach_property'; //財產
+				break;
+			case '3':
+				$column = 'attach_statusprove'; //學生證/醫療證明
+				break;
+			case '4':
+				$column = 'attach_others'; // 其他
+				break;
+		}		
+		// get the original attachment name
+		$this->db->select($column);
+		$this->db->where('案件流水號', $file_key);
+		$query = $this->db->get('files_info_table');
+		
+		$old_file='';
+		foreach ($query->result_array() as $row){
+			$old_file = $row[$column];
+			log_message('debug', 'old file ='.print_r($old_file, true));
+		}		
+
+		// update to the new attachment name	
+		$data = array($column => $attach_name);
+		
+		$this->db->where('案件流水號', $file_key);
+		$this->db->update('files_info_table', $data);
+
+		return $old_file;
+	}
+
 	/*
 	*	add a 初審案件
 	*/

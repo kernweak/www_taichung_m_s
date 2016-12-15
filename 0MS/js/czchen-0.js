@@ -611,6 +611,12 @@
         $("#PH-file_comm_1").val(responsive['整體家況敘述-公所']);
         $("#PH-file_comm_2").val(responsive['整體家況敘述-局處']);
 
+        $("#attach_0").text(responsive['attach_household']);
+        $("#attach_1").text(responsive['attach_income']);
+        $("#attach_2").text(responsive['attach_property']);
+        $("#attach_3").text(responsive['attach_statusprove']);
+        $("#attach_4").text(responsive['attach_others']);
+
         $(".people_home").attr('file_id', responsive['案件流水號']);
         $(".people_home").attr('boy_id', responsive['役男系統編號']);
         

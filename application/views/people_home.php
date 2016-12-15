@@ -93,50 +93,50 @@
 	<div>
 		<div class="upload_div">		
 				<label>戶口名簿</label>
-				<br/><a>0122456.pdf</a>
+				<br/><a id="attach_0">0122456.pdf</a>
 				<hr class="thin"/>				
 				<input type="hidden" value="0"/>
-				<input type="file" name="file"/>
+				<input type="file" name="attachment"/>
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
 				<p class="msg"></p>			
 		</div>
 		<div class="upload_div">			
 				<label>所得</label>
-				<br/><a>0122456.pdf</a>
+				<br/><a id="attach_1">0122456.pdf</a>
 				<hr class="thin"/>
 				<input type="hidden" value="1"/>
-				<input type="file" name="file"/>
+				<input type="file" name="attachment"/>
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
 				<p class="msg"></p>
 		</div>
 		<div class="upload_div">	
 				<label>財產</label>
-				<br/><a>0122456.pdf</a>
+				<br/><a id="attach_2">0122456.pdf</a>
 				<hr class="thin"/>
 				<input type="hidden" value="2"/>
-				<input type="file" name="file"/>
+				<input type="file" name="attachment"/>
 				<p class="alert"></p>
 				<button class="upload">上傳</button>			
 				<p class="msg"></p>
 		</div>
 		<div class="upload_div">			
 				<label style="width: 8em;">學生證/醫療證明</label>
-				<br/><a>0122456.pdf</a>
+				<br/><a id="attach_3">0122456.pdf</a>
 				<hr class="thin"/>
 				<input type="hidden" value="3"/>
-				<input type="file" name="file"/>
+				<input type="file" name="attachment"/>
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
 				<p class="msg"></p>
 		</div>
 		<div class="upload_div">			
 				<label>其他</label>
-				<br/><a>0122456.pdf</a>
+				<br/><a id="attach_4">0122456.pdf</a>
 				<hr class="thin"/>
 				<input type="hidden" value="4"/>
-				<input type="file" name="file"/>				
+				<input type="file" name="attachment"/>				
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
 				<p class="msg"></p>
@@ -150,7 +150,7 @@
 <script>
 $('input[type=file]').on('change', function(e){
 	var file = e.currentTarget.files[0];
-	if (file.size > 4096){ //max file size is 4096KB(4MB)		
+	if (file.size > 4194304){ //max file size is 4 MB = 4096 KB = 4194304 Bytes
 		$(this).next('.alert').html('檔案必須小於4MB');
 		// $(this).siblings('button').fadeOut('slow');
 		$(this).siblings('button').prop('disabled', true);		
@@ -164,13 +164,16 @@ $('input[type=file]').on('change', function(e){
         $('.upload').on('click', function () {
                     // var file_data = $('#file').prop('files')[0];
                     var file_data = $(this).siblings('input[type=file]').prop('files')[0];
+                    var file_id = $('.people_home').attr('file_id'); //案件編號
                     var file_category = $(this).siblings('input[type=hidden]').val();
                     var form_data = new FormData();
                     var msg = $(this).siblings('.msg').get(0);
-                    form_data.append('file', file_data);
+                    form_data.append('attachment', file_data);
+                    form_data.append('file_id', file_id);
                     form_data.append('category', file_category);
+
                     $.ajax({
-                        url: '/index.php/upload/upload_file', // point to server-side controller method
+                        url: '/index.php/attachment/upload', // point to server-side controller method
                         dataType: 'text', // what to expect back from the server
                         cache: false,
                         contentType: false,
