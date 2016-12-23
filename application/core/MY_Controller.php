@@ -59,7 +59,7 @@ class  MY_Controller  extends  CI_Controller  {
 			}
 			else{
 				$code = 0;
-				$msg = "無此帳號";
+				$msg = "無此帳號或密碼錯誤";
 			}
 		}
 		else{	//內部呼叫
@@ -87,7 +87,7 @@ class  MY_Controller  extends  CI_Controller  {
 	}
 
 
-	public function User_Logout(){						//承辦人登出
+	public function User_Logout($type="0"){						//承辦人登出
 		//$this->y5e6g2s7e9y2d3Active_log('承辦人登出');
 		$this->load->library('session');		
 		$this->session->unset_userdata('Login_ID');
@@ -95,8 +95,10 @@ class  MY_Controller  extends  CI_Controller  {
 		$this->session->unset_userdata('organization');
 		$this->session->unset_userdata('department');
 		$this->session->unset_userdata('User_Level');
-		header("Location: /"); /* Redirect browser */
-		exit();
+		if($type=="0"){
+			header("Location: /"); /* Redirect browser */
+			exit();
+		}
 	}
 
 

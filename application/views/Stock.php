@@ -1520,6 +1520,21 @@
 <tr><td>上櫃</td><td>其他</td><td>8942</td><td>森鉅</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 </tbody>
 </table>
+<script type="text/javascript">
+    $("#Stock_table").on('click', 'tr', function(event) {
+        event.preventDefault();
+        var stock_code = $(this).children('td').eq(2).text();
+        console.log(stock_code);
+        var Shref = "https://tw.stock.yahoo.com/d/s/dividend_"+stock_code+".html";
+        console.log(Shref);
+        window.open(Shref,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=800,height=1000');
+        //return false;
+        /* Act on the event */
+    });
+
+
+
+</script>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>

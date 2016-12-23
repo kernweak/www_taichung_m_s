@@ -27,6 +27,10 @@
         });
     }
 
+    function personnel_load(){
+        $("#personnel > iframe").attr('src', 'http://mms.taichung.gov.tw/aup654rm6284gj4rm4/');
+    }
+
     function refile(file_key,event,act){
         file_list_pointer = file_key;
         file_list_action_pointer = act;
@@ -191,14 +195,14 @@
                  var progress = (file.審批階段/6)*100;
                  tbody += "" +
 
-                    '<tr>' +   
+                    '<tr trkey="'+file.案件流水號+'">' +   
                         '<td>'+ yyy_dash(date_to_yyy(file.入伍日期)) +'</td>' +
                         '<td>'+file.Town_name+'</td>' +
                         '<td>'+file.役男姓名+'</td>' +
                         '<td>'+file.身分證字號+'</td>' +
                         '<td>' +
                             '<div class="progress">' +
-                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+progress+'%;">' +
+                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">' +
                                     '<span style="display:none;">20</span>'+file.案件階段名稱+'</div>' +
                             '</div>' +
                         '</td>' +
@@ -211,6 +215,12 @@
                     '</tr>';
             });
             $("#table_progress tbody").html(tbody);
+            setTimeout(function(){
+                $.each(responsive, function(index, file) {
+                    var progress = (file.審批階段/6)*100;
+                    $("#table_progress tbody").find("tr[trkey="+file.案件流水號+"] .progress-bar").css('width', progress+'%');
+                });
+            },1000);
 
         })
         .fail(function() {
@@ -296,15 +306,15 @@
                  var progress = (file.審批階段/6)*100;
                  tbody += "" +
 
-                    '<tr>' +   
+                    '<tr trkey="'+file.案件流水號+'">' +   
                         '<td>'+ yyy_dash(date_to_yyy(file.入伍日期)) +'</td>' +
                         '<td>'+file.Town_name+'</td>' +
                         '<td>'+file.役男姓名+'</td>' +
                         '<td>'+file.身分證字號+'</td>' +
                         '<td>' +
                             '<div class="progress">' +
-                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+progress+'%;">' +
-                                    '<span style="display:none;">20</span>'+file.案件階段名稱+'</div>' +
+                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">' +
+                                    ''+file.案件階段名稱+'</div>' +
                             '</div>' +
                         '</td>' +
                         '<td>'+file.扶助級別+'</td>' +
@@ -316,6 +326,12 @@
                     '</tr>';
             });
             $("#table_id tbody").html(tbody);
+            setTimeout(function(){
+                $.each(responsive, function(index, file) {
+                    var progress = (file.審批階段/6)*100;
+                    $("#table_id tbody").find("tr[trkey="+file.案件流水號+"] .progress-bar").css('width', progress+'%');
+                });
+            },1500);
 
         })
         .fail(function() {
@@ -389,11 +405,18 @@
         return yyyy_date;
     }
 
-    function yyy_dash(date_string){  //民國6/7碼轉西元日期
+    function yyy_dash(date_string){  //1050305 -> 105-03-05
         //date_string = "1040310";
         date_string += "";
         date_string = date_string.substring(0,3) + "-" + date_string.substring(3,5) + "-" + date_string.substring(5);
         return date_string;
+    }
+
+    function dash_yyy(date_string){  //105-03-05 -> 1050305
+        //
+        var date_a = date_string.split("-");
+        var date_b = ""+date_a[0]+date_a[1]+date_a[2];
+        return date_b;
     }
 
     if (!String.prototype.trimall) {            //去除所有空白
@@ -904,11 +927,14 @@
     }
 
     function add_miliboy(){
-        var GROUP_DIV = '<div class="group-div" code=new edit=new><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/captain.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value="役男"></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value="'+$("#PH-name").text()+'"></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value="'+$("#PH-code").text()+'"></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="'+date_to_yyy($("#PH-birthday").text())+'" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">不列口數</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0">一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1" selected>服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="3,30">55歲以上,16歲以下無收入</option><option value="3,31">身心障礙、重大傷病</option><option value="3,32">3個月內之重大傷病</option><option value="3,33">學生</option><option value="3,34">孕婦</option><option value="3,35">獨自照顧直系老幼親屬</option><option value="3,36">獨自照顧重大傷病親屬</option><option value="3,37">不計收入：其他</option><option value="2,38">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
+        var GROUP_DIV = '<div class="group-div" code=new edit=new><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/captain.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value="役男"></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value="'+$("#PH-name").text()+'"></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value="'+$("#PH-code").text()+'"></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="'+dash_yyy($("#PH-birthday").text())+'" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">不列口數</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0">一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1" selected>服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="3,30">55歲以上,16歲以下無收入</option><option value="3,31">身心障礙、重大傷病</option><option value="3,32">3個月內之重大傷病</option><option value="3,33">學生</option><option value="3,34">孕婦</option><option value="3,35">獨自照顧直系老幼親屬</option><option value="3,36">獨自照顧重大傷病親屬</option><option value="3,37">不計收入：其他</option><option value="2,38">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
         $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
         svg_redraw();
+        console.log($("#PH-birthday").text());
+        console.log(dash_yyy($("#PH-birthday").text()));
         $(".group-div").eq(0).find('.people-id-address input').trigger('change');
         $(".group-div").eq(0).find('.people-birthday input').trigger('change');
+
     }
 
     function save_file(){

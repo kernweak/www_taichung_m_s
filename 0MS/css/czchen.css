@@ -77,7 +77,24 @@
 
 
     /***********************************************/
-    
+    .progress-bar{
+        overflow: visible;
+        white-space: nowrap;
+        color: #e4e4e4;/*black;*/
+        transition: 3s;
+        /*padding-left: 30px;*/
+    }
+    #personnel > iframe{
+        width: 99%;
+        height: calc(100vh - 80px);
+        position: relative;
+        left: 0.8%;
+    }
+    .progress{
+        background-image: -webkit-linear-gradient(#c5c5c5 0%, #c5c5c5 100%);
+        background-image: -o-linear-gradient(#c5c5c5 0%, #c5c5c5 100%);
+        background-image: linear-gradient(#c5c5c5 0%, #c5c5c5 100%);
+    }
     .thumbnail {
         width: 55px;
         height: 75px;
