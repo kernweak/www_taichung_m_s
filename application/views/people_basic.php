@@ -436,6 +436,9 @@
         </div>
         <div class="proper-inc-div add-new-button">
             <sapn class="add-proper-inc">新增所得</sapn>
+              <div class="miliboy-add-new-inc-comm fade" style="position: absolute;bottom: 0;right: 0;">役男服役所得請勿登錄列計<span>
+            </span>
+        </div>
         </div>
         <div class="modal fade" id="confirm-delete-inc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">

@@ -18,50 +18,68 @@ var Property_limit =[
 	["臺東縣",106,11448,3500000],
 	["金門縣",106,10290,2700000],
 	["連江縣",106,10290,2700000]
-]
+];
 
-var Stock = [
-[104, "鴻海2317", 5],
-[103, "鴻海2317", 4.3],
-[102, "鴻海2317", 3],
-[102, "鴻海2317", 2.5],
-[104, "台積電2330", 6],
-[103, "台積電2330", 4.5],
-[102, "台積電2330", 3],
-[104, "大立光3008", 63.5],
-[103, "大立光3008", 51],
-[102, "大立光3008", 28.5],
-]
+Property_limit.getIndexbyName = function(){
+
+}
+
+Property_limit.getImmLimitbyName = function(area_string = ""){
+    var result = 9999999999999;     //抓不到回傳值，就給一個超大值(爆掉)
+    $.each(this, function(index, area) {
+
+        if(area[0] == area_string){
+            // console.log(area[0]);
+            // console.log(area_string);
+            // console.log(area[3]);
+            result = area[3];
+        }
+    });
+    return result;    
+}
+
+// var Stock = [
+// [104, "鴻海2317", 5],
+// [103, "鴻海2317", 4.3],
+// [102, "鴻海2317", 3],
+// [102, "鴻海2317", 2.5],
+// [104, "台積電2330", 6],
+// [103, "台積電2330", 4.5],
+// [102, "台積電2330", 3],
+// [104, "大立光3008", 63.5],
+// [103, "大立光3008", 51],
+// [102, "大立光3008", 28.5],
+// ]
 
 //測試chart.js 圖表
-var data = {
-    labels: ["西屯區", "北屯區", "南屯區", "西區", "中區", "東區", "南區", "北區"],
-    datasets: [
-        {
-            label: "105年 1月~12月 各區扶助案件申請數",
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(173, 82, 155, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(173, 82, 155, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1,
-            data: [95, 89, 40, 61, 56, 55, 55, 40],
-        }
-    ]
-};
+// var data = {
+//     labels: ["西屯區", "北屯區", "南屯區", "西區", "中區", "東區", "南區", "北區"],
+//     datasets: [
+//         {
+//             label: "105年 1月~12月 各區扶助案件申請數",
+//             backgroundColor: [
+//                 'rgba(255, 99, 132, 0.2)',
+//                 'rgba(54, 162, 235, 0.2)',
+//                 'rgba(255, 206, 86, 0.2)',
+//                 'rgba(75, 192, 192, 0.2)',
+//                 'rgba(153, 102, 255, 0.2)',
+//                 'rgba(173, 82, 155, 0.2)',
+//                 'rgba(255, 159, 64, 0.2)'
+//             ],
+//             borderColor: [
+//                 'rgba(255,99,132,1)',
+//                 'rgba(54, 162, 235, 1)',
+//                 'rgba(255, 206, 86, 1)',
+//                 'rgba(75, 192, 192, 1)',
+//                 'rgba(153, 102, 255, 1)',
+//                 'rgba(173, 82, 155, 1)',
+//                 'rgba(255, 159, 64, 1)'
+//             ],
+//             borderWidth: 1,
+//             data: [95, 89, 40, 61, 56, 55, 55, 40],
+//         }
+//     ]
+// };
 
 
 $(document).ready(function() {
@@ -277,7 +295,8 @@ $(document).ready(function() {
                 continue;
             }
             var arr1= Special.split(',');
-            if (arr1[0] == '0' || arr1[0] == '3'){    //-------------------一般&依實際所得-----------------------------------------------------------------------------------------    
+            var title = $(GDIV).eq(i).find(".people-title input").val();
+            if (arr1[0] == '0' || arr1[0] == '3' || title == "役男"){    //-------------------一般&依實際所得-----------------------------------------------------------------------------------------    
                 //console.log(arr1[0]);
                 
                 for(j=0;j<$(Income_Div).length;j++){
@@ -420,7 +439,7 @@ $(document).ready(function() {
 
         var property_move_limit = 0    //動產限額
         var property_imm_limit = 0    //不動產限額
-        var members_area_array = []    //縣市
+        var imm_area_array = []    //縣市
         var GDIV = $(".center-total-count .group-div");
         total_members_num = $(GDIV).length-1;   //要扣掉 新增家屬 按鈕
 
@@ -442,14 +461,21 @@ $(document).ready(function() {
             if (arr1[0] == '0' || arr1[0] == '2' || title == "役男" || arr1[0] == '3'){    //-------------------一般&依實際所得&不計收入-----------------------------------------------------------------------------------------    
                 if(title != "役男"){total_members_count++;}//列計人數+1
                   
-                var area = $(GDIV).eq(i).find(".member_area").attr('area-index');
+                //var area = $(GDIV).eq(i).find(".member_area").attr('area-index');   //2016-12-25捕捉縣市區域用的ARRAY，目前是用人來抓，準備改成用房屋土地來抓
 
-                members_area_array.push(Property_limit[area][3]);
+                //imm_area_array.push(Property_limit[area][3]);       //2016-12-25捕捉縣市區域用的ARRAY，目前是用人來抓，準備改成用房屋土地來抓
+
+
+
+
+                //Property_limit.getImmLimitbyName("臺中市")
+
                 for(j=0;j<$(Property_Div).length;j++){  
                     //var income_ex_flag = 0;
                     var Property_type = $(Property_Div).eq(j).find(".proper-inc-div-1 option:selected").text();
 
-                    if( Property_type == "儲蓄存款" || Property_type == "有價證券" ||  Property_type == "投資" ||  Property_type == "其他"){
+                    //if( Property_type == "儲蓄存款" || Property_type == "有價證券" ||  Property_type == "投資" ||  Property_type == "其他"){
+                    if( Property_type == "儲蓄存款"){
                         //total_property_move += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
                         total_property_Deposits += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
         
@@ -471,6 +497,16 @@ $(document).ready(function() {
                             total_property_house_num_con++;
                             total_property_house_value += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
                             total_property_house_value_con += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+
+
+                            //改成要計算房屋的位置
+                            // console.log((Property_Div).eq(j).find(".proper-inc-div-6").val());
+                            // console.log(Property_limit.getImmLimitbyName((Property_Div).eq(j).find(".proper-inc-div-6").val()));
+                            imm_area_array.push(Property_limit.getImmLimitbyName((Property_Div).eq(j).find(".proper-inc-div-6").val())); 
+                            
+
+
+
                         }else{
                             //自住
                             total_property_house_num++;
@@ -484,6 +520,13 @@ $(document).ready(function() {
                             total_property_land_num_con++;
                             total_property_land_value += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
                             total_property_land_value_con += parseInt($(Property_Div).eq(j).find(".proper-inc-div-2").val());
+
+                            //改成要計算房屋的位置
+                            // console.log((Property_Div).eq(j).find(".proper-inc-div-6").val());
+                            // console.log(Property_limit.getImmLimitbyName((Property_Div).eq(j).find(".proper-inc-div-6").val()));
+                            imm_area_array.push(Property_limit.getImmLimitbyName((Property_Div).eq(j).find(".proper-inc-div-6").val())); 
+
+                            
                         }else{
                             //自住
                             total_property_land_num++;
@@ -497,8 +540,16 @@ $(document).ready(function() {
         }
         total_property_imm_count = total_property_land_value_con + total_property_house_value_con;
         property_move_limit = 2500000 + (total_members_count - 1) * 250000;
-        property_imm_limit = members_area_array.min();
+        property_imm_limit = imm_area_array.min();
         total_property_move = total_property_Deposits+total_property_Securities+total_property_Investment+total_property_Others;
+
+        console.log();
+        console.log();
+        console.log();
+        console.log();
+        console.log();
+        console.log();
+        console.log();
 
         //console.log("列計人數："+total_members_count);
         $("#PH-members").text(total_members_count);
@@ -623,6 +674,15 @@ $(document).ready(function() {
 
     //中面板-選定中間成員後，重繪整個右方4大區塊
     function right_total_count_redraw(){
+        //----------------------------若是役男，要提醒不要把服役薪資列計--------------------------
+        //console.log($('.group-div.selected .people-title input').val());
+        if($('.group-div.selected .people-title input').val() == "役男"){
+            $(".miliboy-add-new-inc-comm").addClass('in');
+        }else{
+            $(".miliboy-add-new-inc-comm").removeClass('in');
+        }
+
+
         //----
         //console.log("Family member selceted");
         //----------------------------住址頁籤----------------------------------------------------
@@ -669,8 +729,33 @@ $(document).ready(function() {
 
     //右面板.財產.新增財產按鈕點擊事件
     $("#right_tab_property").on('click', '.add-proper', function(event) {
-        var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"style="display: none;"><option value="y" selected="">非自住</option><option value="m">自住</option></select><select class="proper-inc-div-6" style="display: none;"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
+        var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4 fade"><option value="y" selected="">非自住</option><option value="m">自住</option></select><select class="proper-inc-div-6 fade"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
         $(PRO_DIV).appendTo('#right_tab_property .pro-div-cont');
+        var area = $(".center-total-count .group-div").eq(0).find(".member_area").val();
+        $('#right_tab_property .pro-div-cont .proper-inc-div').last().find('.proper-inc-div-6').val(area);
+
+
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //console.log(area);
+
         /* Act on the event */
     });    
 
@@ -736,11 +821,13 @@ $(document).ready(function() {
             //alert('pro select');
             if($(this).is('.proper-inc-div-1')){
                 if($(this).children("option:selected").text() == '房屋' || $(this).children("option:selected").text() == '土地' ){
-                    $(this).parent().find(".proper-inc-div-6").fadeIn();
-                    $(this).parent().children(".proper-inc-div-4").fadeIn();
+                    // $(this).parent().find(".proper-inc-div-6").fadeIn();         //fadein fadeout 是改變透明度，有動畫過程，導致瞬間寫回去的時候，都還是0而消失
+                    // $(this).parent().children(".proper-inc-div-4").fadeIn();     //
+                    $(this).parent().find(".proper-inc-div-6").addClass('in');
+                    $(this).parent().children(".proper-inc-div-4").addClass('in');
                 }else{
-                    $(this).parent().find(".proper-inc-div-6").fadeOut();
-                    $(this).parent().children(".proper-inc-div-4").fadeOut();
+                    $(this).parent().find(".proper-inc-div-6").removeClass('in');
+                    $(this).parent().children(".proper-inc-div-4").removeClass('in');
                 }
             }
         }

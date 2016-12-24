@@ -11,7 +11,7 @@ class Report extends MY_Controller {
 		$this->load->model('income_model');
      } 
 
-     public function Access_Print_Form(){				//檔案應用影像列印(檔案列印.功能 )
+    public function Access_Print_Form($file_key = 0){				//檔案應用影像列印(檔案列印.功能 )
 		
 		//*********安全檢查*****	
 
@@ -26,11 +26,22 @@ class Report extends MY_Controller {
 			$organization = $this->session->userdata('organization');
 			$department = $this->session->userdata('department');
 			$User_Level = $this->session->userdata('User_Level');
-			$this->load->view('TEST', Array(
-				'FullName' 		=> 	$FullName,
-				'organization' 		=> 	$organization,
-				'User_Level' 		=> 	$User_Level,
-			));
+
+			$file_key = (int)$file_key;
+			//$file_key = $this->input->post('file_key');	
+
+
+			//$members = $this->member_model->get_members_for_file($file_key);		
+			$files = $this->file_model->read_file($file_key);
+			$file_info = $files[0];
+
+			// $data = array(
+			// 	'file_info' => $files[0],
+			// 	'members' => $members
+			// );
+			//log_message('debug', 'get_members_file return ='. print_r($data, true));
+			//echo json_encode($data);
+
 		}
 		else{
 			//$this->load->view('login');
@@ -41,16 +52,19 @@ class Report extends MY_Controller {
 			
 			//echo $FullName;
 			//echo $Department;
+		//var_dump($file_info);
+		//$file_info->案件流水號
 			
 			$this->load->view('print_page_file_info', Array(
-				'pageTitle' => '檔案調閱列印',
+				'file_info' 		 => 	$file_info,
+				'pageTitle' 		 => 	'檔案調閱列印',
 				'Department' 		 => 	$department,
 				'FullName' 			 => 	$FullName,	
 				'water_mark_check'   => 	"TEST_WM",	
 				'OrganizationName'   => 	$organization,
 			));
 			
-		}
-		
 	}
+		
+	
 }
