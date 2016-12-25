@@ -36,47 +36,17 @@ class Chart extends MY_Controller {
   //       <option value="各區核定案件數量">各區核定案件數量</option>
   //       <option value="各區核定案件扶助級別人數">各區核定案件扶助級別人數</option>
   //       <option value="全市核定案件扶助級別人數">全市核定案件扶助級別人數</option>
-		if($statistics_type == "各區案件申請數量"){
-			// $data_array =
-			// [
-			// 	['Task', 'Hours per Day'],
-   //        		['西屯區',     11],
-   //        		['南屯區',      2],
-   //        		['北屯區',  2],
-   //        		['豐原區', 2],
-   //        		['霧峰區',    7]
-   //        	];
-			$array1 = $this->statistics_model->Statistics_1($Date_1,$Date_2);
-			$data_array2 = [['區域','件數', "{ role: 'annotation' }"]];
-			foreach ($array1 as $value) {
-			    $new_data = array($value['Town_name'],(int)$value['amount'],(string)$value['amount']);
-			    $data_array2[] = $new_data;
-			}
-		}elseif($statistics_type == "各區核定案件數量"){
-			$array1 = $this->statistics_model->Statistics_2($Date_1,$Date_2);
-			$data_array2 = [['區域','甲級','乙級',"丙級"]];
-			foreach ($array1 as $value) {
-			    $new_data = array($value['區別'],(int)$value['甲級'],(int)$value['乙級'],(int)$value['丙級']);
-			    $data_array2[] = $new_data;
-			}
-		}elseif($statistics_type == "各區核定案件扶助級別人數"){
-			$array1 = $this->statistics_model->Statistics_3($Date_1,$Date_2);
-			$data_array2 = [['區域','甲級','乙級',"丙級"]];
-			foreach ($array1 as $value) {
-			    $new_data = array($value['區別'],(int)$value['甲級'],(int)$value['乙級'],(int)$value['丙級']);
-			    $data_array2[] = $new_data;
-			}
-		}elseif($statistics_type == "全市核定案件扶助級別人數"){
-			$array1 = $this->statistics_model->Statistics_4($Date_1,$Date_2);
-			$data_array2 = [['扶助級別','人數']];
-			foreach ($array1 as $value) {
-			    $new_data = array($value['GroupName'],(int)$value['PostCount']);
-			    $data_array2[] = $new_data;
-			}
+		$data = [];
+		if($statistics_type == "各區案件申請數量"){			
+			$data = $this->statistics_model->Statistics_1($Date_1,$Date_2);			
+		}elseif($statistics_type == "各區核定案件數量"){			
+			$data = $this->statistics_model->Statistics_2($Date_1,$Date_2);
+		}elseif($statistics_type == "各區核定案件扶助級別人數"){			
+			$data = $this->statistics_model->Statistics_3($Date_1,$Date_2);			
+		}elseif($statistics_type == "全市核定案件扶助級別人數"){			
+			$data = $this->statistics_model->Statistics_4($Date_1,$Date_2);
 		}
-
-		
-
-		echo json_encode($data_array2);
+			
+		echo json_encode($data);
 	}
 }
