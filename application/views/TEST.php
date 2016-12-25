@@ -71,6 +71,9 @@
                                     <li><a href="#" onclick="close_file()">不儲存關閉</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#" onclick="add_miliboy()">家屬編修-加入役男</a></li>
+                                    <?php if($User_Level == 1 || $User_Level >= 4 ){  ?>
+                                    <li><a id="Access_Print_botton" href="/Report/Access_Print_Form/" target="_blank">紙本簽核單</a></li>
+                                    <?php }  ?>
 
                                 </ul>
                             </li>
@@ -111,11 +114,11 @@
                                     <li><a href="#">Separated link</a></li>-->
                                 </ul>
                             </li>
-                            <form class="navbar-form navbar-right">
+                            <!--<form class="navbar-form navbar-right">
                                 <div class="form-group">
                                     <input id="body-zoom" type="number" step= 0.05 class="form-control" placeholder="縮放倍率" value="1.0" style="width: 5em;margin-right: 1em;">
                                 </div>
-                            </form>
+                            </form>-->
                             <li><a href="/Welcome/User_Logout"><span class="mif-security icon"></span>登出</a></li>
                         </ul>
                     </div>

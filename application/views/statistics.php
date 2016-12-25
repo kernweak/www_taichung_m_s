@@ -1,7 +1,7 @@
 
   <div class="container-fluid">
       <div class="row">
-          <div class='col-lg-3'>
+          <div class='col-lg-4 col-md-4 col-sm-4'>
               <div class="form-group"><span style="color:white;">起始日期：</span>
                   <div class='input-group date' id='datetimepicker1'>
                       <input type='text' class="form-control" />
@@ -11,7 +11,7 @@
                   </div>
               </div>
           </div>
-          <div class='col-lg-3'>
+          <div class='col-lg-4 col-md-4 col-sm-4'>
               <div class="form-group"><span style="color:white;">結尾日期：</span>
                   <div class='input-group date' id='datetimepicker2'>
                       <input type='text' class="form-control" />
@@ -21,7 +21,7 @@
                   </div>
               </div>
           </div>
-          <div class='col-lg-3'>
+          <div class='col-lg-4 col-md-4 col-sm-4'>
               <div class="form-group"><span style="color:white;">統計分析：</span>
                   <div class='input-group date' id='statistics_type' style="width:100%;">
                       <select class="form-control" style="border-radius: 0.25em;">

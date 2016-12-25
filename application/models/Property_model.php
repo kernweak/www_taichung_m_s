@@ -14,6 +14,7 @@ class Property_model extends CI_Model {
     		'成員系統編號' => $member_key,
     		'財產類別' => $property->type,
     		'位於何處' => $property->from,
+    		'縣市別' => $property->area,
     		'價值' =>$property->value,
     		'自用' => $property->self_use,
     		'備註' => $property->note
@@ -32,6 +33,7 @@ class Property_model extends CI_Model {
     	$data = array(    		
     		'財產類別' => $property->type,
     		'位於何處' => $property->from,
+    		'縣市別' => $property->area,
     		'價值' =>$property->value,
     		'自用' => $property->self_use,
     		'備註' => $property->note
@@ -65,6 +67,7 @@ class Property_model extends CI_Model {
 				'key' => $row['財產系統編號'],
 				'type' => $row['財產類別'],
 				'from' => $row['位於何處'],
+				'area' => $row['縣市別'],
 				'value' => $row['價值'],
 				'self_use' => $row['自用'],
 				'note' => $row['備註']

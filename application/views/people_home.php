@@ -81,12 +81,12 @@
 	
 	
 	<!--<hr class="thin"/>-->
-	<div style="width: 50%; display: inline-block;">
+	<div style="width: 100%; display: inline-block;">
 		<label style="width: 20em;"><h3>整體家況敘述-區公所</h3></label><button id="PH-file_comm_1_button">帶入自動家況</button>
-		<textarea style="width: 90%;height: 10em;" id="PH-file_comm_1"></textarea>
-	</div><div style="width: 50%; display: inline-block;">
+		<textarea style="width: 100%;height: 10em;" id="PH-file_comm_1"></textarea>
+	</div><div style="width: 100%; display: inline-block;">
 		<label style="width: 20em;"><h3>整體家況敘述確認-市政府</h3></label><button id="PH-file_comm_2_button">帶入公所家況敘述</button>
-		<textarea  style="width: 90%;height: 10em;"  id="PH-file_comm_2" disabled></textarea>
+		<textarea  style="width: 100%;height: 10em;"  id="PH-file_comm_2" disabled></textarea>
 	</div>
 	<br/>
 	<hr class="thin"/>

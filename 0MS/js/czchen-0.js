@@ -450,7 +450,21 @@
     }
 
     function numberWithCommas(x) {  //numberWithCommas  轉換成有千分號的數字字串
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        x = x + "";
+        x = x.replace(/,/g , "");
+        if((typeof stringValue) != "string"){
+            x = parseInt(x);
+            x = x.toString();
+        }else{
+            x = x.replace(/,/g , "");
+        }
+        return x.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function noCommas(x) {  //消除數字字串的千分號
+        x = x + "";
+        x = x.replace(/,/g , "");
+        return x;
     }
 
     function recount_member_inc(MDIV){      //重新計算成員面板上的所得數字
@@ -481,7 +495,9 @@
         $(MDIV).find('.people-income-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
         svg_redraw();
     }
-
+    function update_Access_Print_botton(file_key){
+        $("#Access_Print_botton").attr('href', '/Report/Access_Print_Form/'+file_key);
+    }
     function recount_member_pro(MDIV){      //重新計算成員面板上的財產數字
         var IGContiv = $(MDIV).find('.property-cont').eq(0);     //income-cont -> property-cont
         var IGCD = $(IGContiv).children('div');
@@ -537,6 +553,7 @@
         })
         .done(function(responsive) {
             console.log("success");
+            update_Access_Print_botton(file_key);
             setTimeout(function(){
                     $("#family-edit-nav").fadeIn('400');
                     //$('#Add_file').modal('hide');
@@ -603,32 +620,32 @@
         $("#PH-fulladdress").text(responsive['County_name']+responsive['Town_name']+responsive['Village_name']+responsive['戶籍地址']);
         
         $("#PH-members").text(responsive['總列計人口']);
-        $("#PH-need").text(responsive['月所需']);
+        $("#PH-need").text(numberWithCommas(responsive['月所需']));
 
 
-        $("#PH-Deposits").text(responsive['存款本金總額']);
-        $("#PH-Investment").text(responsive['投資總額']);
-        $("#PH-Securities").text(responsive['有價證券總額']);
-        $("#PH-others-Pro").text(responsive['其他動產總額']);
-        $("#PH-total-pro").text(responsive['總動產']);
+        $("#PH-Deposits").text(numberWithCommas(responsive['存款本金總額']));
+        $("#PH-Investment").text(numberWithCommas(responsive['投資總額']));
+        $("#PH-Securities").text(numberWithCommas(responsive['有價證券總額']));
+        $("#PH-others-Pro").text(numberWithCommas(responsive['其他動產總額']));
+        $("#PH-total-pro").text(numberWithCommas(responsive['總動產']));
 
-        $("#PH-Salary").text(responsive['薪資月所得']);
-        $("#PH-Profit").text(responsive['營利月所得']);
-        $("#PH-Property-int").text(responsive['財產月所得']);
-        $("#PH-Bank-int").text(responsive['利息月所得']);
-        $("#PH-Stock-int").text(responsive['股利月所得']);
-        $("#PH-others-int").text(responsive['其他月所得']);
-        $("#PH-total-inc").text(responsive['月總所得']);
+        $("#PH-Salary").text(numberWithCommas(responsive['薪資月所得']));
+        $("#PH-Profit").text(numberWithCommas(responsive['營利月所得']));
+        $("#PH-Property-int").text(numberWithCommas(responsive['財產月所得']));
+        $("#PH-Bank-int").text(numberWithCommas(responsive['利息月所得']));
+        $("#PH-Stock-int").text(numberWithCommas(responsive['股利月所得']));
+        $("#PH-others-int").text(numberWithCommas(responsive['其他月所得']));
+        $("#PH-total-inc").text(numberWithCommas(responsive['月總所得']));
         
-        $("#PH-Houses").text(responsive['房屋棟數']);
-        $("#PH-Houses-total").text(responsive['房屋總價']);
-        $("#PH-Houses-num").text(responsive['房屋非自用棟數']);
-        $("#PH-Houses-listtotal").text(responsive['房屋列計總價']);
-        $("#PH-Land").text(responsive['土地筆數']);
-        $("#PH-Land-total").text(responsive['土地總價']);
-        $("#PH-Land-num").text(responsive['土地非自用筆數']);
-        $("#PH-Land-listtotal").text(responsive['土地列計總價']);
-        $("#PH-total-imm").text(responsive['不動產列計總額']);
+        $("#PH-Houses").text(numberWithCommas(responsive['房屋棟數']));
+        $("#PH-Houses-total").text(numberWithCommas(responsive['房屋總價']));
+        $("#PH-Houses-num").text(numberWithCommas(responsive['房屋列計棟數']));
+        $("#PH-Houses-listtotal").text(numberWithCommas(responsive['房屋列計總價']));
+        $("#PH-Land").text(numberWithCommas(responsive['土地筆數']));
+        $("#PH-Land-total").text(numberWithCommas(responsive['土地總價']));
+        $("#PH-Land-num").text(numberWithCommas(responsive['土地列計筆數']));
+        $("#PH-Land-listtotal").text(numberWithCommas(responsive['土地列計總價']));
+        $("#PH-total-imm").text(numberWithCommas(responsive['不動產列計總額']));
         $("#PH-file_comm_1").val("");
         $("#PH-file_comm_2").val("");
         $("#PH-file_comm_1").val(responsive['整體家況敘述-公所']);
@@ -748,9 +765,68 @@
             // console.log(property.from);
             // console.log(property.note);
             // console.log(property.self_use);
-            var D_none = "", SD = "" , SS = "", SI = "", SH = "", SL = "", SO = "", SY = "", SM = "";
+            var D_none = "in", SD = "" , SS = "", SI = "", SH = "", SL = "", SO = "", SY = "", SM = "";
+            var a0="", a1="", a2="", a3="", a4="", a5="", a6="", a7="", a8="", a9="", a10="", a11="", a12="", a13="", a14="", a15="", a16="", a17="";
+            switch(property.area) {
+                case "臺北市":
+                    a0 = "selected";
+                    break;
+                case "新北市":
+                    a1 = "selected";
+                    break;
+				case "桃園縣":
+                    a2 = "selected";
+                    break;
+                case "臺中市":
+                    a3 = "selected";
+                    break;
+				case "臺南市":
+                    a4 = "selected";
+                    break;
+                case "高雄市":
+                    a5 = "selected";
+                    break;
+				case "基隆市":
+                    a6 = "selected";
+                    break;
+                case "新竹縣":
+                    a7 = "selected";
+                    break;
+				case "苗栗縣":
+                    a8 = "selected";
+                    break;
+                case "彰化縣":
+                    a9 = "selected";
+                    break;
+				case "雲林縣":
+                    a10 = "selected";
+                    break;
+                case "嘉義縣":
+                    a11 = "selected";
+                    break;
+				case "屏東縣":
+                    a12 = "selected";
+                    break;
+                case "宜蘭縣":
+                    a13 = "selected";
+                    break;
+				case "花蓮縣":
+                    a14 = "selected";
+                    break;
+                case "臺東縣":
+                    a15 = "selected";
+                    break;
+				case "金門縣":
+                    a16 = "selected";
+                    break;
+				case "連江縣":
+                    a17 = "selected";
+                    break;
+                default: 
+            }
+
             if (property.type != "房屋" && property.type != "土地"){
-                D_none = 'style="display: none;"';
+                D_none = '';
             }
             if(property.type == "儲蓄存款"){ SD = 'selected="selected"'; };
             if(property.type == "有價證券"){ SS = 'selected="selected"'; };
@@ -772,29 +848,29 @@
                             '<input placeholder="價值" class="people-input-right proper-inc-div-2" value="'+ property.value +'">' +
                             '<input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value="'+ property.from +'">' +
                             '<input placeholder="備註欄" class="people-input-left proper-inc-div-5" value="'+ property.note +'">' +
-                            '<select class="proper-inc-div-4" '+ D_none +'>' +
+                            '<select class="proper-inc-div-4 fade '+ D_none +'" >' +
                                 '<option value="m" '+ SM +'>自住</option>' +
                                 '<option value="y" '+ SY +'>非自住</option></select>' +
-                            '<select class="proper-inc-div-6" '+ D_none +'>' +
-                                '<option value="" selected="">縣市</option>' +
-                                '<option value="臺北市">臺北市</option>' +
-                                '<option value="新北市">新北市</option>' +
-                                '<option value="桃園縣">桃園縣</option>' +
-                                '<option value="臺中市">臺中市</option>' +
-                                '<option value="臺南市">臺南市</option>' +
-                                '<option value="高雄市">高雄市</option>' +
-                                '<option value="基隆市">基隆市</option>' +
-                                '<option value="新竹縣">新竹縣</option>' +
-                                '<option value="苗栗縣">苗栗縣</option>' +
-                                '<option value="彰化縣">彰化縣</option>' +
-                                '<option value="雲林縣">雲林縣</option>' +
-                                '<option value="嘉義縣">嘉義縣</option>' +
-                                '<option value="屏東縣">屏東縣</option>' +
-                                '<option value="宜蘭縣">宜蘭縣</option>' +
-                                '<option value="花蓮縣">花蓮縣</option>' +
-                                '<option value="臺東縣">臺東縣</option>' +
-                                '<option value="金門縣">金門縣</option>' +
-                                '<option value="連江縣">連江縣</option>' +
+                            '<select class="proper-inc-div-6 fade '+ D_none +'" >' +
+                                '<option value="">縣市</option>' +
+                                '<option value="臺北市"	'+ a0 +'>臺北市</option>' +
+                                '<option value="新北市"	'+ a1 +'>新北市</option>' +
+                                '<option value="桃園縣"	'+ a2 +'>桃園縣</option>' +
+                                '<option value="臺中市"	'+ a3 +'>臺中市</option>' +
+                                '<option value="臺南市"	'+ a4 +'>臺南市</option>' +
+                                '<option value="高雄市"	'+ a5 +'>高雄市</option>' +
+                                '<option value="基隆市"	'+ a6 +'>基隆市</option>' +
+                                '<option value="新竹縣"	'+ a7 +'>新竹縣</option>' +
+                                '<option value="苗栗縣"	'+ a8 +'>苗栗縣</option>' +
+                                '<option value="彰化縣"	'+ a9 +'>彰化縣</option>' +
+                                '<option value="雲林縣"	'+ a10 +'>雲林縣</option>' +
+                                '<option value="嘉義縣"	'+ a11 +'>嘉義縣</option>' +
+                                '<option value="屏東縣"	'+ a12 +'>屏東縣</option>' +
+                                '<option value="宜蘭縣"	'+ a13 +'>宜蘭縣</option>' +
+                                '<option value="花蓮縣"	'+ a14 +'>花蓮縣</option>' +
+                                '<option value="臺東縣"	'+ a15 +'>臺東縣</option>' +
+                                '<option value="金門縣"	'+ a16 +'>金門縣</option>' +
+                                '<option value="連江縣"	'+ a17 +'>連江縣</option>' +
                             '</select>' +
                         '</div>';
         });
@@ -887,11 +963,11 @@
                 
                 $("#PH-Houses").text(responsive['房屋棟數']);
                 $("#PH-Houses-total").text(responsive['房屋總價']);
-                $("#PH-Houses-num").text(responsive['房屋非自用棟數']);
+                $("#PH-Houses-num").text(responsive['房屋列計棟數']);
                 $("#PH-Houses-listtotal").text(responsive['房屋列計總價']);
                 $("#PH-Land").text(responsive['土地筆數']);
                 $("#PH-Land-total").text(responsive['土地總價']);
-                $("#PH-Land-num").text(responsive['土地非自用筆數']);
+                $("#PH-Land-num").text(responsive['土地列計筆數']);
                 $("#PH-Land-listtotal").text(responsive['土地列計總價']);
                 $("#PH-total-imm").text(responsive['不動產列計總額']);
 
@@ -975,12 +1051,13 @@
                 });
                 $(this).find('.property-cont .proper-inc-div').each(function(index, el) {
                     var property = {
-                    "key" : $(this).attr('code'),
-                    "type": $(this).find('.proper-inc-div-1 option:selected').text(),
-                    "value" : $(this).children(".proper-inc-div-2").val(),                    
-                    "from" : $(this).children(".proper-inc-div-3").val(),
-                    "note" : $(this).children(".proper-inc-div-5").val(),
-                    "self_use" : $(this).children(".proper-inc-div-4").val()
+                    "key" :         $(this).attr('code'),
+                    "type":         $(this).find('.proper-inc-div-1 option:selected').text(),
+                    "value" :       $(this).children(".proper-inc-div-2").val(),                    
+                    "from" :        $(this).children(".proper-inc-div-3").val(),
+                    "note" :        $(this).children(".proper-inc-div-5").val(),
+                    "self_use" :    $(this).children(".proper-inc-div-4").val(),
+                    "area" :        $(this).children(".proper-inc-div-6").val()
                 }
                     member.property.push(property);
                 });
@@ -993,29 +1070,29 @@
 
         file_info = {
                 "key" :         $(".people_home").attr('file_id'),      //案件流水號
-                "deposits"  :   $("#PH-Deposits").text(),               //存款
-                "investment"  : $("#PH-Investment").text(),             //投資
-                "securities"  : $("#PH-Securities").text(),             //證券
-                "others_pro"  : $("#PH-others-Pro").text(),             //其他動產
-                "total_pro"  :  $("#PH-total-pro").text(),  //動產列計總額
-                "houses"  :     $("#PH-Houses").text(),     //房屋棟數
-                "houses_total"  : $("#PH-Houses-total").text(), //房屋總價
-                "houses_num"  : $("#PH-Houses-num").text(), //列計棟數
-                "houses_listtotal"  : $("#PH-Houses-listtotal").text(), //列計價值
-                "land"  :       $("#PH-Land").text(),   //土地筆數      
-                "land_total"  : $("#PH-Land-total").text(),     //土地總值
-                "land_num"  :   $("#PH-Land-num").text(),       //列計筆數
-                "land_listtotal"  : $("#PH-Land-listtotal").text(),     //列計價值
-                "total_imm"  :  $("#PH-Total-imm").text(),     //不動產列計總額
-                "salary"  :     $("#PH-Salary").text(),     //薪資
-                "profit"  :     $("#PH-Profit").text(),     //營利
-                "property_inc"  : $("#PH-Property-inc").text(), //財產所得
-                "bank_inc"  :   $("#PH-Bank-int").text(),       //存款利息
-                "stock_inc"  :  $("#PH-Stock-int").text(),      //股利
-                "others_inc"  : $("#PH-others-int").text(),     //其他所得 
-                "total_inc"  :  $("#PH-total-inc").text(),      //月均所得總額
+                "deposits"  :   noCommas($("#PH-Deposits").text()),               //存款
+                "investment"  : noCommas($("#PH-Investment").text()),             //投資
+                "securities"  : noCommas($("#PH-Securities").text()),             //證券
+                "others_pro"  : noCommas($("#PH-others-Pro").text()),             //其他動產
+                "total_pro"  :  noCommas($("#PH-total-pro").text()),  //動產列計總額
+                "houses"  :     noCommas($("#PH-Houses").text()),     //房屋棟數
+                "houses_total"  : noCommas($("#PH-Houses-total").text()), //房屋總價
+                "houses_num"  : noCommas($("#PH-Houses-num").text()), //列計棟數
+                "houses_listtotal"  : noCommas($("#PH-Houses-listtotal").text()), //列計價值
+                "land"  :       noCommas($("#PH-Land").text()),   //土地筆數      
+                "land_total"  : noCommas($("#PH-Land-total").text()),     //土地總值
+                "land_num"  :   noCommas($("#PH-Land-num").text()),       //列計筆數
+                "land_listtotal"  : noCommas($("#PH-Land-listtotal").text()),     //列計價值
+                "total_imm"  :  noCommas($("#PH-total-imm").text()),     //不動產列計總額
+                "salary"  :     noCommas($("#PH-Salary").text()),     //薪資
+                "profit"  :     noCommas($("#PH-Profit").text()),     //營利
+                "property_inc"  : noCommas($("#PH-Property-inc").text()), //財產所得
+                "bank_inc"  :   noCommas($("#PH-Bank-int").text()),       //存款利息
+                "stock_inc"  :  noCommas($("#PH-Stock-int").text()),      //股利
+                "others_inc"  : noCommas($("#PH-others-int").text()),     //其他所得 
+                "total_inc"  :  noCommas($("#PH-total-inc").text()),      //月均所得總額
                 "members"  :    $("#PH-members").text(),        //列計人口 
-                "need"  :       $("#PH-need").text(),           //生活所需-月
+                "need"  :       noCommas($("#PH-need").text()),           //生活所需-月
                 "level"  :      $("#PH-level").text(),           //扶助等級
                 "file_comm_1"  :$("#PH-file_comm_1").val(),           //整體家況敘述-公所
                 "file_comm_2"  :$("#PH-file_comm_2").val()           //整體家況敘述-局處
@@ -1294,33 +1371,33 @@
         $("#FView-PH-status").text(responsive['服役狀態']);
         $("#FView-PH-fulladdress").text(responsive['County_name']+responsive['Town_name']+responsive['Village_name']+responsive['戶籍地址']);
         
-        $("#FView-PH-members").text(responsive['總列計人口']);
-        $("#FView-PH-need").text(responsive['月所需']);
+        $("#FView-PH-members").text(numberWithCommas(responsive['總列計人口']));
+        $("#FView-PH-need").text(numberWithCommas(responsive['月所需']));
 
 
-        $("#FView-PH-Deposits").text(responsive['存款本金總額']);
-        $("#FView-PH-Investment").text(responsive['投資總額']);
-        $("#FView-PH-Securities").text(responsive['有價證券總額']);
-        $("#FView-PH-others-Pro").text(responsive['其他動產總額']);
-        $("#FView-PH-total-pro").text(responsive['總動產']);
+        $("#FView-PH-Deposits").text(numberWithCommas(responsive['存款本金總額']));
+        $("#FView-PH-Investment").text(numberWithCommas(responsive['投資總額']));
+        $("#FView-PH-Securities").text(numberWithCommas(responsive['有價證券總額']));
+        $("#FView-PH-others-Pro").text(numberWithCommas(responsive['其他動產總額']));
+        $("#FView-PH-total-pro").text(numberWithCommas(responsive['總動產']));
 
-        $("#FView-PH-Salary").text(responsive['薪資月所得']);
-        $("#FView-PH-Profit").text(responsive['營利月所得']);
-        $("#FView-PH-Property-int").text(responsive['財產月所得']);
-        $("#FView-PH-Bank-int").text(responsive['利息月所得']);
-        $("#FView-PH-Stock-int").text(responsive['股利月所得']);
-        $("#FView-PH-others-int").text(responsive['其他月所得']);
-        $("#FView-PH-total-inc").text(responsive['月總所得']);
+        $("#FView-PH-Salary").text(numberWithCommas(responsive['薪資月所得']));
+        $("#FView-PH-Profit").text(numberWithCommas(responsive['營利月所得']));
+        $("#FView-PH-Property-int").text(numberWithCommas(responsive['財產月所得']));
+        $("#FView-PH-Bank-int").text(numberWithCommas(responsive['利息月所得']));
+        $("#FView-PH-Stock-int").text(numberWithCommas(responsive['股利月所得']));
+        $("#FView-PH-others-int").text(numberWithCommas(responsive['其他月所得']));
+        $("#FView-PH-total-inc").text(numberWithCommas(responsive['月總所得']));
         
-        $("#FView-PH-Houses").text(responsive['房屋棟數']);
-        $("#FView-PH-Houses-total").text(responsive['房屋總價']);
-        $("#FView-PH-Houses-num").text(responsive['房屋非自用棟數']);
-        $("#FView-PH-Houses-listtotal").text(responsive['房屋列計總價']);
-        $("#FView-PH-Land").text(responsive['土地筆數']);
-        $("#FView-PH-Land-total").text(responsive['土地總價']);
-        $("#FView-PH-Land-num").text(responsive['土地非自用筆數']);
-        $("#FView-PH-Land-listtotal").text(responsive['土地列計總價']);
-        $("#FView-PH-total-imm").text(responsive['不動產列計總額']);
+        $("#FView-PH-Houses").text(numberWithCommas(responsive['房屋棟數']));
+        $("#FView-PH-Houses-total").text(numberWithCommas(responsive['房屋總價']));
+        $("#FView-PH-Houses-num").text(numberWithCommas(responsive['房屋列計棟數']));
+        $("#FView-PH-Houses-listtotal").text(numberWithCommas(responsive['房屋列計總價']));
+        $("#FView-PH-Land").text(numberWithCommas(responsive['土地筆數']));
+        $("#FView-PH-Land-total").text(numberWithCommas(responsive['土地總價']));
+        $("#FView-PH-Land-num").text(numberWithCommas(responsive['土地列計筆數']));
+        $("#FView-PH-Land-listtotal").text(numberWithCommas(responsive['土地列計總價']));
+        $("#FView-PH-total-imm").text(numberWithCommas(responsive['不動產列計總額']));
         $("#FView-PH-file_comm_1").val("");
         $("#FView-PH-file_comm_2").val("");
         $("#FView-PH-file_comm_1").val(responsive['整體家況敘述-公所']);
@@ -1384,13 +1461,12 @@ $(document).ready(function() {
         event.preventDefault();
         //console.log("帶入自動家況");
         var HomeStr = "";
-        HomeStr = "本戶扶助等級為" + $("#PH-level").text() + "，全戶月均所得為" + $("#PH-total-inc").text() + "元整，所得支出比為" + Math.floor(parseInt($("#PH-total-inc").text())/parseInt($("#PH-need").text())*100) + "%；";
-        HomeStr += "其動產總額為" + $("#PH-total-pro").text() + "元整，不動產列計總額為" + $("#PH-total-imm").text() + "元整。\n"
+        HomeStr = "本戶扶助等級擬列為" + $("#PH-level").text() + "，查其動產總額為" + numberWithCommas($("#PH-total-pro").text()) + "元整，不動產列計總額為" + numberWithCommas($("#PH-total-imm").text()) + "元整；全戶月均所得為" + numberWithCommas($("#PH-total-inc").text()) + "元整，所得支出比為" + (parseInt($("#PH-total-inc").text())/parseInt($("#PH-need").text())*100).toFixed(4) + "%。\n";
 
 
 
         $('.group-div').find(".comm-cont").each(function(index, el) {
-            HomeStr += $(this).val() + "\n";
+            HomeStr += ($(this).val()).replace(/\n/g , "") + "\n";
         });
 
         $("#PH-file_comm_1").val(HomeStr);
