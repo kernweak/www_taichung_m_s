@@ -1,4 +1,4 @@
-<div style="height:calc(10vh);">
+
   <div class="container-fluid">
       <div class="row">
           <div class='col-lg-4 col-md-4 col-sm-4'>
@@ -46,7 +46,8 @@
           </div>-->
       </div>
   </div>
-</div>
+  <br><br><br>
+
 <script type="text/javascript">
       function Date_today(year = 0){    //傳回今天日期 2016-05-13 變數調整年
         var today = new Date();
@@ -134,7 +135,8 @@
       $("#datetimepicker2 input").val(Date_today());
     }
     
-
+    hideChart();
+    hideMap();
     $.ajax({
       url: '/chart/pie',
       type: 'POST',
@@ -145,53 +147,189 @@
         Date_2: $("#datetimepicker2 input").val()
       },
     })
-    .done(function(responsive) {
-      console.log("success");
-
-      if($("#statistics_type select").val()=="各區案件申請數量"){
-        responsive[0][2] = { role: 'annotation' };
-      }
-
-      if($("#statistics_type select").val()=="全市核定案件扶助級別人數"){
-        $("#piechart").removeClass('in');
-        setTimeout(function(){ PieColumnChart(responsive,$("#statistics_type select").val(),"Pie"); }, 1000);
-        setTimeout(function(){ $("#piechart").addClass('in'); }, 1000);
-      }else{
-        $("#piechart").removeClass('in');
-        setTimeout(function(){ PieColumnChart(responsive,$("#statistics_type select").val(),"Column"); }, 1000);
-        setTimeout(function(){ $("#piechart").addClass('in'); }, 1000);
-      }
-
+    .done(function(response) {
+      console.log("success");      
       
-      
-      
+      var origData = response;
+      var chartData = [];
+      var sttsType = $("#statistics_type select").val();
 
+      //prepare chart data
+      switch (sttsType){
+        case "各區案件申請數量":
+          chartData.push(["區域", "件數", { role: 'annotation' }]);
+          for(i=0; i<origData.length; i++){
+            var row = [origData[i].Town_name, parseInt(origData[i].amount), origData[i].amount];
+            chartData.push(row);            
+          }
+          break;
+        case "各區核定案件數量":
+        case "各區核定案件扶助級別人數":
+          chartData.push(['區域','甲級','乙級',"丙級"]);
+          for(i=0; i<origData.length; i++){
+            var row = [origData[i].區別, parseInt(origData[i].甲級), parseInt(origData[i].乙級), parseInt(origData[i].丙級)];
+            chartData.push(row);
+          }
+          break;        
+        case "全市核定案件扶助級別人數":
+          chartData.push(["扶助級別", "人數"]);
+          for(i=0; i<origData.length; i++){
+            var row = [origData[i].GroupName, parseInt(origData[i].PostCount)];
+            chartData.push(row);
+          }
+          break;
+      }          
+
+      //draw chart
+      switch (sttsType){
+        case "各區案件申請數量":
+        case "各區核定案件數量":
+        case "各區核定案件扶助級別人數":
+          setTimeout(function(){ PieColumnChart(chartData,sttsType,"Column"); }, 1000);
+          setTimeout(showChart, 1000);
+          break;
+        case "全市核定案件扶助級別人數":
+          setTimeout(function(){ PieColumnChart(chartData,sttsType,"Pie"); }, 1000);
+          setTimeout(showChart, 1000);
+          break;
+      }      
+
+      //prepare map data and draw map
+      var mapInfoData;
+      switch (sttsType){
+        case "各區案件申請數量":
+          mapInfoData = convertData1(origData);
+          setTimeout(function(){drawMap(mapInfoData)}, 1000);
+          setTimeout(showMap, 1000);
+          break;
+        case "各區核定案件數量":
+          mapInfoData = convertData2(origData);
+          setTimeout(function(){drawMap(mapInfoData)}, 1000);
+          setTimeout(showMap, 1000);
+          break;
+        case "各區核定案件扶助級別人數":
+          mapInfoData = convertData3(origData);
+          setTimeout(function(){drawMap(mapInfoData)}, 1000);
+          setTimeout(showMap, 1000);
+          break;
+        case "全市核定案件扶助級別人數":
+        default:          
+          // hideMap();
+      }      
       
     })
     .fail(function() {
-      console.log("error");
+      console.log("error");      
     })
     .always(function() {
       console.log("complete");
-    });
-    
-
-
-
-
-
-
-
+    });    
   });
+
+  function convertData1(data){
+    var mapData = [];
+    for(i=0; i<data.length; i++){
+      var info = {
+          content: data[i].Town_name + ' '+ data[i].amount+'件',
+          position: {
+             lat: parseFloat(data[i].lat),
+             lng: parseFloat(data[i].lng)
+           }
+      }
+      mapData.push(info);
+    }
+    
+    return mapData;
+  }
+
+  function convertData2(data){
+    var mapData = [];
+    for(i=0; i<data.length; i++){
+      var total = parseInt(data[i].甲級) + parseInt(data[i].乙級) + parseInt(data[i].丙級);
+      var info = {
+          content: data[i].區別 + ' ' + total +'件',
+          position: {
+             lat: parseFloat(data[i].lat),
+             lng: parseFloat(data[i].lng)
+           }
+      }
+      mapData.push(info);
+    }    
+    return mapData;
+  }
+
+  function convertData3(data){
+    var mapData = [];
+    for(i=0; i<data.length; i++){
+      var total = parseInt(data[i].甲級) + parseInt(data[i].乙級) + parseInt(data[i].丙級);
+      var info = {
+          content: data[i].區別 + ' ' + total +'人',
+          position: {
+             lat: parseFloat(data[i].lat),
+             lng: parseFloat(data[i].lng)
+           }
+      }
+      mapData.push(info);
+    }    
+    return mapData;
+  }
+
+
+  function drawMap(data){
+    var xintun ={lat: 24.1779, lng: 120.633328};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: xintun,
+      zoom: 12
+    });    
+
+    for(i=0; i<data.length;i++){
+      var infowindow = new google.maps.InfoWindow(data[i]);
+      infowindow.open(map);
+    }        
+    // showMap();
+  }
+
+  function hideMap(){
+    $("#map").removeClass('in');
+    // $("#map").hide();
+  }
+  function showMap(){
+    $("#map").addClass('in');    
+    // $("#map").show();
+    // google.maps.event.trigger(map, 'resize');
+  }
+
+  function hideChart(){
+    $("#piechart").removeClass('in');
+  }
+
+  function showChart(){
+    $("#piechart").addClass('in');
+  }
+
 </script>
+
+    <script async defer
+       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAf3yYFNmlOV2vZnox1g0SkBMXajb6rL1o">
+    </script>
 <style type="text/css">
-  #piechart > div{
+  #piechart > div, #map{
     box-shadow: 2px 2px 10px 1px;
   }
 </style>
 <row>
-  <div style="height:calc(75vh - 10em);" id="draw_area">
-    <div id="piechart" class='col-lg-12 fade' style="height: calc(85vh - 10em);transition: 1s;/*margin:auto;*/"></div>
+  <div style="height:calc(85vh - 10em);" id="draw_area">
+    <div id="piechart" class='col-lg-8 col-lg-offset-2 fade' style="height: calc(85vh - 10em);transition: 1s;/*margin:auto;*/"></div>
+
+      <!--<div class="box">
+          <canvas id="chart-area" class="zone"></canvas>
+      </div>-->
+  </div>
+</row>
+<row>
+  <br/><br/><br/>
+  <div style="height:calc(85vh - 10em);padding-left:15px;padding-right:15px;" id="map_area">
+    <div id="map" class='col-lg-8 col-lg-offset-2 fade' style="height: 100%; transition: 1s;"></div>
 
       <!--<div class="box">
           <canvas id="chart-area" class="zone"></canvas>

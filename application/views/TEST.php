@@ -128,7 +128,7 @@
             </nav>
         </div>
         <div class="tab-content" id="Home_root">
-            <div id="filelist-navcon" role="tabpanel" class="tab-pane active fade in nav-container">
+            <div id="filelist-navcon" role="tabpanel" class="tab-pane active fade in nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
                 <?php include('filelist.php');?>
             </div>
             <div id="filelist-progress" role="tabpanel" class="tab-pane fade nav-container">
