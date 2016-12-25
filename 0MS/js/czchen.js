@@ -669,6 +669,7 @@ $(document).ready(function() {
         $('.group-div.selected').removeClass('selected');
         $(this).addClass('selected');
         right_total_count_redraw();
+        $(".right-total-count").fadeIn();
 
     });
 
@@ -1286,6 +1287,17 @@ $(document).ready(function() {
             $(this).next('span').css('color', '');
         }
         recount_left_family_panel();
+    });
+
+    //中面板.家屬.選擇生日：把值換回7碼
+    $('.center-total-count').on('focus', '.birthday', function(event) {
+        //console.log("選擇生日");
+        $(this).val(date_to_yyy($(this).attr("yyyymmdd")));
+    });
+
+    $('.center-total-count').on('blur', '.birthday', function(event) {
+        //console.log("選擇生日");
+        $(this).trigger('change');
     });
 
 

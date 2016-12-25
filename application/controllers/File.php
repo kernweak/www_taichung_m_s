@@ -74,7 +74,6 @@ class File extends MY_Controller {
 	* create a new military boy record, and initialize his subsidy file
 	*/
 	public function add_new_boy_file(){
-		date_default_timezone_set('Asia/Taipei');
 		// create a new boy record
 		$this->load->library('session');
 		//var_dump($this->session);
@@ -262,7 +261,6 @@ class File extends MY_Controller {
 	}
 
 	public function progress_log($file_key, $log_comment, $progress_name, $progress_level){
-		date_default_timezone_set('Asia/Taipei');
 		$this->load->model('file_model');
 		$this->load->library('session');
 		$Login_ID = $this->session->userdata('Login_ID');

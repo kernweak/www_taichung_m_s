@@ -2,7 +2,7 @@
     <?php include('left_total_count.php');?>
 </div>
 <div class="center-total-count">
-    <div style="height: 100%;width: calc(100% + 1em);overflow-y: scroll;">
+    <div style="height: calc(100% + 1em);width: calc(100% + 1em);overflow-y: scroll;padding-bottom: 1em;">
         <div class="group-div">
             <button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-people" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button>
             <div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="0MS/images/captain.svg" /></div>
@@ -386,9 +386,9 @@
         </div>
     </div>
 </div>
-<div class="right-total-count">
+<div class="right-total-count" style="display: none;">  
     
-<div>
+<div style="height: 100%;">
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
@@ -399,29 +399,9 @@
   </ul>
 
   <!-- Tab panes -->
-  <div class="tab-content" style="height: calc(100VH - 101px);">
+  <div class="tab-content" style="height: 100%;">
   <div role="tabpanel" class="tab-pane fade in active" id="right_tab_area">
-    <div><!--
-       <div class="town-name" area="臺北市">臺北市</div>
-       <div class="town-name" area="新北市">新北市</div>
-       <div class="town-name" area="桃園市">桃園市</div>
-       <div class="town-name" area="臺中市">臺中市</div>
-       <div class="town-name" area="臺南市">臺南市</div>
-       <div class="town-name" area="高雄市">高雄市</div>
-       <div class="town-name" area="基隆市">基隆市</div>m
-       <div class="town-name" area="新竹縣">新竹縣</div>
-       <div class="town-name" area="苗栗縣">苗栗縣</div>
-       <div class="town-name" area="彰化縣">彰化縣</div>
-       <div class="town-name" area="雲林縣">雲林縣</div>
-       <div class="town-name" area="嘉義縣">嘉義縣</div>
-       <div class="town-name" area="屏東縣">屏東縣</div>
-       <div class="town-name" area="宜蘭縣">宜蘭縣</div>
-       <div class="town-name" area="花蓮縣">花蓮縣</div>
-       <div class="town-name" area="臺東縣">臺東縣</div>
-       <div class="town-name" area="金門縣">金門縣</div>
-       <div class="town-name" area="連江縣">連江縣</div>
-       -->
-    </div> 
+    <div style="height: initial;"></div> 
     <div style="display: block;clear: left;padding-top:2em;">
         <div class="local-cost-limit-span">每月最低生活費：<span id="area_cost"></span></div>
         <div class="local-cost-limit-span">每年最低生活費：<span id="area_cost_year"></span></div>
@@ -429,8 +409,8 @@
     </div>
     
   </div>
-  <div role="tabpanel" class="tab-pane fade" id="right_tab_income" style="height: 100%;">
-    <div style="height: 100%;width: calc(100% + 1em);overflow-y: scroll;">
+  <div role="tabpanel" class="tab-pane fade" id="right_tab_income">
+    <div>
         <div class="inc-div-cont">
             
         </div>
@@ -460,8 +440,8 @@
 
 
   </div>
-  <div role="tabpanel" class="tab-pane fade" id="right_tab_property" style="height: 100%;">
-    <div style="height: 100%;width: calc(100% + 1em);overflow-y: scroll;">
+  <div role="tabpanel" class="tab-pane fade" id="right_tab_property">
+    <div>
         <div class="proper-inc-div">
             <sapn class="auto-proper">自動帶入</sapn>
         </div>
@@ -504,8 +484,13 @@
                 </select>
             </div>
         </div>
-        <div class="proper-inc-div">
-            <sapn class="add-proper add-new-button">新增財產</sapn>
+        <div class="proper-inc-div" style="text-align: center;padding-top: 2.2em;">
+            <sapn class="add-proper add-new-button" value="儲蓄存款">＋儲蓄存款</sapn>
+            <sapn class="add-proper add-new-button" value="有價證券">＋有價證券</sapn>
+            <sapn class="add-proper add-new-button" value="投資">＋新增投資</sapn>
+            <sapn class="add-proper add-new-button" value="房屋">＋新增房屋</sapn>
+            <sapn class="add-proper add-new-button" value="土地">＋新增土地</sapn>
+            <sapn class="add-proper add-new-button" value="其他">＋新增其他</sapn>
         </div>
         <div class="modal fade" id="confirm-delete-pro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -526,7 +511,7 @@
     </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="right_tab_membercomm">個人敘述將顯示於此
-  <div class="proper-inc-div">
+  <div class="proper-inc-div" style="height: 6.8em;width: 90%;">
             <sapn class="auto-comm">自動帶入</sapn>
   </div>
   <textarea style="display: block;background-color: #f3ede8;height: 12em;">測試</textarea>

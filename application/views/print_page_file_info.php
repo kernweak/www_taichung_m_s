@@ -213,17 +213,18 @@
     	<table id="boy_info" border="1" style="text-align: center;width: 95%;margin:auto;/*margin-top: 0.5em;*/">
 			<tbody>
 			<tr>
-				<td class="C1-1" style="width:12%;">役男姓名</td><td style="width:21.3%;"><?php echo $file_info->役男姓名; ?></td>
-				<td class="C2-1" style="width:12%;">身分證號</td><td style="width:21.3%;"><?php echo $file_info->身分證字號; ?></td>
-				<td class="C3-1" style="width:12%;">役男生日</td><td style="width:21.3%;"><?php echo $file_info->役男生日; ?></td>
+				<td class="C1-1" style="width:10%;">役男姓名</td><td style="width:27.5%;"><?php echo $file_info->役男姓名; ?></td>
+				<td class="C2-1" style="width:10%;">身分證號</td><td style="width:27.5%;"><?php echo $file_info->身分證字號; ?></td>
+				<td class="C3-1" style="width:10%;">役男生日</td><td style="width:15%;"><?php $date = new DateTime($file_info->役男生日); $date->modify("-1911 year"); echo ltrim($date->format('Y年m月d日'),"0");?></td>
 			</tr>
 			<tr>
-				<td class="C1-1">入伍日期</td><td><?php echo $file_info->入伍日期; ?></td>
+				<td class="C1-1">入伍日期</td><td><?php $date = new DateTime($file_info->入伍日期); $date->modify("-1911 year"); echo ltrim($date->format('Y年m月d日'),"0");?></td>
 				<td class="C2-1">服役軍種</td><td><?php echo $file_info->服役軍種; ?></td>
 				<td class="C3-1">服役狀態</td><td><?php echo $file_info->服役狀態; ?></td>
 			</tr>
 			<tr>
-				<td class="C1-1">戶籍地址</td><td  colspan="5"><?php echo $file_info->County_name.$file_info->Town_name.$file_info->Village_name.$file_info->戶籍地址; ?></td>
+				<td class="C1-1">戶籍地址</td><td  colspan="3" style="/*font-size:0.95em; vertical-align: bottom;*/"><?php echo $file_info->County_name.$file_info->Town_name.$file_info->Village_name.$file_info->戶籍地址; ?></td>
+				<td class="C1-1">申請日期</td><td><?php $date = new DateTime($file_info->建案日期); $date->modify("-1911 year"); echo ltrim($date->format('Y年m月d日'),"0");?></td>
 			</tr>
 			</tbody>
 		</table><br>
