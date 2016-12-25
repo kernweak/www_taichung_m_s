@@ -485,12 +485,12 @@
             </div>
         </div>
         <div class="proper-inc-div" style="text-align: center;padding-top: 2.2em;">
-            <sapn class="add-proper add-new-button" value="儲蓄存款">＋儲蓄存款</sapn>
-            <sapn class="add-proper add-new-button" value="有價證券">＋有價證券</sapn>
-            <sapn class="add-proper add-new-button" value="投資">＋新增投資</sapn>
-            <sapn class="add-proper add-new-button" value="房屋">＋新增房屋</sapn>
-            <sapn class="add-proper add-new-button" value="土地">＋新增土地</sapn>
-            <sapn class="add-proper add-new-button" value="其他">＋新增其他</sapn>
+            <sapn class="add-proper add-new-button" value="Deposits">＋儲蓄存款</sapn>
+            <sapn class="add-proper add-new-button" value="Securities">＋有價證券</sapn>
+            <sapn class="add-proper add-new-button" value="Investment">＋新增投資</sapn>
+            <sapn class="add-proper add-new-button" value="Houses">＋新增房屋</sapn>
+            <sapn class="add-proper add-new-button" value="Land">＋新增土地</sapn>
+            <sapn class="add-proper add-new-button" value="others">＋新增其他</sapn>
         </div>
         <div class="modal fade" id="confirm-delete-pro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">

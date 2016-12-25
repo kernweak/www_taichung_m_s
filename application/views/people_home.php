@@ -93,53 +93,58 @@
 	<div>
 		<div class="upload_div">		
 				<label>戶口名簿</label>
-				<br/><a id="attach_0">0122456.pdf</a>
-				<hr class="thin"/>				
+				<br/><a id="attach_0" class="attach-a" target="_blank"></a>
+				<hr class="athin"/>				
 				<input type="hidden" value="0"/>
-				<input type="file" name="attachment"/>
+				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="file" name="attachment" class="transparent_input" />
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
-				<p class="msg"></p>			
+				<p class="msg" style="display: none;"></p>			
 		</div>
 		<div class="upload_div">			
 				<label>所得</label>
-				<br/><a id="attach_1">0122456.pdf</a>
-				<hr class="thin"/>
+				<br/><a id="attach_1" class="attach-a" target="_blank"></a>
+				<hr class="athin"/>
 				<input type="hidden" value="1"/>
-				<input type="file" name="attachment"/>
+				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="file" name="attachment" class="transparent_input" />
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
-				<p class="msg"></p>
+				<p class="msg" style="display: none;"></p>
 		</div>
 		<div class="upload_div">	
 				<label>財產</label>
-				<br/><a id="attach_2">0122456.pdf</a>
-				<hr class="thin"/>
+				<br/><a id="attach_2" class="attach-a" target="_blank"></a>
+				<hr class="athin"/>
 				<input type="hidden" value="2"/>
-				<input type="file" name="attachment"/>
+				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="file" name="attachment" class="transparent_input" />
 				<p class="alert"></p>
 				<button class="upload">上傳</button>			
-				<p class="msg"></p>
+				<p class="msg" style="display: none;"></p>
 		</div>
 		<div class="upload_div">			
 				<label style="width: 8em;">學生證/醫療證明</label>
-				<br/><a id="attach_3">0122456.pdf</a>
-				<hr class="thin"/>
+				<br/><a id="attach_3" class="attach-a" target="_blank"></a>
+				<hr class="athin"/>
 				<input type="hidden" value="3"/>
-				<input type="file" name="attachment"/>
+				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="file" name="attachment" class="transparent_input" />
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
-				<p class="msg"></p>
+				<p class="msg" style="display: none;"></p>
 		</div>
 		<div class="upload_div">			
 				<label>其他</label>
-				<br/><a id="attach_4">0122456.pdf</a>
-				<hr class="thin"/>
+				<br/><a id="attach_4" class="attach-a" target="_blank"></a>
+				<hr class="athin"/>
 				<input type="hidden" value="4"/>
-				<input type="file" name="attachment"/>				
+				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="file" name="attachment" class="transparent_input" />			
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
-				<p class="msg"></p>
+				<p class="msg" style="display: none;"></p>
 		</div>
 	</div>
 </div>
@@ -148,44 +153,60 @@
 </div>
 
 <script>
-$('input[type=file]').on('change', function(e){
-	var file = e.currentTarget.files[0];
-	if (file.size > 4194304){ //max file size is 4 MB = 4096 KB = 4194304 Bytes
-		$(this).next('.alert').html('檔案必須小於4MB');
-		// $(this).siblings('button').fadeOut('slow');
-		$(this).siblings('button').prop('disabled', true);		
-	}else{
-		$(this).next('.alert').html('');
-		// $(this).siblings('button').fadeIn('slow');		
-		$(this).siblings('button').prop('disabled', false);		
-	}
-});
 
-        $('.upload').on('click', function () {
-                    // var file_data = $('#file').prop('files')[0];
-                    var file_data = $(this).siblings('input[type=file]').prop('files')[0];
-                    var file_id = $('.people_home').attr('file_id'); //案件編號
-                    var file_category = $(this).siblings('input[type=hidden]').val();
-                    var form_data = new FormData();
-                    var msg = $(this).siblings('.msg').get(0);
-                    form_data.append('attachment', file_data);
-                    form_data.append('file_id', file_id);
-                    form_data.append('category', file_category);
+	$('input[type=file]').on('change', function(e){
+		$(this).parent().children('.fake_input').val($(this).val());
+		var file = e.currentTarget.files[0];
+		if (file.size > 4194304){ //max file size is 4 MB = 4096 KB = 4194304 Bytes
+			$(this).next('.alert').html('檔案必須小於4MB');
+			// $(this).siblings('button').fadeOut('slow');
+			$(this).siblings('button').prop('disabled', true);		
+		}else{
+			$(this).next('.alert').html('');
+			// $(this).siblings('button').fadeIn('slow');		
+			$(this).siblings('button').prop('disabled', false);		
+		}
+	});
 
-                    $.ajax({
-                        url: '/index.php/attachment/upload', // point to server-side controller method
-                        dataType: 'text', // what to expect back from the server
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: form_data,
-                        type: 'post',
-                        success: function (response) {
-                            $(msg).html(response); // display success response from the server
-                        },
-                        error: function (response) {
-                            $(msg).html(response); // display error response from the server
-                        }
-                    });
+    $('.upload').on('click', function () {
+        // var file_data = $('#file').prop('files')[0];
+        var file_data = $(this).siblings('input[type=file]').prop('files')[0];
+        var file_id = $('.people_home').attr('file_id'); //案件編號
+        var file_category = $(this).siblings('input[type=hidden]').val();
+        var form_data = new FormData();
+        var msg = $(this).siblings('.msg').get(0);
+        var hyper_link = $(this).siblings('.attach-a').eq(0);
+
+        form_data.append('attachment', file_data);
+        form_data.append('file_id', file_id);
+        form_data.append('category', file_category);
+
+        $.ajax({
+            url: '/index.php/attachment/upload', // point to server-side controller method
+            dataType: 'text', // what to expect back from the server
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function (response) {
+                $(msg).html(response); // display success response from the server
+                $(msg).show();
+                $("#edit-home").scrollTop(10000);
+                var strs = response.split('<br>新檔名: ');
+                var newfile = strs[1];
+                console.log(newfile);
+                $(hyper_link).text(newfile);
+                $(hyper_link).attr('href', '/uploads/'+newfile);
+                $(this).parent().children('.fake_input').val("");
+                setTimeout(function(){
+                    $(msg).fadeOut('2000');
+            	},1500);
+
+            },
+            error: function (response) {
+                $(msg).html(response); // display error response from the server
+            }
         });
+    });
 </script>

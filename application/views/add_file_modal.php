@@ -47,14 +47,14 @@
                         <label for="ADF-status">服役狀態:</label>
                         <select name="ADF-status" id="ADF-status"><option value="服役中">服役中</option><option value="停役中">停役中</option><option value="已退役">已退役</option></select>
                     </div>
-                    <div class="form-actions">
+                    <div class="form-actions"><br>　　　　:
                         <button type="submit" class="button primary" id="ADF-submit">新增</button>
                         <button type="button" class="button link" id="ADF-clear">清除</button>
                     </div>
                 </div>
                 <hr class="thin"/>
                 <br />
-                <span class="mif-spinner2 mif-ani-spin fade" id="ADF-wait-icon"></span><span id="ADF-Msg">填寫資料</span>
+                <span class="mif-spinner2 mif-ani-spin fade" id="ADF-wait-icon"></span><span id="ADF-Msg" style="padding: 0.5em;">填寫資料</span>
                 
 
                 
@@ -148,15 +148,30 @@
 
         $( "#ADF-submit" ).on( "click", function( event ) {             //新增役男案件
             event.preventDefault();
+            $("#ADF-Msg").text('').removeClass('btn-warning');
             //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
             if($('#ADF-name').val() == ""){
-                alert("請先輸入姓名!");
+                //alert("請先輸入役男姓名!");
+                $("#ADF-Msg").text('請先輸入役男姓名!').addClass('btn-warning');
                 return;
             }
             if($('#ADF-code').val() == ""){
-                alert("請先輸入身分證字號!");
+                //alert("請先輸入身分證字號!");
+                $("#ADF-Msg").text('請先輸入身分證字號!').addClass('btn-warning');
                 return;
             }
+            if($('#ADF-birthday').val() == ""){
+                //alert("請先輸入役男生日!");
+                $("#ADF-Msg").text('請先輸入役男生日!').addClass('btn-warning');
+                return;
+            }
+            if($('#ADF-milidate').val() == ""){
+                //alert("請先輸入役男入伍日期!");
+                $("#ADF-Msg").text('請先輸入役男入伍日期!').addClass('btn-warning');
+                return;
+            }
+            
+            
 
             $("#MSG").text("連線中...");
             $("#ADF-wait-icon").addClass('in');
@@ -195,10 +210,14 @@
                     $("#family-edit-nav").fadeIn('400');
                     $('#Add_file').modal('hide');
                     $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
-                    read_file(responsive['file_key']);
+                    read_file_test(responsive['file_key']);
                     setTimeout(function(){
                         empty_members();
                         add_miliboy();
+                        setTimeout(function(){
+                            $(".add-people").trigger("click");
+                        },1000);
+                        
                         $("#PH-file_comm_1").val("");
                         $("#PH-file_comm_2").val("");
                     },1000);

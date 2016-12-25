@@ -166,7 +166,7 @@ $(document).ready(function() {
     
     
     //版本列表，轉換為可排序可分頁之dataTable
-    $('#Stock_table').dataTable({
+    var Stock_table = $('#Stock_table').dataTable({
         "lengthMenu": [10, 25, 1],
         "language": {
             "paginate": {
@@ -541,15 +541,13 @@ $(document).ready(function() {
         total_property_imm_count = total_property_land_value_con + total_property_house_value_con;
         property_move_limit = 2500000 + (total_members_count - 1) * 250000;
         property_imm_limit = imm_area_array.min();
+        //console.log(property_imm_limit);
+        if(!isFinite(property_imm_limit)){   //抓不到的話，就用役男的戶籍地
+            var area = $(GDIV).eq(0).find(".member_area").attr('area-index');   //2016-12-25捕捉縣市區域用的ARRAY，目前是用人來抓，準備改成用房屋土地來抓
+            property_imm_limit = Property_limit[area][3]; 
+            //console.log("抓到啥?");
+        }
         total_property_move = total_property_Deposits+total_property_Securities+total_property_Investment+total_property_Others;
-
-        console.log();
-        console.log();
-        console.log();
-        console.log();
-        console.log();
-        console.log();
-        console.log();
 
         //console.log("列計人數："+total_members_count);
         $("#PH-members").text(total_members_count);
@@ -661,6 +659,7 @@ $(document).ready(function() {
         $('.group-div.selected').remove();
         $('#confirm-delete-people').modal('hide');
         recount_left_family_panel();
+        $('.right-total-count').fadeOut('slow');
     });
 
     //中面板-成員面板被點擊時，加上被選擇狀態，且更新右側詳細資料面板
@@ -730,35 +729,59 @@ $(document).ready(function() {
 
     //右面板.財產.新增財產按鈕點擊事件
     $("#right_tab_property").on('click', '.add-proper', function(event) {
+        //console.log($(this).attr("value"));
         var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4 fade"><option value="y" selected="">非自住</option><option value="m">自住</option></select><select class="proper-inc-div-6 fade"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
         $(PRO_DIV).appendTo('#right_tab_property .pro-div-cont');
         var area = $(".center-total-count .group-div").eq(0).find(".member_area").val();
-        $('#right_tab_property .pro-div-cont .proper-inc-div').last().find('.proper-inc-div-6').val(area);
+        var new_pro = $('#right_tab_property .pro-div-cont .proper-inc-div').last();
+        $(new_pro).find('.proper-inc-div-6').val(area).trigger('change');
+        $(new_pro).find('.proper-inc-div-1').val($(this).attr("value")).trigger('change');
+        $("#right_tab_property > div").animate({scrollTop:$("#right_tab_property > div").scrollTop()+170}, '500', 'swing');
+    });
 
+    //右面板.財產.自動帶入按鈕點擊事件
+    $("#right_tab_property").on('click', '.auto-proper', function(event) {
+        $(".group-div.selected .income-cont .proper-inc-div").each(function(index, el) {
+              var type = $(this).children('.proper-inc-div-1').val();
+              if( type == "Stock-int" || type == "Bank-int" ){   //Securities    Deposits
+                if (type == "Stock-int"){
+                    var type2 = "Securities";
+                    var value = Math.floor($(this).children('.proper-inc-div-2').val() / $(this).children('.proper-inc-div-7').val() * 10);
 
+                } 
+                if (type == "Bank-int"){
+                    var type2 = "Deposits";
+                    var value = Math.floor($(this).children('.proper-inc-div-2').val() / $(this).children('.proper-inc-div-7').val());
 
-        
-        
+                } 
+                
+                 //若是財產中有股票/銀行利息者
+                 //存款 = 年入金額 / 息率
+                 //股票 = 年入金額 / 息率 * 10
+                 //prepend() 和 prependTo()   從上方插入
+                var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4 fade"><option value="y" selected="">非自住</option><option value="m">自住</option></select><select class="proper-inc-div-6 fade"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
+                $(PRO_DIV).prependTo('#right_tab_property .pro-div-cont');
+                var area = $(".center-total-count .group-div").eq(0).find(".member_area").val();
+                var new_pro = $('#right_tab_property .pro-div-cont .proper-inc-div').eq(0);
+                $(new_pro).addClass('Pdiv-Strong');
+                $(new_pro).find('.proper-inc-div-6').val(area).trigger('change');
+                $(new_pro).find('.proper-inc-div-1').val(type2).trigger('change');
+                $(new_pro).find('.proper-inc-div-2').val(value).trigger('change');
+                $(new_pro).find('.proper-inc-div-3').val($(this).children('.proper-inc-div-3').val()).trigger('change');
+                $(new_pro).find('.proper-inc-div-5').val("自動逆算產生").trigger('change');
+                
+              }
+        },Clear_Pdiv_Strong());//.Pdiv-Strong
+ //console.log("callback");
+            //setTimeout(function(){$(".Pdiv-Strong").removeClass('Pdiv-Strong');}, 2000);
+//.Pdiv-Strong
 
+    });
 
+    function Clear_Pdiv_Strong(){
+        setTimeout(function(){$(".Pdiv-Strong").removeClass('Pdiv-Strong');}, 2000);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //console.log(area);
-
-        /* Act on the event */
-    });    
 
     //右面板.財產.財產面板-刪除紐點擊時，將此div selected，並更新提示面板內的資料
     $('.right-total-count').on('click', '#right_tab_property .proper-inc-div .close', function(event) {
@@ -875,8 +898,9 @@ $(document).ready(function() {
 
     //右面板.所得.新增所得按鈕被點擊後
     $("#right_tab_income .add-proper-inc").click(function(event) {
-        var INC_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-inc" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Salary" selected>薪資</option><option value="Stock-int">股票配息</option><option value="Profit">營利</option><option value="Bank-int" >存款利息</option><option value="others">其他</option></select><input placeholder="額度-新台幣(元)" class="people-input-right proper-inc-div-2" value="0"><input placeholder="來源單位(企業或機構)" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"><option value="m">月收</option><option value="y" selected>年收</option></select><input placeholder="利率/值" class="people-input-right proper-inc-div-7" value="" style="display: none;"></div>';
+        var INC_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-inc" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Salary" selected>薪資</option><option value="Stock-int">股票配息</option><option value="Profit">營利</option><option value="Bank-int" >存款利息</option><option value="others">其他</option></select><input placeholder="額度-新台幣(元)" class="people-input-right proper-inc-div-2" value="0"><input placeholder="來源單位(企業或機構)" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"><option value="m">月收</option><option value="y" selected>年收</option></select><input placeholder="利率/值" class="people-input-right proper-inc-div-7 fade"></div>';
         $(INC_DIV).appendTo('#right_tab_income .inc-div-cont');
+        $("#right_tab_income > div").animate({scrollTop:$("#right_tab_income > div").scrollTop()+170}, '500', 'swing');
     });
 
     //右面板.所得.所得面板-刪除紐點擊時，將此div selected，並更新提示面板內的資料
@@ -934,11 +958,20 @@ $(document).ready(function() {
 
             if($(this).children("option:selected").text() == '股票配息' || $(this).children("option:selected").text() == '存款利息'){
                 $(this).parent().find(".proper-inc-div-4").val("y");
-                $(this).parent().find(".proper-inc-div-7").fadeIn();
-                if($(this).children("option:selected").text() == '存款利息'){$(this).parent().find(".proper-inc-div-7").val(0.01355)}
+                $(this).parent().find(".proper-inc-div-7").addClass('in');
+                if($(this).children("option:selected").text() == '存款利息'){
+                    $(this).parent().find(".proper-inc-div-7").val(0.01355);
+                }else{
+                    $(this).parent().find(".proper-inc-div-7").val(0);
+                }
             }else{
-                $(this).parent().find(".proper-inc-div-7").fadeOut();
+                $(this).parent().find(".proper-inc-div-7").removeClass('in');
             }
+        }
+        if($(this).is(".proper-inc-div-3") && $(this).parent().find(".proper-inc-div-1").children("option:selected").text() == '股票配息'){
+            $('#Law_4').modal('toggle');
+            //Stock_table.search($(this).val()).draw() ;
+            $("#Stock_table_filter > label > input").val($(this).val()).trigger('keyup');
         }
         //複製回成員隱藏面板
         var MDIV = $(".group-div.selected").eq(0);
@@ -993,7 +1026,7 @@ $(document).ready(function() {
         var job = $.trim($(".group-div.selected .people-job input").val());
         job = job?job:'無';
         var income = $.trim($(".group-div.selected .people-income-total-value").text());       
-        income = (income === '0')?'查無所得資料':'月均所得：$'+income;
+        income = (income === '0')?'查無所得資料':'月均所得：$'+numberWithCommas(income);
 
         var special = $(".group-div.selected .people-special select option:selected").val();
         var status = $(".group-div.selected .people-special select option:selected").text();
@@ -1071,13 +1104,13 @@ $(document).ready(function() {
         real_estate += (self_land_count>0)? '自用土地 '+self_land_count+'筆；':'';
         real_estate += (house_count>0)? '非自用房屋 '+house_count+'筆；':'';
         real_estate += (land_count>0)? '非自用土地 '+land_count+'筆；':'';
-        real_estate = (real_estate ==='')?'':'名下有不動產：'+real_estate+'列計總額共 $'+house_land_value+'元整。';
+        real_estate = (real_estate ==='')?'':'名下有不動產：'+real_estate+'列計總額共 $'+numberWithCommas(house_land_value)+'元整。';
         
         var movable = (saving_count>0)?'儲蓄存款 '+saving_count+'筆；':'';
         movable += (security_count>0)?'有價證券 '+security_count+'筆；':'';
         movable += (investment_count>0)?'投資 '+investment_count+'筆；':'';
         movable += (others_count>0)?'其他 '+others_count+'筆；':'';
-        movable = (movable === '')?'':'名下有動產：'+movable+'共 $'+movable_value+'元整。';
+        movable = (movable === '')?'':'名下有動產：'+movable+'共 $'+numberWithCommas(movable_value)+'元整。';
         description = description +'\n' +real_estate+'\n' +movable;
 
         $('#confirm-auto-comm .modal-body').html(description);
@@ -1258,6 +1291,7 @@ $(document).ready(function() {
         svg_redraw();
         var index_g = $(".group-div").length - 2;
         $(".group-div").eq(index_g).find('.people-id-address input').trigger('change');
+        $(".center-total-count > div").animate({scrollTop:$(".center-total-count > div").scrollTop()+270}, '500', 'swing');
         //recount_left_family_panel();
     });
 
@@ -1292,12 +1326,21 @@ $(document).ready(function() {
     //中面板.家屬.選擇生日：把值換回7碼
     $('.center-total-count').on('focus', '.birthday', function(event) {
         //console.log("選擇生日");
-        $(this).val(date_to_yyy($(this).attr("yyyymmdd")));
+        if($(this).val()!=""){
+            $(this).val(date_to_yyy($(this).attr("yyyymmdd")));
+        }
+        
     });
 
     $('.center-total-count').on('blur', '.birthday', function(event) {
-        //console.log("選擇生日");
-        $(this).trigger('change');
+        console.log("選擇生日");
+        if($(this).val()!=""){
+            if($(this).attr("yyyymmdd") == yyy_to_date($(this).val()) ){
+                $(this).trigger('change');
+            }
+            
+        }
+        
     });
 
 

@@ -20,6 +20,8 @@
     .nav-container {
         padding: 0em;
         padding-top: 3.5em;
+        padding-left: 0.3em;
+        padding-right: 0.3em;
         position: absolute;
         left: 0;
         top: 0;
@@ -27,6 +29,10 @@
         height: 100%;
     }
     
+    #edit-navcon{
+        /*padding-left: 0.3em;*/
+    }
+
     table .progress {
         margin-bottom: 0px;
     }
@@ -75,8 +81,45 @@
     #family-edit-nav {
         display: none;
     }
-
-
+    .athin{
+        margin-top: 1px;
+        margin-bottom: 12px;
+        border-top: 2px solid #b3b3b3;
+    }
+    .attach-a{
+        display:block;
+        width:100%;
+        height:1.5em;
+    }
+    .fake_input{
+        width: 100%;
+        font-size: 0.85em;
+    }
+    .transparent_input{
+        position: absolute;
+        top: 4.3em;
+        height: 2.5em;
+        width: calc(100% - 1em);
+        /*background-color: aqua;*/
+        opacity: 0;
+    }
+    .upload_div .alert{
+        padding: 0px;
+        margin-bottom: 0px;
+        border: 0px;
+        border-radius: 0px;
+        -webkit-box-shadow: 0 0 0;
+        box-shadow: 0 0 0;
+        display: block;
+        width: 100%;
+        height: 2em;
+    }
+    
+    .h4-label-btn-group{
+        float: left;
+        margin-right: 3em;
+        margin-bottom: 1em;
+    }
     /***********************************************/
     .progress-bar{
         overflow: visible;
@@ -490,7 +533,13 @@
         border-radius: 0.5em;
         position: relative;
         font-size: 1.3em;
+        transition: 2s;
     }
+    
+    .Pdiv-Strong{
+        background-color: #db8c3d !important;
+    }
+
     .proper-inc-div-1{
         position: absolute;
         top: 0.5em;
@@ -670,4 +719,5 @@
     box-shadow: 0.05em 0.05em 0.05em 0.05em;
     margin-right: 0.5em;
     width: 13.5em;
+    position: relative;
 }

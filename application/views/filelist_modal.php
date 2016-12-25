@@ -1,11 +1,11 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document" style="min-width: 80em;">
+    <div class="modal-dialog modal-lg" role="document" style="min-width: 95%;width: 99%;height: 100%;margin: 10px auto;">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #eaa47c;border-top-left-radius: 6px;border-top-right-radius: 6px;">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height: 86vh;overflow: auto;">
                 <br><br><br><br>
                 <table style="width: 100%;">
                 <thead>
@@ -97,7 +97,7 @@
                 </table>
         <br>
         <label for="view_log_comment"><h3>家庭概況</h3></label>
-        <table border="1" style="text-align: center;">
+        <table border="1" style="text-align: center;width: 80%;">
         <tbody><tr>
         <td colspan="2" style="background-color: #ced790;">動產</td>
         <td colspan="4" style="background-color: #90c5d7;">不動產</td>
@@ -166,8 +166,42 @@
     </tbody></table>
     <br><br><br>
     <hr class="thin"/>
-    
-    
+    <div class="h4-label-btn-group" id="View-att-0" afile="">
+        <h4><span class="label label-danger">戶口名簿</span></h4>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="b1 btn btn-danger">直接瀏覽</button>
+          <a type="button" class="b2 btn btn-danger" target="_blank">外部開啟</a>
+        </div>
+    </div>
+    <div class="h4-label-btn-group" id="View-att-1" afile="">
+        <h4><span class="label label-warning">所得證明</span></h4>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="b1 btn btn-warning">直接瀏覽</button>
+          <a type="button" class="b2 btn btn-warning" target="_blank">外部開啟</a>
+        </div>
+    </div>
+    <div class="h4-label-btn-group" id="View-att-2" afile="">
+        <h4><span class="label label-info">財產證明</span></h4>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="b1 btn btn-info">直接瀏覽</button>
+          <a type="button" class="b2 btn btn-info" target="_blank">外部開啟</a>
+        </div>
+    </div>
+    <div class="h4-label-btn-group" id="View-att-3" afile="">
+        <h4><span class="label label-success">在學與就醫證明</span></h4>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="b1 btn btn-success">直接瀏覽</button>
+          <a type="button" class="b2 btn btn-success" target="_blank">外部開啟</a>
+        </div>
+    </div>
+    <div class="h4-label-btn-group" id="View-att-4" afile="">
+        <h4><span class="label label-primary">其他資料</span></h4>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="b1 btn btn-primary">直接瀏覽</button>
+          <a type="button" class="b2 btn btn-primary" target="_blank">外部開啟</a>
+        </div>
+    </div>
+    <hr class="thin" style="clear: left;"/>
     <!--<hr class="thin"/>-->
     <div style="width: 39vw; display: inline-block;vertical-align: top;">
         <div style="width: 100%;">
@@ -177,13 +211,11 @@
             <label style="width: 20em;"><h3>整體家況敘述確認-市政府</h3></label>
             <textarea  style="width: 96%;height: 30em;"  id="FView-PH-file_comm_2" disabled></textarea>
         </div>
-    </div><div style="width: 50vw; display: inline-block;vertical-align: top;"><h3 style="margin-top: 0px;margin-bottom: 15px;">PDF測試</h3><iframe src="\uploads\test01.pdf" style="width: 50vw;height: 100vh; display: inline-block;"></iframe></div>
+    </div><div style="width: 50vw; display: inline-block;vertical-align: top;"><h3 style="margin-top: 0px;margin-bottom: 15px;">PDF測試</h3><iframe id="pdf_viewer" src="\uploads\test01.pdf" style="width: 50vw;height: 100vh; display: inline-block;"></iframe></div>
     <br/>
     <hr class="thin"/>
     
 
-
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
 
@@ -232,12 +264,6 @@
                 <td>初審</td>
                 </tr></tbody></table>
                 <br><br><br>
-                <!--<label for="log_comment">意見批註</label>
-
-                <textarea name="log_comment" id="log_comment" style="width: 100%;height: 15em;"></textarea>-->
-
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -246,3 +272,10 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(".b1").on('click', function(event) {
+        event.preventDefault();
+        var afile_name = $(this).parents(".h4-label-btn-group").attr('afile');
+        $("#pdf_viewer").attr('src', '/uploads/'+afile_name);
+    });
+</script>

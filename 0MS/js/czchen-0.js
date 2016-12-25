@@ -537,7 +537,7 @@
 
 
     function read_file_test(file_key){
-
+        $('.right-total-count').hide();//隱藏右面板
 
 
         $.ajax({
@@ -656,6 +656,12 @@
         $("#attach_2").text(responsive['attach_property']);
         $("#attach_3").text(responsive['attach_statusprove']);
         $("#attach_4").text(responsive['attach_others']);
+
+        $("#attach_0").attr('href', '/uploads/'+responsive['attach_household']);
+        $("#attach_1").attr('href', '/uploads/'+responsive['attach_income']);
+        $("#attach_2").attr('href', '/uploads/'+responsive['attach_property']);
+        $("#attach_3").attr('href', '/uploads/'+responsive['attach_statusprove']);
+        $("#attach_4").attr('href', '/uploads/'+responsive['attach_others']);
 
         $(".people_home").attr('file_id', responsive['案件流水號']);
         $(".people_home").attr('boy_id', responsive['役男系統編號']);
@@ -883,7 +889,7 @@
         $.each(incomes, function(index, income) {
             var D_none = "", SS = "" , ST = "", SP = "", SB = "", SO = "", SY = "", SM = "";
             if (income.type == "股票配息" || income.type == "存款利息"){
-                D_none = 'style="display: none;"';
+                D_none = 'in';
             }
             if(income.type == "薪資"){ SS = 'selected="selected"'; };
             if(income.type == "股票配息"){ ST = 'selected="selected"'; };
@@ -908,7 +914,7 @@
                                 '<option value="m" '+ SM +'>月收</option>' +
                                 '<option value="y" '+ SY +'>年收</option>' +
                             '</select>' +
-                            '<input placeholder="利率/值" class="people-input-right proper-inc-div-7" value="'+income.rate+'" '+ D_none +'>' +
+                            '<input placeholder="利率/值" class="people-input-right proper-inc-div-7 fade '+ D_none +'" value="'+income.rate+'" >' +
                           '</div>';
         });
         incomes_str += '</div>';
@@ -1006,8 +1012,8 @@
         var GROUP_DIV = '<div class="group-div" code=new edit=new><div style="width: 8em;height: 8em;"><img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/captain.svg" /></div><div class="income-total"><div>所得</div><div class="people-income-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="property-total"><div>財產</div><div class="people-property-total-value">0<img class="svg social-link NTD" src="/0MS/images/NTD.svg"></div></div><div class="people-job"><input class="people-input-left" placeholder="所得職業" value=""></div><div class="people-title"><input class="people-input-center" placeholder="稱謂" value="役男"></div><div class="people-name"><input class="people-input-left" placeholder="姓名" value="'+$("#PH-name").text()+'"></div><div class="people-id"><input class="people-input-left" placeholder="身份證字號" value="'+$("#PH-code").text()+'"></div><div class="people-id-address"><input class="people-input-left" placeholder="戶籍地址" value="'+ $("#PH-fulladdress").text() +'"></div><div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="未婚"></div><div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="前配偶"></div><div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="'+dash_yyy($("#PH-birthday").text())+'" style="width: 7em;">　　<span>(0歲)</span></div><div class="people-special">身分：<span style="color: #a47523;">不列口數</span><div style="width: 7.5em;position: relative;left: 1em;display: inline-block;"><select class="people-input-left"><option value="0,0">一般</option><option value="0,2">產業訓儲或第3階段替代</option><option value="1,15">歿</option><option value="1,1" selected>服役中</option><option value="1,3">榮民領有生活費</option><option value="1,4">就學領有公費</option><option value="1,5">通緝或服刑</option><option value="1,6">失蹤有案</option><option value="1,7">災難失蹤</option><option value="1,8">政府安置</option><option value="1,9">無設籍外、陸配</option><option value="1,10">無扶養事實之直系尊親屬</option><option value="1,11">未盡照顧職責之父母</option><option value="1,12">父母離異而分離之兄弟姊妹</option><option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option><option value="3,30">55歲以上,16歲以下無收入</option><option value="3,31">身心障礙、重大傷病</option><option value="3,32">3個月內之重大傷病</option><option value="3,33">學生</option><option value="3,34">孕婦</option><option value="3,35">獨自照顧直系老幼親屬</option><option value="3,36">獨自照顧重大傷病親屬</option><option value="3,37">不計收入：其他</option><option value="2,38">不計收入：其他</option></select></div></div><div class=hidden-info><input type="hidden" name="" class="member_area" value="" area-index><div class=income-cont></div><div class=property-cont></div><textarea class=comm-cont></textarea></div></div>';
         $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
         svg_redraw();
-        console.log($("#PH-birthday").text());
-        console.log(dash_yyy($("#PH-birthday").text()));
+        //console.log($("#PH-birthday").text());
+        //console.log(dash_yyy($("#PH-birthday").text()));
         $(".group-div").eq(0).find('.people-id-address input').trigger('change');
         $(".group-div").eq(0).find('.people-birthday input').trigger('change');
 
@@ -1403,6 +1409,42 @@
         $("#FView-PH-file_comm_1").val(responsive['整體家況敘述-公所']);
         $("#FView-PH-file_comm_2").val(responsive['整體家況敘述-局處']);
 
+        //有附件檔就傳檔名+顯示，不然就隱藏起來
+        if(responsive['attach_household'] != ""){
+            $("#View-att-0").attr('afile', responsive['attach_household']);
+            $("#View-att-0 .b2").attr('href', '/uploads/'+responsive['attach_household']);
+            $("#View-att-0").show();
+        }else{
+            $("#View-att-0").hide();
+        }
+        if(responsive['attach_income'] != ""){
+            $("#View-att-1").attr('afile', responsive['attach_income']);
+            $("#View-att-1 .b2").attr('href', '/uploads/'+responsive['attach_income']);
+            $("#View-att-1").show();
+        }else{
+            $("#View-att-1").hide();
+        }
+        if(responsive['attach_property'] != ""){
+            $("#View-att-2").attr('afile', responsive['attach_property']);
+            $("#View-att-2 .b2").attr('href', '/uploads/'+responsive['attach_property']);
+            $("#View-att-2").show();
+        }else{
+            $("#View-att-2").hide();
+        }
+        if(responsive['attach_statusprove'] != ""){
+            $("#View-att-3").attr('afile', responsive['attach_statusprove']);
+            $("#View-att-3 .b2").attr('href', '/uploads/'+responsive['attach_statusprove']);
+            $("#View-att-3").show();
+        }else{
+            $("#View-att-3").hide();
+        }
+        if(responsive['attach_others'] != ""){
+            $("#View-att-4").attr('afile', responsive['attach_others']);
+            $("#View-att-4 .b2").attr('href', '/uploads/'+responsive['attach_others']);
+            $("#View-att-4").show();
+        }else{
+            $("#View-att-4").hide();
+        }
         //$(".people_home").attr('file_id', responsive['案件流水號']);
         //$(".people_home").attr('boy_id', responsive['役男系統編號']);
     }
