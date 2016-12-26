@@ -39,8 +39,10 @@ class User_model extends CI_Model {
 	}
 
 	function User_updatePW($Login_ID, $FullName, $Login_PW0, $Login_PW1){
+		$datetime1 = new DateTime("now");
 		$data = array(    		
-    		'user_pw' => $Login_PW1
+    		'user_pw' => $Login_PW1,
+    		'上次修改密碼' => $datetime1->format('Y-m-d H:i:s')
     	);
     	$this->db->where('user_id', $Login_ID);
 		$this->db->where('user_pw', $Login_PW0);

@@ -710,7 +710,7 @@ $(document).ready(function() {
             $('.group-div.selected').find(".property-cont > div").clone().appendTo($(".pro-div-cont"));
         }
         //----------------------------敘述頁籤----------------------------------------------------
-        $("#right_tab_membercomm > textarea").val($('.group-div.selected').find(".comm-cont").val());
+        $("#right_tab_membercomm  textarea").val($('.group-div.selected').find(".comm-cont").val());
         //$('.group-div.selected').find(".comm-cont").val();
 
         //<div class=comm-cont></div>

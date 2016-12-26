@@ -203,7 +203,7 @@
     </div>
     <hr class="thin" style="clear: left;"/>
     <!--<hr class="thin"/>-->
-    <div style="width: 39vw; display: inline-block;vertical-align: top;">
+    <div style="width: 40%; display: inline-block;vertical-align: top;">
         <div style="width: 100%;">
             <label style="width: 20em;"><h3 style="margin-top: 0px;">整體家況敘述-區公所</h3></label>
             <textarea style="width: 96%;height: 30em;" id="FView-PH-file_comm_1" disabled></textarea>
@@ -211,7 +211,7 @@
             <label style="width: 20em;"><h3>整體家況敘述確認-市政府</h3></label>
             <textarea  style="width: 96%;height: 30em;"  id="FView-PH-file_comm_2" disabled></textarea>
         </div>
-    </div><div style="width: 50vw; display: inline-block;vertical-align: top;"><h3 style="margin-top: 0px;margin-bottom: 15px;">PDF測試</h3><iframe id="pdf_viewer" src="\uploads\test01.pdf" style="width: 50vw;height: 100vh; display: inline-block;"></iframe></div>
+    </div><div style="width: 60%; display: inline-block;vertical-align: top;"><h3 style="margin-top: 0px;margin-bottom: 15px;">PDF測試</h3><iframe id="pdf_viewer" src="" style="width: 100%;height: 100vh; display: inline-block;"></iframe></div>
     <br/>
     <hr class="thin"/>
     

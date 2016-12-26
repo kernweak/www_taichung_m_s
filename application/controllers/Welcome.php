@@ -2,7 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends MY_Controller {
-
+	public function __construct() { 
+        parent::__construct(); 
+    }
 	/**
 	 * Index Page for this controller.
 	 *
@@ -32,11 +34,29 @@ class Welcome extends MY_Controller {
 			$organization = $this->session->userdata('organization');
 			$department = $this->session->userdata('department');
 			$User_Level = $this->session->userdata('User_Level');
+			$Last_time_CPW = $this->session->userdata('Last_time_CPW');
+			$Auto_Logout_Time = $this->SC('Auto_Logout_Time');
+
 			$this->load->view('TEST', Array(
 				'FullName' 		=> 	$FullName,
 				'organization' 		=> 	$organization,
 				'User_Level' 		=> 	$User_Level,
+				'Auto_Logout_Time' 	=> 	$Auto_Logout_Time,
 			));
+
+			if($this->IF_PW_Expired($Last_time_CPW)){
+				$this->load->view('Javascript_command/PW_Effective_Days');    //若密碼過期，就執行這段
+			}else{
+				$this->load->view('Javascript_command/Normal');
+			}
+
+
+
+
+
+			
+			
+			$this->load->view('TEST_footer');
 		}
 		else{
 			$this->load->view('login');
@@ -55,6 +75,9 @@ class Welcome extends MY_Controller {
 		$this->load->library('session');
 		var_dump($this->session);
 	}
+
+
+
 
 	public function sso_2test(){					//首頁
 		if(!isset($_SESSION)) 

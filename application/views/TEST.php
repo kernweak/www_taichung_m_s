@@ -190,10 +190,6 @@
 <script type="text/javascript">
 //隔一段時間後，會自動登出
 $(document).ready(function () {
-    setTimeout(function(){
-        $("#preloader").fadeOut();
-    },1000);
-    
     //Increment the idle time counter every minute.
     var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
 
@@ -208,10 +204,8 @@ $(document).ready(function () {
 
 function timerIncrement() {
     idleTime = idleTime + 1;
-    if (idleTime >= 20) { // 20 minutes 發呆->登出
+    if (idleTime >= <?php echo $Auto_Logout_Time ?>) { // 20 minutes 發呆->登出  
         window.location.href = "/Welcome/User_Logout";
     }
 }
 </script>
-
-</html>
