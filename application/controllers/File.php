@@ -30,32 +30,9 @@ class File extends MY_Controller {
 		$this->load->model('income_model');
     } 
 
-	public function index()
-	{
-		$this->load->library('session');
-		$User_Login = $this->User_Login("1");
-		//echo $User_Login;
-		if($User_Login == 1){
-			$Login_ID = $this->session->userdata('Login_ID');
-			$FullName = $this->session->userdata('FullName');
-			$organization = $this->session->userdata('organization');
-			$department = $this->session->userdata('department');
-			$User_Level = $this->session->userdata('User_Level');
-			$this->load->view('TEST', Array(
-				'FullName' 		=> 	$FullName,
-			));
-		}
-		else{
-			$this->load->view('login');
-		}
-
-	}
 
 
-	public function login()
-	{
-		$this->load->view('login');
-	}
+
 
 	public function check_boy_exist()		//檢查此役男是否存在
 	{	
