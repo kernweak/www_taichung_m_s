@@ -124,4 +124,24 @@ class  MY_Controller  extends  CI_Controller  {
 		$this->session->set_userdata('User_Level', $User_Level);
 		$this->session->set_userdata('Last_time_CPW', $Last_time_CPW);
 	}
+
+	protected function log_activity($activity1="", $activity2="", $activity3=""){
+
+
+		$log['user_id'] = (string)$this->session->userdata('Login_ID'); //varchar 20
+		$log['full_name'] = (string)$this->session->userdata('FullName'); //varchar 20
+		
+		$log['organization'] = $this->session->userdata('organization'); //varchar 20
+		$log['department'] 	= $this->session->userdata('department'); //varchar 20
+
+		$log['activity1']		= $activity1;
+		$log['activity2']		= $activity2;
+		$log['activity3']		= $activity3;
+
+		$log['date_time'] 	= date('Y-m-d H:i:s', time());
+		$log['ip'] 			= $this->input->ip_address();
+		
+		$this->load->model('activitylog_model');
+		$this->activitylog_model->add($log);
+	}
 }
