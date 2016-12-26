@@ -9,7 +9,7 @@ class Family extends MY_Controller {
 		$this->load->model('member_model');
 		$this->load->model('property_model');
 		$this->load->model('income_model');
-     } 
+    } 
 
 
 	public function set_members_file(){

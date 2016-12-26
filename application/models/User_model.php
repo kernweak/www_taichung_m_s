@@ -16,6 +16,15 @@ class User_model extends CI_Model {
 		return $query;
 	}
 
+	function User_PW_Error_Read($Login_ID){
+		$this->db->select('*');
+		$this->db->from('user');
+		$this->db->where('user_id', $Login_ID);
+		//$this->db->where('Login_PW', $Login_PW);
+		$query = $this->db->get();
+		return $query;
+	}
+
 	//E化入口網登入
 	function Login_IDNM_select($Login_ID, $Login_NM){
 		$this->db->select('*');
@@ -58,5 +67,21 @@ class User_model extends CI_Model {
 		//$this->db->where('Login_PW', $Login_PW);
 		$query = $this->db->get();
 		return $query;
+	}
+
+	function User_PW_Error_Write($Login_ID, $data){
+		$this->db->select('*');
+		$this->db->from('user');
+		$this->db->where('user_id', $Login_ID);
+		//$this->db->where('Login_PW', $Login_PW);
+		$query = $this->db->get();
+		if ($query->num_rows() > 1){
+			return array(0,"帳號不是唯一，寫入失敗");
+		}
+
+    	$this->db->where('user_id', $Login_ID);
+    	$this->db->update('user', $data);
+
+		return array(1,"使用者登入錯誤之紀錄已更新");
 	}
 }

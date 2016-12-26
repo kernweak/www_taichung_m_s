@@ -18,7 +18,7 @@ class Report extends MY_Controller {
 		//**********************
 	
 		$this->load->library('session');
-		$User_Login = $this->User_Login("1");
+		$User_Login = $this->IF_User_Login();
 		//echo $User_Login;
 		if($User_Login == 1){
 			$Login_ID = $this->session->userdata('Login_ID');

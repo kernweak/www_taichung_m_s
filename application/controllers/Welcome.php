@@ -26,7 +26,7 @@ class Welcome extends MY_Controller {
 	//}
 	public function index(){
 		$this->load->library('session');
-		$User_Login = $this->User_Login("1");
+		$User_Login = $this->IF_User_Login();
 		//echo $User_Login;
 		if($User_Login == 1){
 			$Login_ID = $this->session->userdata('Login_ID');
@@ -245,7 +245,7 @@ class Welcome extends MY_Controller {
 		$this->load->library('session');
 		$time_L = 0	;
 		$code = 0	;	//0:未登入/1:已登入
-		$User_Login = $this->User_Login("1");
+		$User_Login = $this->IF_User_Login();
 		$msg="";
 		//var_dump("接收到".$User_Login);
 		

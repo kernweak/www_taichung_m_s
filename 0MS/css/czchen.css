@@ -694,7 +694,7 @@
     }
 .add-i-p-cont{
     text-align: center;
-    padding-top: calc(3.4em - 1em);
+    padding-top: calc(3.4em - 1.3em);
 }
 
 @media (max-width: 1800px) {
