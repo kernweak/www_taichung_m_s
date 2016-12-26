@@ -153,7 +153,7 @@
             <div id="edit-navcon" role="tabpanel" class="tab-pane fade nav-container">
                 <?php include('people_basic.php');?>
             </div>
-            <div id="statistics" role="tabpanel" class="tab-pane fade nav-container" style="overflow-y: scroll;height: 100vh;background-color: #4280bf;">
+            <div id="statistics" role="tabpanel" class="tab-pane fade nav-container" style="overflow-y: scroll;height: 100vh;background-color: #4280bf;padding-bottom: 10vh;">
                 <?php include('statistics.php');?>
             </div>
             <div id="personnel" role="tabpanel" class="tab-pane fade nav-container" style="overflow-y: scroll;height: 100vh;">

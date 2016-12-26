@@ -1,4 +1,3 @@
-
   <div class="container-fluid">
       <div class="row">
           <div class='col-lg-4 col-md-4 col-sm-4'>
@@ -187,10 +186,18 @@
         case "各區核定案件扶助級別人數":
           setTimeout(function(){ PieColumnChart(chartData,sttsType,"Column"); }, 1000);
           setTimeout(showChart, 1000);
+          $("#statistics").css({
+            overflowY: 'scroll',
+            paddingRight: '0.3em'
+          });
           break;
         case "全市核定案件扶助級別人數":
           setTimeout(function(){ PieColumnChart(chartData,sttsType,"Pie"); }, 1000);
           setTimeout(showChart, 1000);
+          $("#statistics").css({
+            overflowY: 'hidden',
+            paddingRight: '1.6em'
+          });
           break;
       }      
 
@@ -328,7 +335,7 @@
 </row>
 <row>
   <br/><br/><br/>
-  <div style="height:calc(85vh - 10em);padding-left:15px;padding-right:15px;" id="map_area">
+  <div style="height:calc(85vh - 10em);padding-left:1.38em;padding-right:1.38em;" id="map_area">
     <div id="map" class='col-lg-8 col-lg-offset-2 fade' style="height: 100%; transition: 1s;"></div>
 
       <!--<div class="box">
@@ -336,6 +343,3 @@
       </div>-->
   </div>
 </row>
-<div style="height:calc(70vh);">
-
-</div>

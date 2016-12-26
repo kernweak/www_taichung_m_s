@@ -263,7 +263,7 @@
                 else{
                     edit_button = "";
                 }
-                if(User_Level >= 4){
+                if(User_Level >= 4 && file.審批階段 != 8){
                     edit_button2 = '<div class="btn-group" role="group">'+
                     '<button type="button" class="btn btn-info" onclick="progress_p_patch('+file.案件流水號+',this)">補件</button>'+
                   '</div>';
@@ -301,9 +301,6 @@
 
                   Button_str = Button_str + edit_button3 + edit_button2 +
                 '</div>';
-
-                //console.log(file.審批階段);
-                 var progress = (file.審批階段/6)*100;
                  tbody += "" +
 
                     '<tr trkey="'+file.案件流水號+'">' +   
@@ -328,7 +325,10 @@
             $("#table_id tbody").html(tbody);
             setTimeout(function(){
                 $.each(responsive, function(index, file) {
-                    var progress = (file.審批階段/6)*100;
+                    var progress_temp = file.審批階段;
+                    if (progress_temp == 8){progress_temp = 6;}
+                    //console.log(file.審批階段);
+                    var progress = (progress_temp/6)*100;
                     $("#table_id tbody").find("tr[trkey="+file.案件流水號+"] .progress-bar").css('width', progress+'%');
                 });
             },1500);

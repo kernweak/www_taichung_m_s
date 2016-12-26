@@ -116,7 +116,7 @@ $(document).ready(function() {
         $("#bs-example-navbar-collapse-1 > ul:nth-child(1) > li:nth-child(2) > a").tab('show')
     });
 
-    read_file_list_pending();
+    //read_file_list_pending();
     //案件列表，轉換為可排序可分頁之dataTable
 
     setTimeout(function(){
@@ -133,8 +133,6 @@ $(document).ready(function() {
             },
             "order": [[ 7, "desc" ]]
         });
-    }, 1000); /*
-    setTimeout(function(){
         $('#table_progress').dataTable({
             "lengthMenu": [100, 75, 50, 25, 10, 1],
             "language": {
@@ -147,8 +145,6 @@ $(document).ready(function() {
                 "search": "粗搜索:"
             }
         });
-    }, 1000);
-    setTimeout(function(){
         $('#table_supporting').dataTable({
             "lengthMenu": [100, 75, 50, 25, 10, 1],
             "language": {
@@ -161,7 +157,7 @@ $(document).ready(function() {
                 "search": "粗搜索:"
             }
         });
-    }, 1000);*/
+    }, 200);
 
     
     

@@ -14,6 +14,6 @@
         </tr>
     </thead>
     <tbody>
-
+        <tr><td>105-03-08</td><td>大雅區</td><td>袁大頭</td><td style="color: black;">081-09-11</td><td>M123456789</td><td>甲級1口</td><td style="padding-right: 1em;"><div class="progress"><div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 80.54794520547945%;">294</div></div></td><td>陳宗儒</td><td>中秋複查</td><td><div class="btn-group" role="group" aria-label="..."><div class="btn-group" role="group"><button type="button" class="btn btn-primary" onclick="progress_view(12,this)">檢視</button></div><div class="btn-group" role="group"><button type="button" class="btn btn-info" onclick="refile(12,this,'春節複查')">春節</button></div><div class="btn-group" role="group"><button type="button" class="btn btn-info" onclick="refile(12,this,'端午複查')">端午</button></div><div class="btn-group" role="group"><button type="button" class="btn btn-info" onclick="refile(12,this,'中秋複查')">中秋</button></div><div class="btn-group" role="group"><button type="button" class="btn btn-warning" onclick="refile(12,this,'複查')">複查</button></div><div class="btn-group" role="group"><button type="button" class="btn btn-danger" onclick="refile(12,this,'退役')">退役</button></div></div></td></tr>
     </tbody>
 </table>
