@@ -20,6 +20,7 @@ class Family extends MY_Controller {
 		log_message('debug', 'received post "members" ='.print_r($members, true));
 		$this->set_members($members, $file_key);
 		$this->file_model->update($file_info);
+		$this->log_activity("儲存案件與家屬資訊", "file_key=$file_key");
 		//TODO check if success??
 		$data= array(			
 			'Msg' => "success"
@@ -38,6 +39,7 @@ class Family extends MY_Controller {
 			'members' => $members
 		);
 		log_message('debug', 'get_members_file return ='. print_r($data, true));
+		$this->log_activity("讀取案件與家屬資訊", "file_key=$file_key");
 		echo json_encode($data);
 	}
 

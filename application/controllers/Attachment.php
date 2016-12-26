@@ -53,6 +53,7 @@ class Attachment extends MY_Controller {
     function update($file_key, $category, $attchment_name){
         $this->load->model('file_model');
         $old_attach = $this->file_model->update_attach($file_key, $category, $attchment_name);
+        $this->log_activity("uploaded an attachment", "file_key=$file_key", "attachment=$attchment_name");
         
         if (!empty($old_attach)){
             //delete old file

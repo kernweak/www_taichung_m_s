@@ -127,7 +127,7 @@ class  MY_Controller  extends  CI_Controller  {
 
 	protected function log_activity($activity1="", $activity2="", $activity3=""){
 
-
+		$this->load->library('session');
 		$log['user_id'] = (string)$this->session->userdata('Login_ID'); //varchar 20
 		$log['full_name'] = (string)$this->session->userdata('FullName'); //varchar 20
 		

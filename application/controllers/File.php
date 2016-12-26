@@ -55,8 +55,6 @@ class File extends MY_Controller {
  		$organization  = $this->session->organization;
       	$department  = $this->session->department;
 
-
-
 		$this->load->model('boy_model');
 		$name = $this->input->post('ADF_name');
 		$id = $this->input->post('ADF_code');
@@ -125,9 +123,7 @@ class File extends MY_Controller {
 		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
 		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
 		//LV 7 工程模式，全部狀態都能看到
-	}
-
-	
+	}	
 
 	public function read_file_progerss_log(){	
 		$this->load->library('session');
@@ -185,6 +181,9 @@ class File extends MY_Controller {
 		//$file_info = $this->file_model->progress_file($file_key,"+");
 
 		$this->progress_log($new_file_key, $log_comment, "新增複查案", 1);
+		
+		$this->log_activity("rebuild a file", $act ,"old_key=$file_key new_key=$new_file_key");
+
 		echo json_encode("Success");
 	}
 
@@ -193,6 +192,7 @@ class File extends MY_Controller {
 		$log_comment = $this->input->post('log_comment');		
 		$file_info = $this->file_model->progress_file($file_key,"+");
 		$this->progress_log($file_key, $log_comment, "向上呈核",$file_info);
+		$this->log_activity("向上呈核", "file_key=$file_key");
 		echo json_encode("Success");
 	}
 
@@ -201,6 +201,7 @@ class File extends MY_Controller {
 		$log_comment = $this->input->post('log_comment');		
 		$file_info = $this->file_model->progress_file($file_key,"p");
 		$this->progress_log($file_key, $log_comment, "要求補件",$file_info);
+		$this->log_activity("要求補件", "file_key=$file_key");
 		echo json_encode("Success");
 	}
 
@@ -209,6 +210,7 @@ class File extends MY_Controller {
 		$log_comment = $this->input->post('log_comment');		
 		$file_info = $this->file_model->progress_file($file_key,"r");
 		$this->progress_log($file_key, $log_comment, "補件重送",$file_info);
+		$this->log_activity("補件重送", "file_key=$file_key");
 		echo json_encode("Success");
 	}
 	
@@ -219,6 +221,7 @@ class File extends MY_Controller {
 		$log_comment = $this->input->post('log_comment');		
 		$file_info = $this->file_model->progress_file($file_key,"1");
 		$this->progress_log($file_key, $log_comment, "退回承辦",$file_info);
+		$this->log_activity("退回承辦", "file_key=$file_key");
 		echo json_encode("Success");
 	}
 
