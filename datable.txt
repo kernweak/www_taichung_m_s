@@ -11,3 +11,28 @@ table.ajax.reload();//感覺不好用
 table.row.add(["1","2","3","4","5","6","7","8","9","10"]);
 
 table.row.draw(false);
+
+範例：
+$(document).ready(function() {
+    var t = $('#example').dataTable();
+    var counter = 1;
+ 
+    $('#addRow').on( 'click', function () {
+        var data = [
+            counter +'.1',
+            counter +'.2',
+            counter +'.3',
+            counter +'.4',
+            counter +'.5'
+        ];
+        var rowIndex = t.fnAddData(data);
+        var row = t.fnGetNodes(rowIndex);
+        $(row).attr( 'id', 'MyUniqueID' );
+ 
+        counter++;
+    } );
+ 
+} );
+
+//產生：
+//			<tr role="row" class="odd" id="MyUniqueID"><td class="sorting_1">5.1</td><td>5.2</td><td>5.3</td><td>5.4</td><td>5.5</td></tr>

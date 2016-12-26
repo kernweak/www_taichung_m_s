@@ -116,7 +116,9 @@ $(document).ready(function() {
         $("#bs-example-navbar-collapse-1 > ul:nth-child(1) > li:nth-child(2) > a").tab('show')
     });
 
-    //read_file_list_pending();
+    setTimeout(function(){
+        read_file_list_pending();
+    }, 1000);
     //案件列表，轉換為可排序可分頁之dataTable
 
     setTimeout(function(){
@@ -157,7 +159,7 @@ $(document).ready(function() {
                 "search": "粗搜索:"
             }
         });
-    }, 200);
+    }, 0);
 
     
     

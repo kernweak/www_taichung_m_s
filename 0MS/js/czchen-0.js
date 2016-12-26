@@ -238,69 +238,65 @@
             console.log("complete");
         })
         .done(function(responsive) {
-            // console.log("success");
-            // miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
-            // area_town.Town_name//    <th style="width: 7em;">行政區</th>
-            // miliboy_table.役男姓名 //    <th style="width: 7em;">役男姓名</th>
-            // miliboy_table.身分證字號//    <th style="width: 7.5em;">役男證號</th>
-            // files_info_table.審批階段//      <th style="width: 12em;">案件進度</th>
-            // files_info_table.扶助級別//      <th style="width: 8em;">審查結果</th>
-            // files_info_table.建案日期//      <th style="width: 7em;">立案日期</th>
-            // files_info_table.修改人姓名//     <th style="width: 7em;">主要承辦人</th>
-            // files_info_table.案件流水號//    案件流水號
-            // files_info_table.可否編修//      可否編輯    --可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
-            // files_status_code.案件階段名稱//       作業類別
 
             $("#table_id tbody").empty();
+            var table = $('#table_id').DataTable();     //DataTable
+            table.clear();                              //DataTable 清空
+
             tbody = "";
             $.each(responsive, function(index, file) {
                 var edit_button = "";
                 if(file.審批階段 <= 1 || file.審批階段 == 8 || file.審批階段 == 4){
-                    edit_button = '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-success" onclick="read_file_test('+file.案件流水號+')">編輯</button>'+
-                  '</div>';
+                    edit_button = "<div class='btn-group' role='group'>"+
+                    "<button type='button' class='btn btn-success' onclick='read_file_test("+file.案件流水號+")'>編輯</button>"+
+                  "</div>";
                 }
                 else{
-                    edit_button = "";
+                    edit_button = '';
                 }
                 if(User_Level >= 4 && file.審批階段 != 8){
-                    edit_button2 = '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-info" onclick="progress_p_patch('+file.案件流水號+',this)">補件</button>'+
-                  '</div>';
+                    edit_button2 = "<div class='btn-group' role='group'>"+
+                    "<button type='button' class='btn btn-info' onclick='progress_p_patch("+file.案件流水號+",this)'>補件</button>"+
+                  "</div>";
                 }else{
-                    edit_button2 = "";
+                    edit_button2 = '';
                 }
 
                 //檢視.編輯.意見.退回.呈核
                 var Button_str = 
-                '<div class="btn-group" role="group" aria-label="...">'+
-                  '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-primary" onclick="progress_view('+file.案件流水號+',this)">檢視</button>'+
-                  '</div>'+
+                "<div class='btn-group' role='group' aria-label='...'>"+
+                  "<div class='btn-group' role='group'>"+
+                    "<button type='button' class='btn btn-primary' onclick='progress_view("+file.案件流水號+",this)'>檢視</button>"+
+                  "</div>"+
                   edit_button+
-                  // '<div class="btn-group" role="group">'+
-                  //   '<button type="button" class="btn btn-info">意見</button>'+
-                  // '</div>'+
-                  '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-warning" onclick="progress_p_back('+file.案件流水號+',this)">退回</button>'+
-                  '</div>';
+                  // "<div class='btn-group' role='group'>"+
+                  //   "<button type='button' class='btn btn-info'>意見</button>"+
+                  // "</div>"+
+                  "<div class='btn-group' role='group'>"+
+                    "<button type='button' class='btn btn-warning' onclick='progress_p_back("+file.案件流水號+",this)'>退回</button>"+
+                  "</div>";
                   if(file.審批階段 == 8){
-                    edit_button3 = '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-info" onclick="progress_p_patch_re('+file.案件流水號+',this)">補件</button>'+
-                  '</div>';
+                    edit_button3 = "<div class='btn-group' role='group'>"+
+                    "<button type='button' class='btn btn-info' onclick='progress_p_patch_re("+file.案件流水號+",this)'>補件</button>"+
+                  "</div>";
                   }else if(file.審批階段 == 5){
-                    edit_button3 = '<div class="btn-group" role="group">'+
-                    '<button type="button" class="btn btn-info" onclick="progress_p_next('+file.案件流水號+',this)">結案</button>'+
-                  '</div>';
+                    edit_button3 = "<div class='btn-group' role='group'>"+
+                    "<button type='button' class='btn btn-info' onclick='progress_p_next("+file.案件流水號+",this)'>結案</button>"+
+                  "</div>";
                   }else{
                     edit_button3 = 
-                    '<div class="btn-group" role="group">'+
-                        '<button type="button" class="btn btn-danger" onclick="progress_p_next('+file.案件流水號+',this)">呈核</button>'+
-                    '</div>';
+                    "<div class='btn-group' role='group'>"+
+                        "<button type='button' class='btn btn-danger' onclick='progress_p_next("+file.案件流水號+",this)'>呈核</button>"+
+                    "</div>";
                   }
 
                   Button_str = Button_str + edit_button3 + edit_button2 +
-                '</div>';
+                "</div>";
+                /*
+                var progress_temp = file.審批階段;
+                if (progress_temp == 8){progress_temp = 6;}
+                var progress = (progress_temp/6)*100;
+
                  tbody += "" +
 
                     '<tr trkey="'+file.案件流水號+'">' +   
@@ -310,7 +306,7 @@
                         '<td>'+file.身分證字號+'</td>' +
                         '<td>' +
                             '<div class="progress">' +
-                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">' +
+                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+progress+'%;">' +
                                     ''+file.案件階段名稱+'</div>' +
                             '</div>' +
                         '</td>' +
@@ -320,9 +316,32 @@
                         '<td>'+file.作業類別名稱+'</td>' +
                         '<td style="min-width: 190px;">'+Button_str+'</td>' +
 
-                    '</tr>';
+                    '</tr>';*/
+                /*
+                    Datable 的寫法
+                */
+
+                var data = [
+                    yyy_dash(date_to_yyy(file.入伍日期)),
+                    file.Town_name,
+                    file.役男姓名,
+                    file.身分證字號,
+                    '<div class="progress">' +
+                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+"0"+'%;">' +
+                                    ''+file.案件階段名稱+'</div>' +
+                            '</div>',
+                    file.扶助級別,
+                    yyy_dash(date_to_yyy(file.建案日期)),
+                    file.修改人姓名,
+                    file.作業類別名稱,
+                    Button_str
+                ];
+
+                var row = table.row.add(data).node();
+                $(row).attr('trkey', file.案件流水號);
+                //table.draw(false);
             });
-            $("#table_id tbody").html(tbody);
+            table.draw(false);
             setTimeout(function(){
                 $.each(responsive, function(index, file) {
                     var progress_temp = file.審批階段;
