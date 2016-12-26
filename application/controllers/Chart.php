@@ -46,7 +46,7 @@ class Chart extends MY_Controller {
 		}elseif($statistics_type == "全市核定案件扶助級別人數"){			
 			$data = $this->statistics_model->Statistics_4($Date_1,$Date_2);
 		}
-			
+		$this->log_activity("統計分析", "$Date_1 -> $Date_2","type=$statistics_type");
 		echo json_encode($data);
 	}
 }

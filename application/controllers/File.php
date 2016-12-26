@@ -30,33 +30,6 @@ class File extends MY_Controller {
 		$this->load->model('income_model');
     } 
 
-	public function index()
-	{
-		$this->load->library('session');
-		$User_Login = $this->IF_User_Login();
-		//echo $User_Login;
-		if($User_Login == 1){
-			$Login_ID = $this->session->userdata('Login_ID');
-			$FullName = $this->session->userdata('FullName');
-			$organization = $this->session->userdata('organization');
-			$department = $this->session->userdata('department');
-			$User_Level = $this->session->userdata('User_Level');
-			$this->load->view('TEST', Array(
-				'FullName' 		=> 	$FullName,
-			));
-		}
-		else{
-			$this->load->view('login');
-		}
-
-	}
-
-
-	public function login()
-	{
-		$this->load->view('login');
-	}
-
 	public function check_boy_exist()		//檢查此役男是否存在
 	{	
 		$this->load->model('boy_model');		
@@ -81,8 +54,6 @@ class File extends MY_Controller {
  		$organization  = $this->session->organization;
       	$department  = $this->session->department;
 
-
-
 		$this->load->model('boy_model');
 		$name = $this->input->post('ADF_name');
 		$id = $this->input->post('ADF_code');
@@ -92,9 +63,9 @@ class File extends MY_Controller {
 		$status = $this->input->post('ADF_status');
 		
 		$boy_key = $this->boy_model->add_new_boy($name, $id, $birthday, $begin_date, $type, $status);
+		$this->log_activity('added a boy', 'boy_key='.$boy_key);
 
-		// create a new file record for this boy
-		$this->load->model('file_model');
+		// create a new file record for this boy		
 		$county = $this->input->post('ADF_county');
 		$town = $this->input->post('ADF_town');
 		$village = $this->input->post('ADF_village');
@@ -103,6 +74,8 @@ class File extends MY_Controller {
 		log_message('debug', print_r($today, true));
 
 		$file_key = $this->file_model->add_new_file($today, $boy_key, $county, $town, $village, $address, $FullName, $organization, $department);
+
+		$this->log_activity('added a file', 'file_key='.$file_key);
 		
 		$this->boy_model->update_new_boy_file_link($boy_key, $file_key);
 		$data= array(
@@ -115,11 +88,10 @@ class File extends MY_Controller {
 	}
 
 	public function read_new_file(){
-		$file_key = (int)$this->input->post('file_key');
-		$this->load->model('file_model');
+		$file_key = (int)$this->input->post('file_key');		
 		$file_info = $this->file_model->read_file($file_key);
-		//var_dump($file_key);
-		//var_dump($file_info);
+		$this->log_activity('read a file', 'file_key='.$file_key);
+
 		echo json_encode($file_info[0]);
 	}
 
@@ -128,10 +100,9 @@ class File extends MY_Controller {
 		$this->load->library('session');
 		//var_dump($this->session);
 		$user_level = $this->session->User_Level;
-		$user_organ = $this->session->organization;
-		$this->load->model('file_model');
+		$user_organ = $this->session->organization;		
 		$file_list = $this->file_model->read_file_list_pending($user_level, $user_organ);
-		//var_dump($file_list);
+		$this->log_activity('list pending files');
 		echo json_encode($file_list);
 		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
 		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
@@ -143,38 +114,29 @@ class File extends MY_Controller {
 		$this->load->library('session');
 		//var_dump($this->session);
 		$user_level = $this->session->User_Level;
-		$user_organ = $this->session->organization;
-		$this->load->model('file_model');
+		$user_organ = $this->session->organization;	
 		$file_list = $this->file_model->read_file_list_progress($user_level, $user_organ);
-		//var_dump($file_list);
+		$this->log_activity('list files in progress');		
 		echo json_encode($file_list);
 		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
 		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
 		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
 		//LV 7 工程模式，全部狀態都能看到
-	}
-
-	
+	}	
 
 	public function read_file_progerss_log(){	
 		$this->load->library('session');
 		$file_key = (int)$this->input->post('file_key');
 		$user_level = $this->session->User_Level;
 		$user_organ = $this->session->organization;
-		$this->load->model('file_model');
 		$file_list = $this->file_model->read_file_progerss_log($user_level, $user_organ, $file_key);
-		//var_dump($file_list);
+		$this->log_activity('read a file progress log', 'file_key='.$file_key);
 		echo json_encode($file_list);
 		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
 		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
 		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
 		//LV 7 工程模式，全部狀態都能看到
 	}
-
-
-
-
-
 	
 
 	//列出此公所已通過補助，役男尚未退役的之案件
@@ -182,10 +144,9 @@ class File extends MY_Controller {
 		$this->load->library('session');
 		//var_dump($this->session);
 		$user_level = $this->session->User_Level;
-		$user_organ = $this->session->organization;
-		$this->load->model('file_model');
+		$user_organ = $this->session->organization;		
 		$file_list = $this->file_model->read_file_list_supporting($user_level, $user_organ);
-		//var_dump($file_list);
+		$this->log_activity('list files in supporting');
 		echo json_encode($file_list);
 		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
 		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
@@ -219,33 +180,36 @@ class File extends MY_Controller {
 		//$file_info = $this->file_model->progress_file($file_key,"+");
 
 		$this->progress_log($new_file_key, $log_comment, "新增複查案", 1);
+		
+		$this->log_activity("rebuild a file", $act ,"old_key=$file_key new_key=$new_file_key");
+
 		echo json_encode("Success");
 	}
 
 	public function progress_next(){
 		$file_key = (int)$this->input->post('file_key');
-		$log_comment = $this->input->post('log_comment');
-		$this->load->model('file_model');
+		$log_comment = $this->input->post('log_comment');		
 		$file_info = $this->file_model->progress_file($file_key,"+");
 		$this->progress_log($file_key, $log_comment, "向上呈核",$file_info);
+		$this->log_activity("向上呈核", "file_key=$file_key");
 		echo json_encode("Success");
 	}
 
 	public function progress_patch(){
 		$file_key = (int)$this->input->post('file_key');
-		$log_comment = $this->input->post('log_comment');
-		$this->load->model('file_model');
+		$log_comment = $this->input->post('log_comment');		
 		$file_info = $this->file_model->progress_file($file_key,"p");
 		$this->progress_log($file_key, $log_comment, "要求補件",$file_info);
+		$this->log_activity("要求補件", "file_key=$file_key");
 		echo json_encode("Success");
 	}
 
 	public function progress_patch_re(){
 		$file_key = (int)$this->input->post('file_key');
-		$log_comment = $this->input->post('log_comment');
-		$this->load->model('file_model');
+		$log_comment = $this->input->post('log_comment');		
 		$file_info = $this->file_model->progress_file($file_key,"r");
 		$this->progress_log($file_key, $log_comment, "補件重送",$file_info);
+		$this->log_activity("補件重送", "file_key=$file_key");
 		echo json_encode("Success");
 	}
 	
@@ -253,15 +217,14 @@ class File extends MY_Controller {
 
 	public function progress_back(){
 		$file_key = (int)$this->input->post('file_key');
-		$log_comment = $this->input->post('log_comment');
-		$this->load->model('file_model');
+		$log_comment = $this->input->post('log_comment');		
 		$file_info = $this->file_model->progress_file($file_key,"1");
 		$this->progress_log($file_key, $log_comment, "退回承辦",$file_info);
+		$this->log_activity("退回承辦", "file_key=$file_key");
 		echo json_encode("Success");
 	}
 
-	public function progress_log($file_key, $log_comment, $progress_name, $progress_level){
-		$this->load->model('file_model');
+	public function progress_log($file_key, $log_comment, $progress_name, $progress_level){		
 		$this->load->library('session');
 		$Login_ID = $this->session->userdata('Login_ID');
 		$FullName = $this->session->userdata('FullName');
@@ -269,8 +232,6 @@ class File extends MY_Controller {
 		$department = $this->session->userdata('department');
 		$User_Level = $this->session->userdata('User_Level');
 		$datetime = date ("Y-m-d H:i:s"); 
-
-
 
 
 		$this->file_model->progress_log($file_key,$log_comment, $progress_name, $progress_level,$organization,$department,$FullName,$User_Level,$datetime);
