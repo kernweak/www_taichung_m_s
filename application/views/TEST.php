@@ -28,6 +28,12 @@
 </head>
 
 <body style="overflow: hidden;">
+<div id="preloader">
+    <div id="status">
+        <img src="/0MS/images/loader.gif" alt=""/><h1 class="noSubtitle">系統載入中</h1>
+    </div>
+</div>
+
     <div role="tabpanel">
         <div>
             <nav class="navbar navbar-brown navbar-fixed-top">
@@ -181,6 +187,31 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.js"></script>
+<script type="text/javascript">
+//隔一段時間後，會自動登出
+$(document).ready(function () {
+    setTimeout(function(){
+        $("#preloader").fadeOut();
+    },1000);
+    
+    //Increment the idle time counter every minute.
+    var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
 
+    //Zero the idle timer on mouse movement.
+    $(this).mousemove(function (e) {
+        idleTime = 0;
+    });
+    $(this).keypress(function (e) {
+        idleTime = 0;
+    });
+});
+
+function timerIncrement() {
+    idleTime = idleTime + 1;
+    if (idleTime >= 20) { // 20 minutes 發呆->登出
+        window.location.href = "/Welcome/User_Logout";
+    }
+}
+</script>
 
 </html>
