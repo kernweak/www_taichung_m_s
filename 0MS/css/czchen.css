@@ -547,7 +547,7 @@
         border: 0.15em solid #861135;
     }
 
-    .proper-inc-div, #right_tab_membercomm > textarea{
+    .proper-inc-div, #right_tab_membercomm  textarea{
         width: 90%;
         height: 6.8em;
         background-color: #ffd1a3;

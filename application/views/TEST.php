@@ -59,9 +59,9 @@
                                     <li><a href="#filelist-navcon" role="tab" data-toggle="tab" onclick="read_file_list_pending()">待辦案件</a></li>
                                     <li><a href="#filelist-progress" role="tab" data-toggle="tab" onclick="read_file_list_progress()">呈核中案件</a></li>
                                     <li><a href="#filelist-supporting" role="tab" data-toggle="tab" onclick="read_file_list_supporting()">補助中案件</a></li>
-                                    <li><a href="#">已結案案件</a></li>
+                                    <!--<li><a href="#">已結案案件</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#">進階查詢</a></li>
+                                    <li><a href="#">進階查詢</a></li>-->
                                 </ul>
                             </li>
                             <!--<li><a href="#filelist-navcon" role="tab" data-toggle="tab">案件列表 <span class="sr-only">(current)</span></a></li>-->

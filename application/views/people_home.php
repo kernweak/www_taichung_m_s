@@ -176,6 +176,7 @@
         var form_data = new FormData();
         var msg = $(this).siblings('.msg').get(0);
         var hyper_link = $(this).siblings('.attach-a').eq(0);
+        var fake_input = $(this).siblings('.fake_input').eq(0);
 
         form_data.append('attachment', file_data);
         form_data.append('file_id', file_id);
@@ -198,7 +199,8 @@
                 console.log(newfile);
                 $(hyper_link).text(newfile);
                 $(hyper_link).attr('href', '/uploads/'+newfile);
-                $(this).parent().children('.fake_input').val("");
+                $(fake_input).val("");
+
                 setTimeout(function(){
                     $(msg).fadeOut('2000');
             	},1500);
