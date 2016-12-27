@@ -149,11 +149,13 @@ class Welcome extends MY_Controller {
 			$organization = $this->session->userdata('organization');
 			$department = $this->session->userdata('department');
 			$User_Level = $this->session->userdata('User_Level');
-			$this->load->view('TEST', Array(
+			/*$this->load->view('TEST', Array(
 				'FullName' 		=> 	$FullName,
 				'organization' 		=> 	$organization,
 				'User_Level' 		=> 	$User_Level,
-			));
+			));*/
+			header("Location: /"); /* Redirect browser */
+			exit();
 		}
 		else{
 			$this->load->view('login');
