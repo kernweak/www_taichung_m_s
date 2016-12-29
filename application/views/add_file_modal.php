@@ -69,6 +69,7 @@
 </div>
 <script>
     $(document).ready(function() {
+
         $("#Add_file").on('change', 'input', function(event) {
             event.preventDefault();
             var string = $(this).val();
@@ -247,6 +248,7 @@
             refresh_village();
         });
 
+        
         function refresh_town(){
             //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
             $('#ADF-town').empty();
@@ -275,7 +277,13 @@
 
                 $('#ADF-town').append(seloption);
                 setTimeout(function(){
-                    refresh_village();
+                    if(User_Level <= 3){
+                        //把新增案件的區先選起來
+                        $("#ADF-town").val($("#ADF-town option:contains('"+organization+"')").val()).prop('disabled',true);
+                        setTimeout(function(){
+                            refresh_village();
+                        },300);
+                    }
                 },300);
                 
                 console.log("success");

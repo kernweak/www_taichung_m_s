@@ -28,6 +28,29 @@ class Welcome extends MY_Controller {
 		$this->load->library('session');
 		$User_Login = $this->IF_User_Login();
 		//echo $User_Login;
+		
+		if($this->SC('TEST_MOD') == true){
+			$this->session->set_userdata('Login_ID', "God");
+			$this->session->set_userdata('FullName', "工程模式");
+			$this->session->set_userdata('organization', "標竿數位文化工作室");
+			$this->session->set_userdata('department', "工程部");
+			$this->session->set_userdata('User_Level', 7);
+			$this->session->set_userdata('Last_time_CPW', date('Y-m-d H:i:s', time()));
+			$this->output->set_header('Cache-Control: max-age=2592000');	//快取儲存一個月
+			$this->load->view('TEST', Array(
+				'FullName' 		=> 	$this->session->userdata('FullName'),
+				'organization' 		=> 	$this->session->userdata('organization'),
+				'User_Level' 		=> 	$this->session->userdata('User_Level'),
+				'Auto_Logout_Time' 	=> 	120,
+			));
+
+			$this->load->view('Javascript_command/Normal');
+			//$this->output->enable_profiler(TRUE);
+			$this->load->view('TEST_footer');
+			
+			return;
+		}
+
 		if($User_Login == 1){
 			$Login_ID = $this->session->userdata('Login_ID');
 			$FullName = $this->session->userdata('FullName');
@@ -36,7 +59,7 @@ class Welcome extends MY_Controller {
 			$User_Level = $this->session->userdata('User_Level');
 			$Last_time_CPW = $this->session->userdata('Last_time_CPW');
 			$Auto_Logout_Time = $this->SC('Auto_Logout_Time');
-
+			$this->output->set_header('Cache-Control: max-age=2592000');	//快取儲存一個月
 			$this->load->view('TEST', Array(
 				'FullName' 		=> 	$FullName,
 				'organization' 		=> 	$organization,
@@ -49,17 +72,10 @@ class Welcome extends MY_Controller {
 			}else{
 				$this->load->view('Javascript_command/Normal');
 			}
-
-
-
-
-
-			
-			
 			$this->load->view('TEST_footer');
 		}
 		else{
-			$this->load->view('login');
+			$this->load->view('login2');
 		}
 
 	}

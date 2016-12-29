@@ -98,8 +98,8 @@
 
                 }
 
-
-                if(file.案件流水號 == file.最新案件流水號){
+                console.log(file.複查進行中);
+                if(file.複查進行中 == "0"){
                     var Button_str = 
                         '<div class="btn-group" role="group" aria-label="...">'+
                           '<div class="btn-group" role="group">'+
@@ -1483,6 +1483,7 @@
 
 
 $(document).ready(function() {
+
     $("#Home_root").on('click', '#myModal button.btn.btn-primary',function(event) {
         event.preventDefault();
         //console.log("click");

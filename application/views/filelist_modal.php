@@ -1,11 +1,11 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document" style="min-width: 95%;width: 99%;height: 100%;margin: 10px auto;">
+    <div class="modal-dialog modal-lg" role="document" style="">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #eaa47c;border-top-left-radius: 6px;border-top-right-radius: 6px;">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
-            <div class="modal-body" style="height: 86vh;overflow: auto;">
+            <div class="modal-body" style="overflow: auto;">
                 <br><br><br><br>
                 <table style="width: 100%;">
                 <thead>

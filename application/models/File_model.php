@@ -227,6 +227,7 @@ class File_model extends CI_Model {
 		date_default_timezone_set('Asia/Taipei');
 		$data = array(
 			'作業類別' => $act2,
+			'源版本號' => $file_key,
 			'審批階段' => 1,
 			'是否扶助' => null,
 			'建案日期' => date("Y-m-d H:i:s")
@@ -357,7 +358,64 @@ class File_model extends CI_Model {
 
 			// $Qstring = "SELECT * FROM (SELECT `miliboy_table`.`入伍日期`, `miliboy_table`.`役男生日`, `area_town`.`Town_name`, `miliboy_table`.`役男姓名`, `miliboy_table`.`身分證字號`, `files_info_table`.`審批階段`, `files_info_table`.`扶助級別`, `files_info_table`.`建案日期`, `files_info_table`.`是否扶助`, `miliboy_table`.`退伍日期`, `files_info_table`.`修改人姓名`, `files_info_table`.`案件流水號`, `files_info_table`.`可否編修`, `files_status_code`.`案件階段名稱`, `files_type`.`作業類別名稱`, `miliboy_table`.`最新案件流水號` FROM `files_info_table` JOIN `miliboy_table` ON `miliboy_table`.`役男系統編號` = `files_info_table`.`役男系統編號` JOIN `area_town` ON `area_town`.`Town_code` = `files_info_table`.`town` LEFT JOIN `files_status_code` ON `files_status_code`.`審批階段代號` = `files_info_table`.`審批階段` LEFT JOIN `files_type` ON `files_type`.`作業類別` = `files_info_table`.`作業類別` order by `files_info_table`.`建案日期` asc) as `test` WHERE `test`.`是否扶助` = 1 AND `test`.`退伍日期` IS NULL ".$if_town." group by `身分證字號`";
 
-			$Qstring = "SELECT ps.案件流水號, ps.建案日期, ps.役男系統編號, `miliboy_table`.`入伍日期`, `miliboy_table`.`役男生日`, `area_town`.`Town_name`, `miliboy_table`.`役男姓名`, `miliboy_table`.`身分證字號`, ps.`審批階段`, ps.`扶助級別`, ps.`建案日期`, ps.`是否扶助`, `miliboy_table`.`退伍日期`, ps.`修改人姓名`, ps.`案件流水號`, ps.`可否編修`, `files_status_code`.`案件階段名稱`, `files_type`.`作業類別名稱`, `miliboy_table`.`最新案件流水號` FROM ( SELECT MAX(建案日期) as 建案日期, 役男系統編號 FROM files_info_table GROUP BY 役男系統編號) ps2 LEFT JOIN files_info_table ps USING (役男系統編號) JOIN `miliboy_table` ON `miliboy_table`.`役男系統編號` = `ps`.`役男系統編號` JOIN `area_town` ON `area_town`.`Town_code` = `ps`.`town` LEFT JOIN `files_status_code` ON `files_status_code`.`審批階段代號` = `ps`.`審批階段` LEFT JOIN `files_type` ON `files_type`.`作業類別` = `ps`.`作業類別` WHERE ps.建案日期 = ps2.建案日期 AND `ps`.`是否扶助` = 1 AND `miliboy_table`.`退伍日期` IS NULL ".$if_town." GROUP BY ps.役男系統編號";
+			//$Qstring = "SELECT ps.案件流水號, ps.建案日期, ps.役男系統編號, `miliboy_table`.`入伍日期`, `miliboy_table`.`役男生日`, `area_town`.`Town_name`, `miliboy_table`.`役男姓名`, `miliboy_table`.`身分證字號`, ps.`審批階段`, ps.`扶助級別`, ps.`建案日期`, ps.`是否扶助`, `miliboy_table`.`退伍日期`, ps.`修改人姓名`, ps.`案件流水號`, ps.`可否編修`, `files_status_code`.`案件階段名稱`, `files_type`.`作業類別名稱`, `miliboy_table`.`最新案件流水號` FROM ( SELECT MAX(建案日期) as 建案日期, 役男系統編號 FROM files_info_table GROUP BY 役男系統編號) ps2 LEFT JOIN files_info_table ps USING (役男系統編號) JOIN `miliboy_table` ON `miliboy_table`.`役男系統編號` = `ps`.`役男系統編號` JOIN `area_town` ON `area_town`.`Town_code` = `ps`.`town` LEFT JOIN `files_status_code` ON `files_status_code`.`審批階段代號` = `ps`.`審批階段` LEFT JOIN `files_type` ON `files_type`.`作業類別` = `ps`.`作業類別` WHERE ps.建案日期 = ps2.建案日期 AND `ps`.`是否扶助` = 1 AND `miliboy_table`.`退伍日期` IS NULL ".$if_town." GROUP BY ps.役男系統編號";
+		$localQ = "";
+		if($user_level <= 3){	
+			//區公所使用者登入，應該只能看到自己公所
+			$localQ = "Where `Town_name` = '{$user_organ}'";
+		}
+
+		$Qstring = "
+		SELECT `役男姓名`,`身分證字號`,`役男生日`,`入伍日期`,`服役軍種`,`服役狀態`,`案件流水號`,`作業類別名稱`, `建案日期`, `Town_name`, `扶助級別`, `修改人姓名`, `複查進行中` 
+		FROM	
+		(	
+		SELECT
+		`miliboy_table`.`役男姓名`, `miliboy_table`.`身分證字號`, `miliboy_table`.`役男生日`, `miliboy_table`.`入伍日期`, `miliboy_table`.`服役軍種`, `miliboy_table`.`服役狀態`, `miliboy_table`.`退伍日期`,
+
+		case 
+		    when `FTNEW`.`是否扶助` is NOT NULL then `FTNEW`.`案件流水號`
+			when `FTNEW`.`是否扶助` is NULL  AND `FTOLD`.`是否扶助` is NOT NULL then `FTOLD`.`案件流水號`
+		end as `案件流水號`,
+		case 
+		    when `FTNEW`.`是否扶助` is NOT NULL then `FTNEW`.`作業類別`
+			when `FTNEW`.`是否扶助` is NULL  AND `FTOLD`.`是否扶助` is NOT NULL then `FTOLD`.`作業類別`
+		end as `作業類別`,
+		case 
+		    when `FTNEW`.`是否扶助` is NOT NULL then `FTNEW`.`建案日期`
+			when `FTNEW`.`是否扶助` is NULL  AND `FTOLD`.`是否扶助` is NOT NULL then `FTOLD`.`建案日期`
+		end as `建案日期`,
+		case 
+		    when `FTNEW`.`是否扶助` is NOT NULL then `FTNEW`.`扶助級別`
+			when `FTNEW`.`是否扶助` is NULL  AND `FTOLD`.`是否扶助` is NOT NULL then `FTOLD`.`扶助級別`
+		end as `扶助級別`,
+		case 
+		    when `FTNEW`.`是否扶助` is NOT NULL then `FTNEW`.`修改人姓名`
+			when `FTNEW`.`是否扶助` is NULL  AND `FTOLD`.`是否扶助` is NOT NULL then `FTOLD`.`修改人姓名`
+		end as `修改人姓名`,
+		case 
+		    when `FTNEW`.`是否扶助` is TRUE then 0
+			when `FTNEW`.`是否扶助` is NULL  AND `FTOLD`.`是否扶助` is NOT NULL then 1
+		end as `複查進行中`,
+		case 
+		    when `FTNEW`.`是否扶助` is TRUE then `FTNEW`.`town`
+			when `FTNEW`.`是否扶助` is NULL  AND `FTOLD`.`是否扶助` is NOT NULL then `FTOLD`.`town`
+		end as `town`
+
+
+		FROM `miliboy_table`
+		LEFT JOIN `files_info_table` as FTNEW on `FTNEW`.`案件流水號` = `miliboy_table`.`最新案件流水號`
+		LEFT JOIN `files_info_table` as FTOLD on `FTOLD`.`案件流水號` = `FTNEW`.`源版本號`
+
+		WHERE
+		(`miliboy_table`.`服役狀態` = '服役中' AND `miliboy_table`.`退伍日期` IS NULL AND `miliboy_table`.`最新案件流水號` IS NOT NULL)
+		AND
+			((`FTNEW`.`是否扶助` IS true) OR (`FTNEW`.`是否扶助` IS NOT true AND `FTOLD`.`是否扶助` IS true))
+		) as `tableQ1`
+		LEFT JOIN `area_town` ON `area_town`.`Town_code` = `tableQ1`.`town`
+		LEFT JOIN `files_type` ON `files_type`.`作業類別` = `tableQ1`.`作業類別` ".$localQ;
+
+
+
 
 
 

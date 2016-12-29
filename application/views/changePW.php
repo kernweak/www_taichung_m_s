@@ -11,6 +11,7 @@
             opacity: 0;
             -webkit-transform: scale(.8);
             transform: scale(.8);
+            padding: 1em;
         }
         .login-form input{
             width: 100%;

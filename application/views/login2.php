@@ -1,3 +1,9 @@
+<?php            
+//濃縮減量版，CSS濃縮，只載入JQUERY
+?>
+
+
+
 <!DOCTYPE html>
 <html>
 <head lang="zh-TW">
@@ -8,11 +14,8 @@
     <title>Login</title>
     <!-- 最新編譯和最佳化的 CSS -->
     <!-- <link rel="stylesheet" type="text/css" href="css/metro-icons.css"> -->
-    <link href="/0MS/css/metro.css" rel="stylesheet">
-    <link href="/0MS/css/metro-icons.css" rel="stylesheet">
-    <link href="/0MS/css/metro-responsive.css" rel="stylesheet">
+    <link href="/0MS/css/login.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="/0MS/js/metro.js"></script>
  
     <style>
         .login-form {
@@ -65,7 +68,7 @@
     <div class="login-form padding20 block-shadow">
         <form>
             <h1 class="text-light">登入系統</h1>
-            <hr class="thin"/>
+            <hr>
             <br />
             <div class="input-control text full-size" data-role="input">
                 <label for="user_login">帳號:</label>

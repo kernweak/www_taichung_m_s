@@ -4,26 +4,28 @@
 <head lang="zh-TW">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="">
     <!-- <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' /> -->
     <title>役男家屬生活扶助系統</title>
     <!-- 最新編譯和最佳化的 CSS -->
-    <link rel="stylesheet" href="/0MS/css/bootstrap.css">
+    <link rel="stylesheet" href="/0MS/css/bootstrap.min.css">
     <!-- 選擇性佈景主題 -->
-    <link rel="stylesheet" href="/0MS/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/0MS/css/bootstrap-theme.min.css">
     <!-- <link rel="stylesheet" type="text/css" href="css/metro-icons.css"> -->
-    <link rel="stylesheet" href="/0MS/fonts/notosanstc.css">
+    <!--<link rel="stylesheet" href="/0MS/fonts/notosanstc.css">-->
     <link rel="stylesheet" type="text/css" href="/0MS/extensions/DataTables/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/0MS/images/people/font/flaticon.css">
+    <!--<link rel="stylesheet" type="text/css" href="/0MS/images/people/font/flaticon.css">-->
     <link href="/0MS/css/metro-icons.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/0MS/css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen.css">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
-    <script src="/0MS/js/jquery-3.1.0.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="/0MS/js/czchen-0.js"></script>
     <script>
         var User_Level = <?php echo $User_Level ?>;
+        var organization = '<?php echo $organization ?>';
+        var FullName = '<?php echo $FullName ?>';
     </script>
 </head>
 
@@ -111,7 +113,8 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-apps icon"></span>參考資料 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="$('#Law_1').modal('toggle')">法條參照</a></li>
-                                    <li><a href="#" onclick="$('#Law_2').modal('toggle')">地號查地址</a></li>
+                                    <!--<li><a href="#" onclick="$('#Law_2').modal('toggle')">地號查地址</a></li>-->
+                                    <li><a href="http://easymap.land.moi.gov.tw/R02/Index" target="_blank">地號查地址</a></li>
                                     <li><a href="https://pswst.mol.gov.tw/psdn/" target="_blank">職類薪資</a></li>
                                     <li><a href="#" onclick="$('#Law_3').modal('toggle')">農林漁牧技藝</a></li>
                                     <li><a href="#" onclick="$('#Law_4').modal('toggle')">股票查詢</a></li>
@@ -167,7 +170,7 @@
     </div>
     
     <?php include('Law_1.php');?>
-    <?php include('Law_2.php');?>
+    <?php //include('Law_2.php');?>
     <?php include('Law_3.php');?>
     <?php include('Stock.php');?>
     <?php include('Law_5.php');?>
@@ -191,6 +194,7 @@
 //隔一段時間後，會自動登出
 $(document).ready(function () {
     //Increment the idle time counter every minute.
+
     var idleInterval = setInterval(timerIncrement, 60000); // 1 minute
 
     //Zero the idle timer on mouse movement.
@@ -201,7 +205,7 @@ $(document).ready(function () {
         idleTime = 0;
     });
 });
-
+var idleTime = 0;
 function timerIncrement() {
     idleTime = idleTime + 1;
     if (idleTime >= <?php echo $Auto_Logout_Time ?>) { // 20 minutes 發呆->登出  

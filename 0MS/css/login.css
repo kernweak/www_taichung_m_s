@@ -1,0 +1,106 @@
+/*濃縮減量*/
+body {
+        font-family: Microsoft JhengHei !important;
+        background-color: #004050 !important;
+        font-size: 0.875rem;
+	    line-height: 1.1;
+	    font-weight: 400;
+	    font-style: normal;
+	    padding: 0;
+	    margin: 0;
+	    height: 100%;
+}
+*{
+	box-sizing: border-box;
+	border-collapse: collapse;
+}
+.login-form, #MSG{
+	width: 25rem;
+    height: 18.75rem;
+    position: fixed;
+    top: 50%;
+    margin-top: -9.375rem;
+    left: 50%;
+    margin-left: -12.5rem;
+    background-color: #ffffff;
+    padding: 1.25rem;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+}
+#MSG{
+	height: 4em;
+    top: calc(50% + 20rem);
+    display: none;
+}
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #88b9e3;
+}
+
+.full-size {
+    width: 100% !important;
+}
+.input-control {
+    display: inline-block;
+    min-height: 2.125rem;
+    height: 2.125rem;
+    position: relative;
+    vertical-align: middle;
+    margin: .325rem 0;
+    line-height: 1;
+}
+.input-control.text > label{
+	position: absolute;
+    left: 0;
+    top: -1rem;
+    font-size: .875rem;
+}
+
+.input-control input{
+	-webkit-appearance: none;
+    position: relative;
+    border: 1px #d9d9d9 solid;
+    width: 100%;
+    height: 100%;
+    padding: .3125rem;
+    z-index: 0;
+    line-height: normal;
+    margin: 0;
+    font-size: 100%;
+    vertical-align: middle;
+}
+
+.button {
+    padding: 0 1rem;
+    height: 2.125rem;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border: 1px #d9d9d9 solid;
+    color: #262626;
+    cursor: pointer;
+    display: inline-block;
+    outline: none;
+    font-size: .875rem;
+    line-height: 100%;
+    margin: .15625rem 0;
+    position: relative;
+    font-family: Microsoft JhengHei !important;
+}
+.button.primary {
+    background: #2086bf;
+    color: #ffffff;
+    border-color: #2086bf;
+}
+.button.link {
+    background: transparent;
+    color: #2086bf;
+    border-color: transparent;
+    text-decoration: underline;
+}
+h1, h2, h3, h4, h5, h6 {
+    margin: .625rem 0;
+}
+h1 {
+    font: 400 2.25rem/1.1 Microsoft JhengHei;
+}

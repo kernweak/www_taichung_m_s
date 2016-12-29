@@ -27,59 +27,12 @@ Property_limit.getIndexbyName = function(){
 Property_limit.getImmLimitbyName = function(area_string = ""){
     var result = 9999999999999;     //抓不到回傳值，就給一個超大值(爆掉)
     $.each(this, function(index, area) {
-
         if(area[0] == area_string){
-            // console.log(area[0]);
-            // console.log(area_string);
-            // console.log(area[3]);
             result = area[3];
         }
     });
     return result;    
 }
-
-// var Stock = [
-// [104, "鴻海2317", 5],
-// [103, "鴻海2317", 4.3],
-// [102, "鴻海2317", 3],
-// [102, "鴻海2317", 2.5],
-// [104, "台積電2330", 6],
-// [103, "台積電2330", 4.5],
-// [102, "台積電2330", 3],
-// [104, "大立光3008", 63.5],
-// [103, "大立光3008", 51],
-// [102, "大立光3008", 28.5],
-// ]
-
-//測試chart.js 圖表
-// var data = {
-//     labels: ["西屯區", "北屯區", "南屯區", "西區", "中區", "東區", "南區", "北區"],
-//     datasets: [
-//         {
-//             label: "105年 1月~12月 各區扶助案件申請數",
-//             backgroundColor: [
-//                 'rgba(255, 99, 132, 0.2)',
-//                 'rgba(54, 162, 235, 0.2)',
-//                 'rgba(255, 206, 86, 0.2)',
-//                 'rgba(75, 192, 192, 0.2)',
-//                 'rgba(153, 102, 255, 0.2)',
-//                 'rgba(173, 82, 155, 0.2)',
-//                 'rgba(255, 159, 64, 0.2)'
-//             ],
-//             borderColor: [
-//                 'rgba(255,99,132,1)',
-//                 'rgba(54, 162, 235, 1)',
-//                 'rgba(255, 206, 86, 1)',
-//                 'rgba(75, 192, 192, 1)',
-//                 'rgba(153, 102, 255, 1)',
-//                 'rgba(173, 82, 155, 1)',
-//                 'rgba(255, 159, 64, 1)'
-//             ],
-//             borderWidth: 1,
-//             data: [95, 89, 40, 61, 56, 55, 55, 40],
-//         }
-//     ]
-// };
 
 
 $(document).ready(function() {
@@ -90,24 +43,16 @@ $(document).ready(function() {
     svg_redraw();
 
     redraw_area_list_L1();  //各縣市列表icon改成用js跑
-    //全畫面縮放倍率初始化
-     $("body").css('zoom', $("#body-zoom").val());
      //啟用"案件編輯"下拉選單 (最終... 必須要開啟案件/新增案件 才能觸發 "案件編輯" )
      //$("#family-edit-nav").fadeIn(400);
 
 /*************************全網站通用      TEST.php****************************************/
-    //全畫面縮放倍率變化時
-    $("#body-zoom").change(function(event) {    $("body").css('zoom', $("#body-zoom").val());    });
-
     //重新計算家屬編修左面板
     function recount_left_family_panel(){
         total_count_members();
         total_count_incomes();
         total_count_property();
     }
-
-
-    
 
 /*************************待辦案件      filelist.php****************************************/
     //彈出窗--點擊開啟檔案
@@ -131,7 +76,8 @@ $(document).ready(function() {
                 },
                 "lengthMenu": "每頁顯示 _MENU_ 筆",
                 "info": "第 _PAGE_ / _PAGES_ 頁",
-                "search": "粗搜索:"
+                "search": "粗搜索:",
+                "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
             },
             "order": [[ 7, "desc" ]]
         });
@@ -144,7 +90,8 @@ $(document).ready(function() {
                 },
                 "lengthMenu": "每頁顯示 _MENU_ 筆",
                 "info": "第 _PAGE_ / _PAGES_ 頁",
-                "search": "粗搜索:"
+                "search": "粗搜索:",
+                "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
             }
         });
         $('#table_supporting').dataTable({
@@ -156,7 +103,8 @@ $(document).ready(function() {
                 },
                 "lengthMenu": "每頁顯示 _MENU_ 筆",
                 "info": "第 _PAGE_ / _PAGES_ 頁",
-                "search": "粗搜索:"
+                "search": "粗搜索:",
+                "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
             }
         });
     }, 0);
