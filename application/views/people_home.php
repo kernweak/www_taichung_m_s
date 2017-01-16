@@ -136,7 +136,7 @@
 				<p class="msg" style="display: none;"></p>
 		</div>
 		<div class="upload_div">			
-				<label>其他</label>
+				<label>照片或其他</label>
 				<br/><a id="attach_4" class="attach-a" target="_blank"></a>
 				<hr class="athin"/>
 				<input type="hidden" value="4"/>

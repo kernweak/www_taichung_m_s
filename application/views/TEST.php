@@ -48,7 +48,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"><img src="/0MS/images/Taichung_White_no_text.svg" style="height: 100%;display: inline-block;position: relative;top: -0.2em;">役男家屬生活扶助</a>
+                        <a class="navbar-brand" href="#"><img src="/0MS/images/Taichung_White_no_text.svg" style=""><span>役男家屬<br>生活扶助</span></a>
                         <span class="navbar-brand"><?php echo $organization."-".$FullName ?></span>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->

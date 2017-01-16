@@ -55,49 +55,63 @@
                 <h4 class="modal-title" id="File_list_View_ModalLabel"></h4>
             </div>
             <div class="modal-body" style="height: 80vh;overflow: auto;">
-                <table style="width: 80%;">
-                <thead>
-                <tr style="border-bottom: 1px solid #c5c5c5;">
-                <th>入伍日期</th>
-                <th>行政區</th>
-                <th>役男姓名</th>
-                <th>役男證號</th>
-                <th>案件進度</th>
-                <th>審查結果</th>
-                <th>立案日期</th>
-                <th>主要承辦人</th>
-                <th>作業類別</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr role="row" class="odd">
-                <td class="sorting_1">103-07-05</td>
-                <td>中區</td>
-                <td>陳韋帆</td>
-                <td>S222</td>
-                <td></td>
-                <td>丙級2口</td><td>105-11-20 15:26:09</td>
-                <td>陳宗儒</td>
-                <td>初審</td>
-                </tr></tbody></table>
-                <br>
-                <label for="view_log_comment"><h3>批核歷程</h3></label>
-                <table name="view_log_comment" id="view_log_comment" style="width: 80%;">
-                <thead>
-                <tr style="border-bottom: 1px solid #c5c5c5;">
-                <th>日期時間</th>
-                <th>批核者</th>
-                <th>動作名稱</th>
-                <th>批核後案件進度</th>
-                <th>批核意見</th>
-                </tr>
-                </thead>
-                <tbody></tbody>
+                <div class="panel panel-default">
+                    <div class="panel-heading">案件基本資訊</div>
+                        <!-- /.panel-heading -->
+                    <div class="panel-body">
+                         <table style="width: 100%;">
+                        <thead>
+                        <tr style="border-bottom: 1px solid #c5c5c5;">
+                        <th>入伍日期</th>
+                        <th>行政區</th>
+                        <th>役男姓名</th>
+                        <th>役男證號</th>
+                        <th>案件進度</th>
+                        <th>審查結果</th>
+                        <th>立案日期</th>
+                        <th>主要承辦人</th>
+                        <th>作業類別</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr role="row" class="odd">
+                        <td class="sorting_1">103-07-05</td>
+                        <td>中區</td>
+                        <td>陳韋帆</td>
+                        <td>S222</td>
+                        <td></td>
+                        <td>丙級2口</td><td>105-11-20 15:26:09</td>
+                        <td>陳宗儒</td>
+                        <td>初審</td>
+                        </tr></tbody></table>   
+                    </div>
+                        <!-- /.panel-body -->
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">案件批核歷程</div>
+                        <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <table name="view_log_comment" id="view_log_comment" class="table-striped" style="width: 100%;">
+                        <thead>
+                        <tr style="border-bottom: 1px solid #c5c5c5;">
+                        <th>日期時間</th>
+                        <th>批核者</th>
+                        <th>動作名稱</th>
+                        <th>批核後案件進度</th>
+                        <th>批核意見</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                        </table>
+                    </div>
+                        <!-- /.panel-body -->
+                </div>
 
-                </table>
-        <br>
-        <label for="view_log_comment"><h3>家庭概況</h3></label>
-        <table border="1" style="text-align: center;width: 80%;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">案件家庭概況</div>
+                        <!-- /.panel-heading -->
+                    <div class="panel-body">
+        <table border="1" style="text-align: center;width: 100%;">
         <tbody><tr>
         <td colspan="2" style="background-color: #ced790;">動產</td>
         <td colspan="4" style="background-color: #90c5d7;">不動產</td>
@@ -163,10 +177,16 @@
         <td colspan="4">$<span id="FView-PH-total-imm">0</span></td>
         <td colspan="3">$<span id="FView-PH-total-inc">0</span></td>
         <td><span id="FView-PH-level">甲級1口</span></td></tr>
-    </tbody></table>
-    <br><br><br>
-    <hr class="thin"/>
-    <div class="h4-label-btn-group" id="View-att-0" afile="">
+    </tbody></table> 
+                </div>
+                        <!-- /.panel-body -->
+                </div>
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">案件家況敘述</div>
+                        <!-- /.panel-heading -->
+                    <div class="panel-body">
+                            <div class="h4-label-btn-group" id="View-att-0" afile="">
         <h4><span class="label label-danger">戶口名簿</span></h4>
         <div class="btn-group" role="group" aria-label="...">
           <button type="button" class="b1 btn btn-danger">直接瀏覽</button>
@@ -211,14 +231,10 @@
             <label style="width: 20em;"><h3>整體家況敘述確認-市政府</h3></label>
             <textarea  style="width: 96%;height: 30em;"  id="FView-PH-file_comm_2" disabled></textarea>
         </div>
-    </div><div style="width: 60%; display: inline-block;vertical-align: top;"><h3 style="margin-top: 0px;margin-bottom: 15px;">PDF測試</h3><iframe id="pdf_viewer" src="" style="width: 100%;height: 100vh; display: inline-block;"></iframe></div>
-    <br/>
-    <hr class="thin"/>
-    
-
-
-
-
+    </div><div style="width: 60%; display: inline-block;vertical-align: top;"><h3 style="margin-top: 0px;margin-bottom: 15px;">PDF檔案</h3><iframe id="pdf_viewer" src="" style="width: 100%;height: 100vh; display: inline-block;"></iframe></div>
+                    </div>
+                        <!-- /.panel-body -->
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>

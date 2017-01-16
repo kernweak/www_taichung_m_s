@@ -56,3 +56,6 @@
 .mif-apps:before {
   content: "\e647";
 }
+.mif-cross:before {
+  content: "\ea0f";
+}

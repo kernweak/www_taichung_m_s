@@ -65,6 +65,8 @@
         })
         .done(function(responsive) {
             $("#table_supporting tbody").empty();
+            var table = $('#table_supporting').DataTable();     //DataTable
+            table.clear();    
             tbody = "";
             $.each(responsive, function(index, file) {
                 var oneDay = 24*60*60*1000;
@@ -129,7 +131,7 @@
 
                 progress = diffDays/period*100;
                 //console.log(diffDays);
-                 tbody += "" +
+                 /*tbody += "" +
 
                     '<tr>' +   
                         '<td>'+ yyy_dash(date_to_yyy(file.入伍日期)) +'</td>' +
@@ -148,9 +150,32 @@
                         '<td>'+file.作業類別名稱+'</td>' +
                         '<td>'+Button_str+'</td>' +
 
-                    '</tr>';
+                    '</tr>';*/
+                /*
+                    Datable 的寫法
+                */
+
+                var data = [
+                    yyy_dash(date_to_yyy(file.入伍日期)),
+                    file.Town_name,
+                    file.役男姓名,
+                    yyy_dash(date_to_yyy(file.役男生日)),
+                    file.身分證字號,
+                    file.扶助級別,
+                    '<div class="progress">' +
+                                '<div class="progress-bar progress-bar-'+bar_color+'" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+progress+'%;">' +
+                                    +diffDays+'</div>',
+                    file.修改人姓名,
+                    file.作業類別名稱,
+                    Button_str
+                ];
+
+                var row = table.row.add(data).node();
+                $(row).attr('trkey', file.案件流水號);
+                //table.draw(false);
             });
-            $("#table_supporting tbody").html(tbody);
+            table.draw(false);
+            //$("#table_supporting tbody").html(tbody);
 
         })
         .fail(function() {
@@ -182,6 +207,8 @@
             // files_status_code.案件階段名稱//       作業類別
 
             $("#table_progress tbody").empty();
+            var table = $('#table_progress').DataTable();     //DataTable
+            table.clear(); 
             tbody = "";
             $.each(responsive, function(index, file) {
                 //檢視.編輯.意見.退回.呈核
@@ -193,7 +220,7 @@
 
                 //console.log(file.審批階段);
                  var progress = (file.審批階段/6)*100;
-                 tbody += "" +
+                 /*tbody += "" +
 
                     '<tr trkey="'+file.案件流水號+'">' +   
                         '<td>'+ yyy_dash(date_to_yyy(file.入伍日期)) +'</td>' +
@@ -212,9 +239,38 @@
                         '<td>'+file.作業類別名稱+'</td>' +
                         '<td style="min-width: 190px;">'+Button_str+'</td>' +
 
-                    '</tr>';
+                    '</tr>';*/
+                /*
+                    Datable 的寫法
+                */
+
+                var data = [
+                    yyy_dash(date_to_yyy(file.入伍日期)),
+                    file.Town_name,
+                    file.役男姓名,
+                    file.身分證字號,
+                    '<div class="progress">' +
+                                '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">' +
+                                    '<span style="display:none;">20</span>'+file.案件階段名稱+'</div>' +
+                            '</div>',
+                    file.扶助級別,
+                    yyy_dash(date_to_yyy(file.建案日期)),
+                    file.修改人姓名,
+                    file.作業類別名稱,
+                    Button_str
+                ];
+
+                var row = table.row.add(data).node();
+                $(row).attr('trkey', file.案件流水號);
+
+
+
+
+
+
             });
-            $("#table_progress tbody").html(tbody);
+            table.draw(false);
+           // $("#table_progress tbody").html(tbody);
             setTimeout(function(){
                 $.each(responsive, function(index, file) {
                     var progress = (file.審批階段/6)*100;

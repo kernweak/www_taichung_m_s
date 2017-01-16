@@ -1,4 +1,4 @@
-<a type="button" class="btn btn-warning btn-sm" style="margin-bottom: 2em;" href="#" onclick="$('#Add_file').modal('toggle')">新增案件</a>
+<a type="button" class="btn add-new-file-button" style="margin-bottom: 2em;" href="#" onclick="$('#Add_file').modal('toggle')">新增案件</a>
 <table id="table_id" class="table table-condensed table-hover">
     <thead>
         <tr>

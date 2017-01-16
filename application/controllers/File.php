@@ -174,7 +174,7 @@ class File extends MY_Controller {
 		        $act2 = 5;
 		        break;
 		}
-		var_dump($act2);
+		//var_dump($act2);
 		$new_file_key = $this->file_model->clone_file_info($file_key, $act2);
 
 		//$file_info = $this->file_model->progress_file($file_key,"+");
@@ -184,6 +184,15 @@ class File extends MY_Controller {
 		$this->log_activity("rebuild a file", $act ,"old_key=$file_key new_key=$new_file_key");
 
 		echo json_encode("Success");
+	}
+
+	public function FF(){
+		ini_set('xdebug.var_display_max_depth', 5);
+		ini_set('xdebug.var_display_max_children', 256);
+		ini_set('xdebug.var_display_max_data', 1024);
+		$file_key = 25;
+		$members = $this->member_model->get_members_for_file($file_key);
+		var_dump($members);
 	}
 
 	public function progress_next(){
