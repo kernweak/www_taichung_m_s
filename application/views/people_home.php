@@ -8,7 +8,12 @@
 	<div class="PH-label-g"><label>入伍日期: </label><span id="PH-milidate">1050831</span></div>
 	<div class="PH-label-g"><label>服役軍種: </label><span id="PH-type">陸軍</span></div>
 	<div class="PH-label-g"><label>服役狀態: </label><span id="PH-status">服役中</span></div>
-	<div><label style="width: 6em;">戶籍地址: </label><span id="PH-fulladdress">臺中市西屯區逢福里惠來路三段198號4樓之1</span></div>
+	<br />
+	<div class="PH-label-g"><label>服役梯次: </label><span id="PH-echelon">000000</span></div>
+	<div class="PH-label-g"><label>連絡電話: </label><span id="PH-phone">xx-xxxx-xxxx</span></div>
+	<div class="PH-label-g" style="width: 30em;"><label>電子信箱: </label><span id="PH-email">xxxxxxxxx@xxxxx.xxxxx.xxxxxx</span></div>
+	<div class="PH-label-2g"><label>戶籍地址: </label><span id="PH-fulladdress">臺中市西屯區逢福里惠來路三段198號4樓之1</span></div>
+	
 	<hr class="thin"/>
 	<table border="1" style="text-align: center;">
 		<tr>
@@ -96,7 +101,7 @@
 				<br/><a id="attach_0" class="attach-a" target="_blank"></a>
 				<hr class="athin"/>				
 				<input type="hidden" value="0"/>
-				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="text" class="fake_input" placeholder="選擇檔案">
 				<input type="file" name="attachment" class="transparent_input" />
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
@@ -107,7 +112,7 @@
 				<br/><a id="attach_1" class="attach-a" target="_blank"></a>
 				<hr class="athin"/>
 				<input type="hidden" value="1"/>
-				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="text" class="fake_input" placeholder="選擇檔案">
 				<input type="file" name="attachment" class="transparent_input" />
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
@@ -118,7 +123,7 @@
 				<br/><a id="attach_2" class="attach-a" target="_blank"></a>
 				<hr class="athin"/>
 				<input type="hidden" value="2"/>
-				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="text" class="fake_input" placeholder="選擇檔案">
 				<input type="file" name="attachment" class="transparent_input" />
 				<p class="alert"></p>
 				<button class="upload">上傳</button>			
@@ -129,7 +134,7 @@
 				<br/><a id="attach_3" class="attach-a" target="_blank"></a>
 				<hr class="athin"/>
 				<input type="hidden" value="3"/>
-				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="text" class="fake_input" placeholder="選擇檔案">
 				<input type="file" name="attachment" class="transparent_input" />
 				<p class="alert"></p>
 				<button class="upload">上傳</button>
@@ -140,7 +145,7 @@
 				<br/><a id="attach_4" class="attach-a" target="_blank"></a>
 				<hr class="athin"/>
 				<input type="hidden" value="4"/>
-				<input type="text" class="fake_input" placeholder="上傳檔案">
+				<input type="text" class="fake_input" placeholder="選擇檔案">
 				<input type="file" name="attachment" class="transparent_input" />			
 				<p class="alert"></p>
 				<button class="upload">上傳</button>

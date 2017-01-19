@@ -216,6 +216,7 @@ class  MY_Controller  extends  CI_Controller  {
 		$this->session->unset_userdata('department');
 		$this->session->unset_userdata('User_Level');
 		$this->session->unset_userdata('Last_time_CPW');
+		$this->session->unset_userdata('SSO');
 	}
 	private function session_set($query){
 		$this->load->library('session');

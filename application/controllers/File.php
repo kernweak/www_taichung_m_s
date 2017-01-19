@@ -28,6 +28,7 @@ class File extends MY_Controller {
 		$this->load->model('member_model');
 		$this->load->model('property_model');
 		$this->load->model('income_model');
+		$this->load->model('area_model');
     } 
 
 	public function check_boy_exist()		//檢查此役男是否存在
@@ -61,8 +62,11 @@ class File extends MY_Controller {
 		$begin_date = $this->input->post('ADF_milidate');
 		$type = $this->input->post('ADF_type');
 		$status = $this->input->post('ADF_status');
+		$echelon = $this->input->post('ADF_echelon');
+		$phone = $this->input->post('ADF_phone');
+		$email = $this->input->post('ADF_email');
 		
-		$boy_key = $this->boy_model->add_new_boy($name, $id, $birthday, $begin_date, $type, $status);
+		$boy_key = $this->boy_model->add_new_boy($name, $id, $birthday, $begin_date, $type, $status, $echelon);
 		$this->log_activity('added a boy', 'boy_key='.$boy_key);
 
 		// create a new file record for this boy		
@@ -73,11 +77,14 @@ class File extends MY_Controller {
 		$today = date("Y-m-d H:i:s");
 		log_message('debug', print_r($today, true));
 
-		$file_key = $this->file_model->add_new_file($today, $boy_key, $county, $town, $village, $address, $FullName, $organization, $department);
+		$file_key = $this->file_model->add_new_file($today, $boy_key, $county, $town, $village, $address, $FullName, $organization, $department, $phone, $email);
 
 		$this->log_activity('added a file', 'file_key='.$file_key);
-		
+
 		$this->boy_model->update_new_boy_file_link($boy_key, $file_key);
+		
+		$this->add_member_newboy($file_key,$name,$id,$birthday,$address,$county,$town,$village,$echelon);
+
 		$data= array(
 			'boy_key' => $boy_key,
 			'file_key' => $file_key,
@@ -85,6 +92,24 @@ class File extends MY_Controller {
 			);
 
 		echo json_encode($data);
+	}
+
+	private function add_member_newboy($file_key,$name,$id,$birthday,$address,$county,$town,$village){
+		$address = $this->area_model->address_by_code($county,$town,$village).$address;
+		$person = new stdClass();
+    	$person->title = '役男';
+    	$person->name = $name;
+    	$person->code = $id;
+    	$person->birthday = $birthday;
+    	$person->address = $address;
+    	$person->job = "";
+    	$person->special = "1,1";
+    	$person->marriage = "";
+    	$person->marriage_ex = "";
+    	$person->area = "臺中市";
+    	$person->area_key = "3";
+    	$person->comm = '';
+    	$member_key = $this->member_model->add($person, $file_key);
 	}
 
 	public function read_new_file(){

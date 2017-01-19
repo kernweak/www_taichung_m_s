@@ -197,7 +197,7 @@ class File_model extends CI_Model {
 	/*
 	*	add a 初審案件
 	*/
-	public function add_new_file($today, $id, $county, $town, $village, $address, $FullName, $organization, $department){
+	public function add_new_file($today, $id, $county, $town, $village, $address, $FullName, $organization, $department, $phone, $email){
 		//$organization 機關先不寫
 		$data = array(
 			'作業類別' => 1,
@@ -210,6 +210,8 @@ class File_model extends CI_Model {
 			'修改人姓名' => $FullName,
 			'修改人單位' => $department,
 			'修改人編號' => $organization,
+			'聯絡電話1' => $phone,
+			'email' => $email,
 			'審批階段' => 1
 			);
 		$this->db->insert('files_info_table', $data);

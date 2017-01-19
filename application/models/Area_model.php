@@ -29,5 +29,29 @@ class Area_model extends CI_Model {
 		return $result;		
 	}
 
+	function address_by_code($county,$town,$village){
+		$this->db->select('County_name');
+		$this->db->from('area_county');
+		$this->db->where('County_code', $county);
+		$query = $this->db->get();
+		$result = $query->row();
+		$County_name = $result->County_name;
+		//...
+		$this->db->select('Town_name');
+		$this->db->from('area_town');
+		$this->db->where('Town_code', $town);
+		$query = $this->db->get();
+		$result = $query->row();
+		$Town_name = $result->Town_name;
+		//...
+		$this->db->select('Village_name');
+		$this->db->from('area_village');
+		$this->db->where('Village_id', $village);
+		$query = $this->db->get();
+		$result = $query->row();
+		$Village_name = $result->Village_name;
 
+		return $County_name.$Town_name.$Village_name;
+
+	}
 }

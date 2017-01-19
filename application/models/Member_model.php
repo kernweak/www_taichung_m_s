@@ -10,6 +10,7 @@ class Member_model extends CI_Model {
     	return the new member's primary key
     */
     public function add($person, $file_key){
+        //var_dump($person);
     	$specials = explode(',',$person->special);    	
 
     	$data = array(

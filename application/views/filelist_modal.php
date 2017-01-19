@@ -59,35 +59,58 @@
                     <div class="panel-heading">案件基本資訊</div>
                         <!-- /.panel-heading -->
                     <div class="panel-body">
-                         <table style="width: 100%;">
-                        <thead>
-                        <tr style="border-bottom: 1px solid #c5c5c5;">
-                        <th>入伍日期</th>
-                        <th>行政區</th>
-                        <th>役男姓名</th>
-                        <th>役男證號</th>
-                        <th>案件進度</th>
-                        <th>審查結果</th>
-                        <th>立案日期</th>
-                        <th>主要承辦人</th>
-                        <th>作業類別</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr role="row" class="odd">
-                        <td class="sorting_1">103-07-05</td>
-                        <td>中區</td>
-                        <td>陳韋帆</td>
-                        <td>S222</td>
-                        <td></td>
-                        <td>丙級2口</td><td>105-11-20 15:26:09</td>
-                        <td>陳宗儒</td>
-                        <td>初審</td>
-                        </tr></tbody></table>   
+                        <table style="width: 100%;" class="t1">
+                            <thead>
+                            <tr style="border-bottom: 1px solid #c5c5c5;background: #ebebeb;">
+                            <th style="width: 10%;">入伍日期</th>
+                            <th style="width: 10%;">行政區</th>
+                            <th style="idth: 10%;">役男姓名</th>
+                            <th style="width: 10%;">役男證號</th>
+                            <th style="width: 15%;">案件進度</th>
+                            <th style="width: 10%;">審查結果</th>
+                            <th style="width: 15%;">立案日期</th>
+                            <th style="width: 10%;">主要承辦人</th>
+                            <th style="width: 10%;">作業類別</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr role="row" class="odd">
+                            <td class="sorting_1">103-07-05</td>
+                            <td>中區</td>
+                            <td>陳韋帆</td>
+                            <td>S222</td>
+                            <td></td>
+                            <td>丙級2口</td><td>105-11-20 15:26:09</td>
+                            <td>陳宗儒</td>
+                            <td>初審</td>
+                            </tr></tbody>
+                        </table>
+                        <br/><br/>
+                        <table style="width: 100%;" class="t2">
+                            <thead>
+                            <tr style="border-bottom: 1px solid #c5c5c5;background: #ebebeb;">
+                            <th style="width: 10%;">役男生日</th>
+                            <th style="width: 10%;">服役軍種</th>
+                            <th style="width: 10%;">服役梯次</th>
+                            <th style="width: 10%;">家屬電話</th>
+                            <th style="width: 25%;">電子信箱</th>
+                            <th style="width: 35%;">戶籍地址</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr role="row" class="odd">
+                            <td class="sorting_1">103-07-05</td>
+                            <td>中區</td>
+                            <td>陳韋帆</td>
+                            <td>S222</td>
+                            <td>陳宗儒</td>
+                            <td>初審</td>
+                            </tr></tbody>
+                        </table>
                     </div>
                         <!-- /.panel-body -->
                 </div>
-                <div class="panel panel-primary">
+                <div class="panel panel-warning">
                     <div class="panel-heading">案件批核歷程</div>
                         <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -111,71 +134,71 @@
                     <div class="panel-heading">案件家庭概況</div>
                         <!-- /.panel-heading -->
                     <div class="panel-body">
-        <table border="1" style="text-align: center;width: 100%;">
+        <table border="1" bordercolor="DarkGrey" style="text-align: center;width: 100%;">
         <tbody><tr>
-        <td colspan="2" style="background-color: #ced790;">動產</td>
-        <td colspan="4" style="background-color: #90c5d7;">不動產</td>
-        <td colspan="3" style="background-color: #d79b90;">所得</td>
-        <td style="background-color: #d490d7;">全戶</td>
+        <td colspan="2" class="bg-success" style="border-right: 2px solid #a2a2a2;">動產</td>
+        <td colspan="4" class="bg-success" style="border-right: 2px solid #a2a2a2;">不動產</td>
+        <td colspan="3" class="bg-success" style="border-right: 2px solid #a2a2a2;">所得</td>
+        <td class="bg-success" style="border-right: 2px solid #a2a2a2;">全戶</td>
         </tr>
         <tr>
         <td>存款</td>
-        <td>投資</td>
+        <td style="border-right: 2px solid #a2a2a2;">投資</td>
         <td>房屋棟數</td>
         <td>房屋總價</td>
         <td>列計棟數</td>
-        <td>列計價值</td>
+        <td style="border-right: 2px solid #a2a2a2;">列計價值</td>
         <td>薪資</td>
         <td>營利</td>
-        <td>財產</td>
+        <td style="border-right: 2px solid #a2a2a2;">財產</td>
         <td>列計人口</td>
         </tr>
         <tr>
         <td>$<span id="FView-PH-Deposits">0</span></td>
-        <td>$<span id="FView-PH-Investment">0</span></td>
+        <td style="border-right: 2px solid #a2a2a2;">$<span id="FView-PH-Investment">0</span></td>
         <td><span id="FView-PH-Houses">0</span>棟</td>
         <td>$<span id="FView-PH-Houses-total">0</span></td>
         <td><span id="FView-PH-Houses-num">0</span>棟</td>
-        <td>$<span id="FView-PH-Houses-listtotal">0</span></td>
+        <td style="border-right: 2px solid #a2a2a2;">$<span id="FView-PH-Houses-listtotal">0</span></td>
         <td>$<span id="FView-PH-Salary">0</span></td>
         <td>$<span id="FView-PH-Profit">0</span></td>
-        <td>$<span id="FView-PH-Property-int">0</span></td>
+        <td style="border-right: 2px solid #a2a2a2;">$<span id="FView-PH-Property-int">0</span></td>
         <td><span id="FView-PH-members">1</span>人</td>
         </tr>
         <tr>
         <td>證券</td>
-        <td>其他</td>
+        <td style="border-right: 2px solid #a2a2a2;">其他</td>
         <td>土地筆數</td>
         <td>土地總值</td>
         <td>列計筆數</td>
-        <td>列計價值</td>
+        <td style="border-right: 2px solid #a2a2a2;">列計價值</td>
         <td>利息</td>
         <td>股利</td>
-        <td>其他</td>
+        <td style="border-right: 2px solid #a2a2a2;">其他</td>
         <td>生活所需</td>
         </tr>
         <tr>
         <td>$<span id="FView-PH-Securities">0</span></td>
-        <td>$<span id="FView-PH-others-Pro">0</span></td>
+        <td style="border-right: 2px solid #a2a2a2;">$<span id="FView-PH-others-Pro">0</span></td>
         <td><span id="FView-PH-Land">0</span>筆</td>
         <td>$<span id="FView-PH-Land-total">0</span></td>
         <td><span id="FView-PH-Land-num">0</span>筆</td>
-        <td>$<span id="FView-PH-Land-listtotal">0</span></td>
+        <td style="border-right: 2px solid #a2a2a2;">$<span id="FView-PH-Land-listtotal">0</span></td>
         <td>$<span id="FView-PH-Bank-int">0</span></td>
         <td>$<span id="FView-PH-Stock-int">0</span></td>
-        <td>$<span id="FView-PH-others-int">0</span></td>
+        <td style="border-right: 2px solid #a2a2a2;">$<span id="FView-PH-others-int">0</span></td>
         <td>$<span id="FView-PH-need">19626</span></td>
         </tr>
         <tr>
-        <td colspan="2">動產列計總額</td>
-        <td colspan="4">不動產列計總額</td>
-        <td colspan="3">月均所得總額</td>
+        <td colspan="2" style="border-right: 2px solid #a2a2a2;">動產列計總額</td>
+        <td colspan="4" style="border-right: 2px solid #a2a2a2;">不動產列計總額</td>
+        <td colspan="3" style="border-right: 2px solid #a2a2a2;">月均所得總額</td>
         <td>扶助等級</td>
         </tr>
         <tr>
-        <td colspan="2">$<span id="FView-PH-total-pro">0</span></td>
-        <td colspan="4">$<span id="FView-PH-total-imm">0</span></td>
-        <td colspan="3">$<span id="FView-PH-total-inc">0</span></td>
+        <td colspan="2" style="border-right: 2px solid #a2a2a2;">$<span id="FView-PH-total-pro">0</span></td>
+        <td colspan="4" style="border-right: 2px solid #a2a2a2;">$<span id="FView-PH-total-imm">0</span></td>
+        <td colspan="3" style="border-right: 2px solid #a2a2a2;">$<span id="FView-PH-total-inc">0</span></td>
         <td><span id="FView-PH-level">甲級1口</span></td></tr>
     </tbody></table> 
                 </div>

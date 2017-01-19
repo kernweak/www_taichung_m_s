@@ -36,6 +36,12 @@
     </div>
 </div>
 
+<div id="cortana_wait" style="display: none;">
+    <div id="cortana_wait_cont">
+        <div id="cortana_wait_icon"></div><div id="cortana_wait_msg">與系統連線中...</div>
+    </div>
+</div>
+
     <div role="tabpanel">
         <div>
             <nav class="navbar navbar-brown navbar-fixed-top">
@@ -53,7 +59,7 @@
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" role="tablist">
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-nav" style="width: calc(100% - 280px);">
 
                             <li class="dropdown" id="file-list-nav">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-files-empty icon"></span>案件 <span class="caret"></span></a>
@@ -72,11 +78,10 @@
                             <ul class="dropdown-menu">
                                     <li><a href="#edit-home" role="tab" data-toggle="tab">整體家況</a></li>
                                     <li><a href="#edit-navcon" role="tab" data-toggle="tab">家屬編修</a></li>
-                                    <!--<li><a href="#" onclick="empty_members()">清空</a></li>
-                                    <li><a href="#" onclick="add_miliboy()">加入役男</a></li>-->
-                                    <li><a href="#" onclick="save_file()">儲存</a></li>
-                                    <!--<li><a href="#" onclick="read_file_test()">讀取檔案</a></li>-->
-                                    <li><a href="#" onclick="close_file()">不儲存關閉</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#" onclick="save_file()">儲存案件</a></li>
+                                    <li><a href="#" onclick="reload_file()">放棄修改-重新載入</a></li>
+                                    <li><a href="#" onclick="close_file()">放棄修改-關閉案件</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#" onclick="add_miliboy()">家屬編修-加入役男</a></li>
                                     <?php if($User_Level == 1 || $User_Level >= 4 ){  ?>
@@ -90,26 +95,16 @@
 
 
 
-                        </ul>
+                        <!--</ul>-->
                         <!--<form class="navbar-form navbar-left">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="快速搜尋">
                             </div>
                             <button type="submit" class="btn btn-default">送出</button>
                         </form>-->
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-security icon"></span>人事權限 <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#personnel" role="tab" data-toggle="tab">修改密碼</a></li>
-                                    <?php if($User_Level >= 4){  ?>
-                                    <li><a href="http://mms.taichung.gov.tw/aup654rm6284gj4rm4/" target="_blank">帳號權限設定</a></li>
-                                    <?php }  ?>
-                                    <!--<li role="separator" class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>-->
-                                </ul>
-                            </li>
-                            <li class="dropdown">
+                        <!--<ul class="nav navbar-nav navbar-right">-->
+                            <li class="navbar-right"><a href="/Welcome/User_Logout"><span class="mif-security icon"></span>登出</a></li>
+                            <li class="dropdown navbar-right">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-apps icon"></span>參考資料 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="$('#Law_1').modal('toggle')">法條參照</a></li>
@@ -128,7 +123,21 @@
                                     <input id="body-zoom" type="number" step= 0.05 class="form-control" placeholder="縮放倍率" value="1.0" style="width: 5em;margin-right: 1em;">
                                 </div>
                             </form>-->
-                            <li><a href="/Welcome/User_Logout"><span class="mif-security icon"></span>登出</a></li>
+                            <?php if($SSO == 0 || $User_Level >= 4){  ?>
+                            <li class="dropdown navbar-right">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-security icon"></span>人事權限 <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <?php if($SSO == 0){  ?>
+                                    <li><a href="#personnel" role="tab" data-toggle="tab">修改密碼</a></li>
+                                    <?php }  ?>
+                                    <?php if($User_Level >= 4){  ?>
+                                    <li><a href="http://mms.taichung.gov.tw/aup654rm6284gj4rm4/" target="_blank">帳號權限設定</a></li>
+                                    <?php }  ?>
+                                    <!--<li role="separator" class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>-->
+                                </ul>
+                            </li>
+                            <?php }  ?>
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
@@ -140,10 +149,10 @@
             <div id="filelist-navcon" role="tabpanel" class="tab-pane active fade in nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
                 <?php include('filelist.php');?>
             </div>
-            <div id="filelist-progress" role="tabpanel" class="tab-pane fade nav-container">
+            <div id="filelist-progress" role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
                 <?php include('filelist_in_progress.php');?>
             </div>
-            <div id="filelist-supporting" role="tabpanel" class="tab-pane fade nav-container">
+            <div id="filelist-supporting" role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
                 <?php include('filelist_supporting.php');?>
             </div>
 

@@ -29,6 +29,23 @@ class Family extends MY_Controller {
 		echo json_encode($data);
 	}
 
+	public function set_newboy_file(){
+		$members = json_decode($this->input->post('members'));
+		$file_info = json_decode($this->input->post('file_info'));
+		$file_key = $file_info->key;
+		log_message('debug', 'received post "file_info" ='.print_r($file_info, true));
+		log_message('debug', 'received post "members" ='.print_r($members, true));
+		$this->set_members($members, $file_key);
+		$this->file_model->update($file_info);
+		$this->log_activity("儲存案件與家屬資訊", "file_key=$file_key");
+		//TODO check if success??
+		$data= array(			
+			'Msg' => "success"
+			);
+
+		echo json_encode($data);
+	}
+
 	public function get_members_file(){
 		$file_key = $this->input->post('file_key');		
 		$members = $this->member_model->get_members_for_file($file_key);		

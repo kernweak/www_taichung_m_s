@@ -1,6 +1,26 @@
 /*************************函式庫****************************************/    
     //找出所有img.svg，修改成嵌入式SVG碼，以便著色
     var file_list_refile_pointer = "";
+    var CWait_interrupt = 0;
+    function CWait_Start(wait_time = 1000, msg = "與系統連線中..."){
+        setTimeout(function(){
+            if(!CWait_interrupt){
+                $("#cortana_wait").fadeIn();
+                $("#cortana_wait_msg").text(msg);
+            }
+            CWait_interrupt = 0;
+        },wait_time);        
+    }
+    function CWait_End(wait_time = 0){
+        
+        setTimeout(function(){
+            CWait_interrupt = 1;
+            $("#cortana_wait").stop().fadeOut();
+        },wait_time);
+        setTimeout(function(){
+            CWait_interrupt = 0;
+        },1050);
+    }
 
     function rebuildfile(file_key){
         $.ajax({
@@ -55,6 +75,7 @@
     }
 
     function read_file_list_supporting() {
+        CWait_Start();
         $.ajax({
             url: '/file/read_file_list_supporting',
             type: 'post',
@@ -64,10 +85,12 @@
             console.log("complete");
         })
         .done(function(responsive) {
+            CWait_End();
             $("#table_supporting tbody").empty();
             var table = $('#table_supporting').DataTable();     //DataTable
             table.clear();    
             tbody = "";
+            
             $.each(responsive, function(index, file) {
                 var oneDay = 24*60*60*1000;
                 var firstDate = new Date(file.入伍日期);
@@ -184,6 +207,7 @@
     }
 
     function read_file_list_progress() {
+        CWait_Start();
         $.ajax({
             url: '/file/read_file_list_progress',
             type: 'post',
@@ -205,7 +229,7 @@
             // files_info_table.案件流水號//    案件流水號
             // files_info_table.可否編修//      可否編輯    --可編輯者要多個編輯按鈕--   檢視-編輯-同意&呈核
             // files_status_code.案件階段名稱//       作業類別
-
+            CWait_End();
             $("#table_progress tbody").empty();
             var table = $('#table_progress').DataTable();     //DataTable
             table.clear(); 
@@ -285,6 +309,7 @@
     }
 
     function read_file_list_pending() {
+        CWait_Start();
         $.ajax({
             url: '/file/read_file_list_pending',
             type: 'post',
@@ -294,7 +319,7 @@
             console.log("complete");
         })
         .done(function(responsive) {
-
+            CWait_End();
             $("#table_id tbody").empty();
             var table = $('#table_id').DataTable();     //DataTable
             table.clear();                              //DataTable 清空
@@ -612,7 +637,11 @@
 
 
     function read_file_test(file_key){
+        empty_members();
+        $("#PH-file_comm_1").val("");
+        $("#PH-file_comm_2").val("");
         $('.right-total-count').hide();//隱藏右面板
+        CWait_Start();
 
 
         $.ajax({
@@ -624,19 +653,13 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            
         })
         .done(function(responsive) {
             console.log("success");
             update_Access_Print_botton(file_key);
-            setTimeout(function(){
-                    $("#family-edit-nav").fadeIn('400');
-                    //$('#Add_file').modal('hide');
-                    $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
-                    //read_file(responsive['file_key']);
-            },300);
-            empty_members();
             //console.log(responsive);
+            count = responsive.members.length;
             $.each(responsive.members, function(index, member) {
                  /* iterate through array or object */
                 // console.log(member);
@@ -651,6 +674,21 @@
                 $(MDIV).find('.people-marriage2 input').trigger('change');
                 recount_member_pro($(MDIV));
                 recount_member_inc($(MDIV));
+                if (!--count){
+                    //$(".add-people").trigger("click");
+                    setTimeout(function(){
+                        $('#Add_file').modal('hide');
+                        $("#family-edit-nav").fadeIn('400');
+                        if(responsive.members.length <= 1){
+                            $("#family-edit-nav > ul > li:nth-child(2) > a").tab('show');
+                        }else{
+                            $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
+                        }
+                        
+                        CWait_End();
+                    },300);
+                }
+                
             });
 
             rf_file_info(responsive.file_info);
@@ -660,27 +698,6 @@
         .fail(function() {
             console.log("error");
         });
-
-        //ajax read data
-        //read file_info
-        //read members
-        //          read property
-        //          read income
-        
-
-        //console.log(rf_mem_property(propertys));
-        //console.log(rf_mem_income(incomes));
-
-        // var GROUP_DIV = rf_member();
-
-        // $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
-        // svg_redraw();
-
-        // property.type
-        // property.value                
-        // property.from
-        // property.note
-        // property.self_use
     }
 
     function rf_file_info(responsive){
@@ -692,6 +709,12 @@
         $("#PH-milidate").text(yyy_dash(date_to_yyy(responsive['入伍日期'])));
         $("#PH-type").text(responsive['服役軍種']);
         $("#PH-status").text(responsive['服役狀態']);
+
+        $("#PH-echelon").text(responsive['梯次']);
+        $("#PH-phone").text(responsive['聯絡電話1']);
+        $("#PH-email").text(responsive['email']);
+
+
         $("#PH-fulladdress").text(responsive['County_name']+responsive['Town_name']+responsive['Village_name']+responsive['戶籍地址']);
         
         $("#PH-members").text(responsive['總列計人口']);
@@ -1093,8 +1116,9 @@
         $(".group-div").eq(0).find('.people-birthday input').trigger('change');
 
     }
-
-    function save_file(){
+    //儲存案件
+    function save_file(){   
+        CWait_Start(0);
         members = [];
         $('.group-div').each(function(index, el) {
             if(!$(this).is('.add-new-button')){
@@ -1198,13 +1222,20 @@
             console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
-            read_file_test($(".people_home").attr('file_id'));
+            console.log("遠端儲存完成!");
+            CWait_Start(0,"遠端儲存完成!");
+            CWait_End(1500);
+            //
         })
         .fail(function() {
             console.log("error");
         });
     }
+    function reload_file(){
+        read_file_test($(".people_home").attr('file_id'));
+    }
+    //放棄修改-重新讀取
+    //放棄修改-關閉案件
 
     function read_file_progerss_log(file_key){
         $.ajax({
@@ -1367,10 +1398,9 @@
     }
 
     function progress_view(file_key,event){
+        CWait_Start();
         file_list_pointer = file_key;
         file_list_action_pointer = "next";
-        $('#File_list_View_Modal').modal('show');
-        $('#File_list_View_ModalLabel').html('案件檢視');
         var tr = $(event).parents("tr").get(0);
         update_File_list_View_Modal(tr);
         read_file_progerss_log(file_key);
@@ -1392,6 +1422,7 @@
             console.log("complete");
         })
         .done(function(responsive) {
+            CWait_End();
             console.log("success");
             //console.log(responsive);
             $.each(responsive.members, function(index, member) {
@@ -1411,6 +1442,10 @@
             });
 
             progress_view_rf_file_info(responsive.file_info);
+            
+            $('#File_list_View_Modal').modal('show');
+            $("#File_list_View_Modal .modal-body").scrollTop(0);
+            $('#File_list_View_ModalLabel').html('案件檢視');
             //console.log(responsive.file_info);
 
 
@@ -1443,6 +1478,19 @@
 
     function progress_view_rf_file_info(responsive){
         console.log(responsive);
+
+        $('#File_list_View_Modal .modal-body .t2 tbody tr').children('td').eq(0).html(responsive['役男生日']);//役男生日
+        $('#File_list_View_Modal .modal-body .t2 tbody tr').children('td').eq(1).html(responsive['服役軍種']);//服役軍種
+        $('#File_list_View_Modal .modal-body .t2 tbody tr').children('td').eq(2).html(responsive['梯次']);//服役梯次
+        $('#File_list_View_Modal .modal-body .t2 tbody tr').children('td').eq(3).html(responsive['聯絡電話1']);//家屬電話
+        $('#File_list_View_Modal .modal-body .t2 tbody tr').children('td').eq(4).html(responsive['email']);//電子信箱
+        $('#File_list_View_Modal .modal-body .t2 tbody tr').children('td').eq(5).html(responsive['戶籍地址']);//戶籍地址
+
+
+
+
+
+
         $("#FView-PH-filetype").text(responsive['作業類別名稱']);
         $("#FView-PH-name").text(responsive['役男姓名']);
         $("#FView-PH-code").text(responsive['身分證字號']);
@@ -1525,16 +1573,19 @@
     }
 
     function update_File_list_View_Modal(tr){
-        $(tr).children('td').eq(0).text();
-        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(0).html($(tr).children('td').eq(0).text());
-        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(1).html($(tr).children('td').eq(1).text());
-        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(2).html($(tr).children('td').eq(2).text());
-        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(3).html($(tr).children('td').eq(3).text());
-        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(4).html($(tr).children('td').eq(4).text());
-        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(5).html($(tr).children('td').eq(5).text());
-        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(6).html($(tr).children('td').eq(6).text());
-        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(7).html($(tr).children('td').eq(7).text());
-        $('#File_list_View_Modal .modal-body tbody tr').children('td').eq(8).html($(tr).children('td').eq(8).text());
+        
+        //var tr = $(event).parents("tr").get(0);
+        //$(tr).children('td').eq(0).text();
+
+        $('#File_list_View_Modal .modal-body .t1 tbody tr').children('td').eq(0).html($(tr).children('td').eq(0).text());
+        $('#File_list_View_Modal .modal-body .t1 tbody tr').children('td').eq(1).html($(tr).children('td').eq(1).text());
+        $('#File_list_View_Modal .modal-body .t1 tbody tr').children('td').eq(2).html($(tr).children('td').eq(2).text());
+        $('#File_list_View_Modal .modal-body .t1 tbody tr').children('td').eq(3).html($(tr).children('td').eq(3).text());
+        $('#File_list_View_Modal .modal-body .t1 tbody tr').children('td').eq(4).html($(tr).children('td').eq(4).text());
+        $('#File_list_View_Modal .modal-body .t1 tbody tr').children('td').eq(5).html($(tr).children('td').eq(5).text());
+        $('#File_list_View_Modal .modal-body .t1 tbody tr').children('td').eq(6).html($(tr).children('td').eq(6).text());
+        $('#File_list_View_Modal .modal-body .t1 tbody tr').children('td').eq(7).html($(tr).children('td').eq(7).text());
+        $('#File_list_View_Modal .modal-body .t1 tbody tr').children('td').eq(8).html($(tr).children('td').eq(8).text());
     }
 
 

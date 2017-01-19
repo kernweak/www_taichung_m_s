@@ -15,15 +15,16 @@ class Boy_model extends CI_Model {
 		return $query;
 	}
 
-	public function add_new_boy($name, $id, $birthday, $begin_date, $mili_type, $mili_status){
+	public function add_new_boy($name, $id, $birthday, $begin_date, $mili_type, $mili_status, $echelon){
 		$data = array(
 			'役男姓名' => $name,
 			'身分證字號' => $id,
 			'役男生日' => $birthday,
 			'入伍日期' => $begin_date,
 			'服役軍種' => $mili_type,
-			'服役狀態' => $mili_status
-			);
+			'服役狀態' => $mili_status,
+			'梯次' 		=> $echelon
+		);
 		$this->db->insert('miliboy_table', $data);
 		$index = $this->db->insert_id();
 		log_message('debug', 'boy table insert_id = '. $index);

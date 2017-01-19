@@ -65,6 +65,7 @@ class Welcome extends MY_Controller {
 				'organization' 		=> 	$organization,
 				'User_Level' 		=> 	$User_Level,
 				'Auto_Logout_Time' 	=> 	$Auto_Logout_Time,
+				'SSO' 		=> 	$this->session->userdata('SSO'),
 			));
 
 			if($this->IF_PW_Expired($Last_time_CPW)){
@@ -198,6 +199,7 @@ class Welcome extends MY_Controller {
 			$this->session->unset_userdata('organization');
 			$this->session->unset_userdata('department');
 			$this->session->unset_userdata('User_Level');
+			$this->session->unset_userdata('SSO');
 
 			$Login_ID = $id;
 			$Login_NM = $name;
@@ -229,6 +231,7 @@ class Welcome extends MY_Controller {
 				$this->session->set_userdata('organization', $organization);
 				$this->session->set_userdata('department', $department);
 				$this->session->set_userdata('User_Level', $User_Level);
+				$this->session->set_userdata('SSO', 1);
 				
 				//$this->y5e6g2s7e9y2d3Active_log('登入成功');
 				

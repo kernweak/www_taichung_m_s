@@ -13,29 +13,34 @@
                 <br />-->
                 <div class="input-control text full-size" data-role="input">
                     <label for="ADF-name">役男姓名:</label>
-                    <input type="text" name="ADF-name" id="ADF-name">
+                    <input type="text" name="ADF-name" id="ADF-name" placeholder="(必填)">
                     <button class="button helper-button clear" onclick="$('#ADF-name').val('')"><span class="mif-cross"></span></button>
                 </div>
                 <div class="input-control password full-size" data-role="input">
                     <label for="ADF-code">身份字號:</label>
-                    <input type="text" name="ADF-code" id="ADF-code">
+                    <input type="text" name="ADF-code" id="ADF-code" placeholder="(必填)">
                     <button class="button helper-button clear" onclick="$('#ADF-code').val('')"><span class="mif-cross"></span></button>
                 </div>
 
                 <div id="ADF-toggle" style="display: none;">
                     <div class="input-control password full-size" data-role="input">
                         <label for="ADF-birthday">役男生日:</label>
-                        <input type="text" name="ADF-birthday" id="ADF-birthday" placeholder="7位數民國日期">
+                        <input type="text" name="ADF-birthday" id="ADF-birthday" placeholder="7位數民國日期(必填)">
                         <button class="button helper-button clear" onclick="$('#ADF-birthday').val('')"><span class="mif-cross"></span></button>
                     </div>
                     <div class="input-control password full-size" data-role="input">
                         <label for="ADF-milidate">入伍日期:</label>
-                        <input type="text" name="ADF-milidate" id="ADF-milidate" placeholder="7位數民國日期">
+                        <input type="text" name="ADF-milidate" id="ADF-milidate" placeholder="7位數民國日期(必填)">
                         <button class="button helper-button clear" onclick="$('#ADF-milidate').val('')"><span class="mif-cross"></span></button>
                     </div>
                     <div class="input-control password full-size" data-role="input">
+                        <label for="ADF-echelon">服役梯次:</label>
+                        <input type="text" name="ADF-echelon" id="ADF-echelon" placeholder="(選填)">
+                        <button class="button helper-button clear" onclick="$('#ADF-echelon').val('')"><span class="mif-cross"></span></button>
+                    </div>
+                    <div class="input-control password full-size" data-role="input">
                         <label for="ADF-address">戶籍地址:</label>
-                        <select name="ADF-county" id="ADF-county"><option value="66000">臺中市</option></select><select name="ADF-town" id="ADF-town"></select><select name="ADF-village" id="ADF-village" style="width: 5.6em;"></select><input type="text" name="ADF-address" id="ADF-address" style="width:20em">
+                        <select name="ADF-county" id="ADF-county"><option value="66000">臺中市</option></select><select name="ADF-town" id="ADF-town"></select><select name="ADF-village" id="ADF-village" style="width: 5.6em;"></select><input type="text" name="ADF-address" id="ADF-address" style="width:20em" placeholder="(必填)">
                         <button class="button helper-button clear" onclick="$('#ADF-address').val('')"><span class="mif-cross"></span></button>
                     </div>
                     <div class="input-control password full-size" data-role="input">
@@ -46,6 +51,16 @@
                     <div class="input-control password full-size" data-role="input">
                         <label for="ADF-status">服役狀態:</label>
                         <select name="ADF-status" id="ADF-status"><option value="服役中">服役中</option><option value="停役中">停役中</option><option value="已退役">已退役</option></select>
+                    </div>
+                    <div class="input-control password full-size" data-role="input">
+                        <label for="ADF-phone">家屬電話:</label>
+                        <input type="text" name="ADF-phone" id="ADF-phone" placeholder="(可多筆)">
+                        <button class="button helper-button clear" onclick="$('#ADF-phone').val('')"><span class="mif-cross"></span></button>
+                    </div>
+                    <div class="input-control password full-size" data-role="input">
+                        <label for="ADF-email">電子信箱:</label>
+                        <input type="text" name="ADF-email" id="ADF-email" placeholder="(選填)" style="width: 20em;">
+                        <button class="button helper-button clear" onclick="$('#ADF-email').val('')"><span class="mif-cross"></span></button>
                     </div>
                     <div class="form-actions"><br>　　　　:
                         <button type="submit" class="button primary" id="ADF-submit">新增</button>
@@ -106,7 +121,7 @@
                     $("#ADF-Msg").text('役男資料已存在，請利用其他功能產生案件')
                 }else{
                     $("#ADF-toggle").slideDown('slow');
-                    $("#ADF-Msg").text('新增扶助案件')
+                    $("#ADF-Msg").text('新增扶助案件');
                 }
                 $("#ADF-wait-icon").removeClass('in');
                 refresh_town();
@@ -139,12 +154,7 @@
             $("#ADF-milidate").val("");
             $("#ADF-type").val("陸軍");
             $("#ADF-status").val("服役中");
-            // ADF-name
-            // ADF-code
-            // ADF-birthday
-            // ADF-milidate
-            // ADF-type
-            // ADF-status
+            $("#ADF-address").val("");
         });
 
         $( "#ADF-submit" ).on( "click", function( event ) {             //新增役男案件
@@ -174,8 +184,8 @@
             
             
 
-            $("#MSG").text("連線中...");
-            $("#ADF-wait-icon").addClass('in');
+            $("#ADF-Msg").text("連線中...");
+            //$("#ADF-wait-icon").addClass('in');
             var ADF__birthday = yyy_to_date($("#ADF-birthday").val());
             var ADF__milidate = yyy_to_date($("#ADF-milidate").val());
             $.ajax({
@@ -192,7 +202,10 @@
                     ADF_village     : $("#ADF-village").val(),
                     ADF_address     : $("#ADF-address").val(),
                     ADF_type        : $("#ADF-type").val(),
-                    ADF_status      : $("#ADF-status").val()
+                    ADF_status      : $("#ADF-status").val(),
+                    ADF_echelon     : $("#ADF-echelon").val(),
+                    ADF_phone       : $("#ADF-phone").val(),
+                    ADF_email       : $("#ADF-email").val()
                 },
             })
             .always(function() {
@@ -205,24 +218,12 @@
                 console.log(responsive);
 
                 if (responsive['Msg']=="success"){
-                    $("#MSG").text("連線成功，新增案件中...");
+                    $("#ADF-Msg").text("連線成功，新增案件中...");
+                    $("#ADF-clear").trigger('click');
+                    //CWait_Start();
                 }
-                setTimeout(function(){
-                    $("#family-edit-nav").fadeIn('400');
-                    $('#Add_file').modal('hide');
-                    $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
-                    read_file_test(responsive['file_key']);
-                    setTimeout(function(){
-                        empty_members();
-                        add_miliboy();
-                        setTimeout(function(){
-                            $(".add-people").trigger("click");
-                        },1000);
-                        
-                        $("#PH-file_comm_1").val("");
-                        $("#PH-file_comm_2").val("");
-                    },1000);
-                },1000);
+                read_file_test(responsive['file_key']);
+                
                 
 
                 /*$("#MSG").text(responsive['Msg']);
