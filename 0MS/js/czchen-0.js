@@ -2,7 +2,11 @@
     //找出所有img.svg，修改成嵌入式SVG碼，以便著色
     var file_list_refile_pointer = "";
     var CWait_interrupt = 0;
-    function CWait_Start(wait_time = 1000, msg = "與系統連線中..."){
+    function CWait_Start(wait_time, msg){
+        //為了相容於舊版JS引擎，參數預設值改成在內部定義
+        wait_time = typeof wait_time !== 'undefined' ? wait_time : 1000;
+        msg = typeof msg !== 'undefined' ? msg : "與系統連線中...";
+        //...........................................
         setTimeout(function(){
             if(!CWait_interrupt){
                 $("#cortana_wait").fadeIn();
@@ -11,8 +15,10 @@
             CWait_interrupt = 0;
         },wait_time);        
     }
-    function CWait_End(wait_time = 0){
-        
+    function CWait_End(wait_time){
+        //為了相容於舊版JS引擎，參數預設值改成在內部定義
+        wait_time = typeof wait_time !== 'undefined' ? wait_time : 0;
+        //...........................................
         setTimeout(function(){
             CWait_interrupt = 1;
             $("#cortana_wait").stop().fadeOut();
@@ -327,7 +333,7 @@
             tbody = "";
             $.each(responsive, function(index, file) {
                 var edit_button = "";
-                if(file.審批階段 <= 1 || file.審批階段 == 8 || file.審批階段 == 4){
+                if(file.審批階段 <= 1 || file.審批階段 == 8 || file.審批階段 == 4 || User_Level >= 8){
                     edit_button = "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-success' onclick='read_file_test("+file.案件流水號+")'>編輯</button>"+
                   "</div>";
@@ -360,7 +366,7 @@
                     edit_button3 = "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-info' onclick='progress_p_patch_re("+file.案件流水號+",this)'>補件</button>"+
                   "</div>";
-                  }else if(file.審批階段 == 5){
+                  }else if(file.審批階段 == 6){
                     edit_button3 = "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-info' onclick='progress_p_next("+file.案件流水號+",this)'>結案</button>"+
                   "</div>";
@@ -878,52 +884,52 @@
                 case "新北市":
                     a1 = "selected";
                     break;
-				case "桃園縣":
+                case "桃園縣":
                     a2 = "selected";
                     break;
                 case "臺中市":
                     a3 = "selected";
                     break;
-				case "臺南市":
+                case "臺南市":
                     a4 = "selected";
                     break;
                 case "高雄市":
                     a5 = "selected";
                     break;
-				case "基隆市":
+                case "基隆市":
                     a6 = "selected";
                     break;
                 case "新竹縣":
                     a7 = "selected";
                     break;
-				case "苗栗縣":
+                case "苗栗縣":
                     a8 = "selected";
                     break;
                 case "彰化縣":
                     a9 = "selected";
                     break;
-				case "雲林縣":
+                case "雲林縣":
                     a10 = "selected";
                     break;
                 case "嘉義縣":
                     a11 = "selected";
                     break;
-				case "屏東縣":
+                case "屏東縣":
                     a12 = "selected";
                     break;
                 case "宜蘭縣":
                     a13 = "selected";
                     break;
-				case "花蓮縣":
+                case "花蓮縣":
                     a14 = "selected";
                     break;
                 case "臺東縣":
                     a15 = "selected";
                     break;
-				case "金門縣":
+                case "金門縣":
                     a16 = "selected";
                     break;
-				case "連江縣":
+                case "連江縣":
                     a17 = "selected";
                     break;
                 default: 
@@ -957,24 +963,24 @@
                                 '<option value="y" '+ SY +'>非自住</option></select>' +
                             '<select class="proper-inc-div-6 fade '+ D_none +'" >' +
                                 '<option value="">縣市</option>' +
-                                '<option value="臺北市"	'+ a0 +'>臺北市</option>' +
-                                '<option value="新北市"	'+ a1 +'>新北市</option>' +
-                                '<option value="桃園縣"	'+ a2 +'>桃園縣</option>' +
-                                '<option value="臺中市"	'+ a3 +'>臺中市</option>' +
-                                '<option value="臺南市"	'+ a4 +'>臺南市</option>' +
-                                '<option value="高雄市"	'+ a5 +'>高雄市</option>' +
-                                '<option value="基隆市"	'+ a6 +'>基隆市</option>' +
-                                '<option value="新竹縣"	'+ a7 +'>新竹縣</option>' +
-                                '<option value="苗栗縣"	'+ a8 +'>苗栗縣</option>' +
-                                '<option value="彰化縣"	'+ a9 +'>彰化縣</option>' +
-                                '<option value="雲林縣"	'+ a10 +'>雲林縣</option>' +
-                                '<option value="嘉義縣"	'+ a11 +'>嘉義縣</option>' +
-                                '<option value="屏東縣"	'+ a12 +'>屏東縣</option>' +
-                                '<option value="宜蘭縣"	'+ a13 +'>宜蘭縣</option>' +
-                                '<option value="花蓮縣"	'+ a14 +'>花蓮縣</option>' +
-                                '<option value="臺東縣"	'+ a15 +'>臺東縣</option>' +
-                                '<option value="金門縣"	'+ a16 +'>金門縣</option>' +
-                                '<option value="連江縣"	'+ a17 +'>連江縣</option>' +
+                                '<option value="臺北市"    '+ a0 +'>臺北市</option>' +
+                                '<option value="新北市"    '+ a1 +'>新北市</option>' +
+                                '<option value="桃園縣"    '+ a2 +'>桃園縣</option>' +
+                                '<option value="臺中市"    '+ a3 +'>臺中市</option>' +
+                                '<option value="臺南市"    '+ a4 +'>臺南市</option>' +
+                                '<option value="高雄市"    '+ a5 +'>高雄市</option>' +
+                                '<option value="基隆市"    '+ a6 +'>基隆市</option>' +
+                                '<option value="新竹縣"    '+ a7 +'>新竹縣</option>' +
+                                '<option value="苗栗縣"    '+ a8 +'>苗栗縣</option>' +
+                                '<option value="彰化縣"    '+ a9 +'>彰化縣</option>' +
+                                '<option value="雲林縣"    '+ a10 +'>雲林縣</option>' +
+                                '<option value="嘉義縣"    '+ a11 +'>嘉義縣</option>' +
+                                '<option value="屏東縣"    '+ a12 +'>屏東縣</option>' +
+                                '<option value="宜蘭縣"    '+ a13 +'>宜蘭縣</option>' +
+                                '<option value="花蓮縣"    '+ a14 +'>花蓮縣</option>' +
+                                '<option value="臺東縣"    '+ a15 +'>臺東縣</option>' +
+                                '<option value="金門縣"    '+ a16 +'>金門縣</option>' +
+                                '<option value="連江縣"    '+ a17 +'>連江縣</option>' +
                             '</select>' +
                         '</div>';
         });
@@ -1118,11 +1124,15 @@
     }
     //儲存案件
     function save_file(){   
-        CWait_Start(0);
+        
         members = [];
         $('.group-div').each(function(index, el) {
             if(!$(this).is('.add-new-button')){
                 //每個成員
+                if($(this).find('.people-birthday input').val() == ""){
+                    $(this).find('.people-birthday input').val("1060101").trigger('change');
+                    //return;
+                }
                 var member = {
                     "key" : $(this).attr('code'),
                     "edit" : $(this).attr('edit'),
@@ -1208,7 +1218,7 @@
 
         //console.log('file_info json = ' + file_json);
         //console.log('members json = ' + members_json);
-
+        CWait_Start(0);
         $.ajax({
             url: '/family/set_members_file',
             type: 'post',
@@ -1630,7 +1640,7 @@ $(document).ready(function() {
         event.preventDefault();
         //console.log("帶入自動家況");
         var HomeStr = "";
-        HomeStr = "本戶扶助等級擬列為" + $("#PH-level").text() + "，查其動產總額為" + numberWithCommas($("#PH-total-pro").text()) + "元整，不動產列計總額為" + numberWithCommas($("#PH-total-imm").text()) + "元整；全戶月均所得為" + numberWithCommas($("#PH-total-inc").text()) + "元整，所得支出比為" + (parseInt($("#PH-total-inc").text())/parseInt($("#PH-need").text())*100).toFixed(4) + "%。\n";
+        HomeStr = "本戶扶助等級擬列為" + $("#PH-level").text() + "，查其動產總額為" + numberWithCommas($("#PH-total-pro").text()) + "元整，不動產列計總額為" + numberWithCommas($("#PH-total-imm").text()) + "元整；全戶月均所得為" + numberWithCommas($("#PH-total-inc").text()) + "元整，所得支出比為" + (parseInt(noCommas($("#PH-total-inc").text()))/parseInt(noCommas($("#PH-need").text()))*100).toFixed(4) + "%。\n";
 
 
 

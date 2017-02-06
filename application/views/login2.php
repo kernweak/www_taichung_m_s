@@ -8,14 +8,14 @@
 <html>
 <head lang="zh-TW">
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8,chrome=IE7">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' /> -->
     <title>Login</title>
     <!-- 最新編譯和最佳化的 CSS -->
     <!-- <link rel="stylesheet" type="text/css" href="css/metro-icons.css"> -->
     <link href="/0MS/css/login.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
  
     <style>
         .login-form {
@@ -33,6 +33,35 @@
         }
     </style>
 
+
+</head>
+<body class="bg-darkTeal">
+	<?php include('ie.php');?>
+    <div class="login-form padding20 block-shadow">
+        <form>
+            <h1 class="text-light">登入系統</h1>
+            <hr>
+            <br />
+            <div class="input-control text full-size" data-role="input">
+                <label for="user_login">帳號:</label>
+                <input type="text" name="user_login" id="user_login">
+            </div>
+            <br />
+            <br />
+            <div class="input-control password full-size" data-role="input">
+                <label for="user_password">密碼:</label>
+                <input type="password" name="user_password" id="user_password">
+            </div>
+            <br />
+            <br />
+            <div class="form-actions">
+                <button type="submit" class="button primary">登入</button>
+                <button type="button" class="button link">取消</button>
+            </div>
+        </form>
+    </div>
+    <div id="MSG" class="login-form padding20 block-shadow" style="height: 4em; top: calc(50% + 20rem); display: none;"></div>
+</body>
     <script>
 
         /*
@@ -63,33 +92,6 @@
             });
         });
     </script>
-</head>
-<body class="bg-darkTeal">
-    <div class="login-form padding20 block-shadow">
-        <form>
-            <h1 class="text-light">登入系統</h1>
-            <hr>
-            <br />
-            <div class="input-control text full-size" data-role="input">
-                <label for="user_login">帳號:</label>
-                <input type="text" name="user_login" id="user_login">
-            </div>
-            <br />
-            <br />
-            <div class="input-control password full-size" data-role="input">
-                <label for="user_password">密碼:</label>
-                <input type="password" name="user_password" id="user_password">
-            </div>
-            <br />
-            <br />
-            <div class="form-actions">
-                <button type="submit" class="button primary">登入</button>
-                <button type="button" class="button link">取消</button>
-            </div>
-        </form>
-    </div>
-    <div id="MSG" class="login-form padding20 block-shadow" style="height: 4em; top: calc(50% + 20rem); display: none;"></div>
-</body>
 <script type="text/javascript">
     $( "form" ).on( "submit", function( event ) {
         event.preventDefault();

@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 
 <head lang="zh-TW">
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8,chrome=IE7">
     <meta name="viewport" content="">
     <!-- <link rel='shortcut icon' type='image/x-icon' href='favicon.ico' /> -->
     <title>役男家屬生活扶助系統</title>
@@ -21,7 +21,7 @@
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="/0MS/js/czchen-0.js"></script>
+    <script src="/0MS/js/czchen-0-2017-01-25-1.js"></script>
     <script>
         var User_Level = <?php echo $User_Level ?>;
         var organization = '<?php echo $organization ?>';
@@ -30,6 +30,7 @@
 </head>
 
 <body style="overflow: hidden;">
+<?php include('ie.php');?>
 <div id="preloader">
     <div id="status">
         <img src="/0MS/images/loader.gif" alt=""/><h1 class="noSubtitle">系統載入中</h1>
@@ -54,7 +55,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"><img src="/0MS/images/Taichung_White_no_text.svg" style=""><span>役男家屬<br>生活扶助</span></a>
+                        <a class="navbar-brand" href="#" style="width: 152px;"><img src="/0MS/images/Taichung_White_no_text.svg" style=""><span>役男家屬<br>生活扶助</span></a>
                         <span class="navbar-brand"><?php echo $organization."-".$FullName ?></span>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -64,7 +65,7 @@
                             <li class="dropdown" id="file-list-nav">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-files-empty icon"></span>案件 <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#filelist-navcon" role="tab" data-toggle="tab" onclick="read_file_list_pending()">待辦案件</a></li>
+                                    <li><a href="#filelist-navcon" role="tab" data-toggle="tab" onclick="">待辦案件</a></li>
                                     <li><a href="#filelist-progress" role="tab" data-toggle="tab" onclick="read_file_list_progress()">呈核中案件</a></li>
                                     <li><a href="#filelist-supporting" role="tab" data-toggle="tab" onclick="read_file_list_supporting()">補助中案件</a></li>
                                     <!--<li><a href="#">已結案案件</a></li>

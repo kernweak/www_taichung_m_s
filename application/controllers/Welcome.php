@@ -77,14 +77,20 @@ class Welcome extends MY_Controller {
 		}
 		else{
 			$this->load->view('login2');
+			//$_SERVER['HTTP_USER_AGENT'];
+			//$browser = get_browser(null,true);
+			//var_dump($browser['browser']);
 		}
 
 	}
 
-
+	public function IE()
+	{
+		$this->load->view('ie');
+	}
 	public function login()
 	{
-		$this->load->view('login');
+		$this->load->view('login2');
 	}
 
 	public function session_show()		//記得刪除
@@ -155,7 +161,7 @@ class Welcome extends MY_Controller {
 		if($id != ""){
 			$User_Login = $this->sso_login($id, $name, "1");
 		}else{
-			$this->load->view('login');
+			$this->load->view('login2');
 		}
 		
 		
@@ -175,7 +181,7 @@ class Welcome extends MY_Controller {
 			exit();
 		}
 		else{
-			$this->load->view('login');
+			$this->load->view('login2');
 		}
 		
 	}
@@ -215,6 +221,8 @@ class Welcome extends MY_Controller {
 				$organization = $query->row()->機關;
 				$department = $query->row()->單位;
 				$User_Level = $query->row()->系統等級;
+				
+				$this->log_activity($activity1="試圖SSO登入", $activity2="已看到存在應用系統", $activity3="");
 
 
 				if($query->row()->帳號啟用 == 1){
@@ -233,7 +241,7 @@ class Welcome extends MY_Controller {
 				$this->session->set_userdata('User_Level', $User_Level);
 				$this->session->set_userdata('SSO', 1);
 				
-				//$this->y5e6g2s7e9y2d3Active_log('登入成功');
+				$this->log_activity($activity1="SSO成功登入", $activity2="已看到存在應用系統", $activity3="");
 				
 				
 			}

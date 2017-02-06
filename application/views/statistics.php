@@ -48,7 +48,10 @@
   <br><br><br>
 
 <script type="text/javascript">
-      function Date_today(year = 0){    //傳回今天日期 2016-05-13 變數調整年
+      function Date_today(year){    //傳回今天日期 2016-05-13 變數調整年
+	  //為了相容於舊版JS引擎，參數預設值改成在內部定義
+		year = typeof year !== 'undefined' ? year : 0;
+		//....................................
         var today = new Date();
         // today += (1000 * 60 * 60 * 24) * offsetDay;
         // today = new Date(today);
@@ -71,7 +74,10 @@
       }
 
       google.charts.load('current', {'packages':['corechart', 'bar']});
-      function PieColumnChart(chart_data, chart1_main_title, type = "Column") {
+      function PieColumnChart(chart_data, chart1_main_title, type) {
+		//為了相容於舊版JS引擎，參數預設值改成在內部定義
+		type = typeof type !== 'undefined' ? type : "Column";
+		//....................................
         // var data = google.visualization.arrayToDataTable([
         //   ['Task', 'Hours per Day'],
         //   ['西屯區',     11],

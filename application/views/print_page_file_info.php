@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" id="viewport" name="viewport">
     <title>print css test by mtness</title>
     <style type="text/css">
 	.C1{
@@ -199,11 +200,25 @@
     }
     </style>
     <script src="/0MS/js/jquery-3.1.0.min.js"></script>
+    <script language="javascript">
+ var scrollFunc=function(e){ 
+  e=e || window.event; 
+  if(e.wheelDelta && event.ctrlKey){//IE/Opera/Chrome 
+   event.returnValue=false;
+  }else if(e.detail){//Firefox 
+   event.returnValue=false; 
+  } 
+ }  
+ if(document.addEventListener){ 
+ document.addEventListener('DOMMouseScroll',scrollFunc,false); 
+ }//W3C 
+ window.onmousewheel=document.onmousewheel=scrollFunc;//IE/Opera/Chrome/Safari 
+</script>
 </head>
 
 
 <!--onfocus="window.close()" onmousemove="window.close()"-->
-<body>
+<body style="zoom:1.0;">
 	<!--<div style="width: 100%;height: 100%;background-color: green;">
 		
 	</div>-->
@@ -302,7 +317,7 @@
 			<tbody><tr>
 			<td class="C4-1" style="width: 20%">里幹事</td>
 			<td class="C1-1" style="width: 20%">承辦人</td>
-			<td class="C2-1" style="width: 25%">科長</td>
+			<td class="C2-1" style="width: 25%">課長</td>
 			<td class="C3-1" style="width: 35%">區長</td>
 			</tr>
 			<tr>

@@ -33,7 +33,7 @@ class File_model extends CI_Model {
 		//var_dump($result);
 		$update_boy_table_flag = 0;
 		if ($oper == "+"){
-			if( $result[0]->審批階段 == 5 || $result[0]->審批階段 == 6){
+			if($result[0]->審批階段 == 6){
 				$update_boy_table_flag = 1;
 				if( $result[0]->扶助級別 == "資格不符"){
 					$data = array(

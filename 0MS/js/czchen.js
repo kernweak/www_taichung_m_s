@@ -24,7 +24,10 @@ Property_limit.getIndexbyName = function(){
 
 }
 
-Property_limit.getImmLimitbyName = function(area_string = ""){
+Property_limit.getImmLimitbyName = function(area_string){
+	//為了相容於舊版JS引擎，參數預設值改成在內部定義
+	area_string = typeof area_string !== 'undefined' ? area_string : "";
+	//....................................
     var result = 9999999999999;     //抓不到回傳值，就給一個超大值(爆掉)
     $.each(this, function(index, area) {
         if(area[0] == area_string){
@@ -1306,8 +1309,14 @@ $(document).ready(function() {
 
 
     
-    //
-
+    //****************************************
+$("a[href='#filelist-navcon']").click(function(event) {
+    CWait_Start();
+    event.preventDefault();
+    event.stopPropagation();
+    $('[data-toggle="dropdown"]').parent().removeClass('open');
+    read_file_list_pending();
+});
 
 
     

@@ -151,7 +151,6 @@
     }
     
     #table_id_wrapper {
-        width: 98%;
         margin: auto;
     }
     #table_id > thead > tr > th:nth-child(1){
@@ -550,7 +549,7 @@
 
     .people-input-center{
         width: 100%;
-        background-color: initial;
+        background-color: transparent;
         text-align: center;
         border: 0;
          
@@ -561,7 +560,7 @@
     }
     .people-input-left{
         width: 100%;
-        background-color: initial;
+        background-color: transparent;
         text-align: left;
         border: 0;
         color: #3c3f41; 
@@ -572,7 +571,7 @@
     }
     .people-input-right{
         width: 100%;
-        background-color: initial;
+        background-color: transparent;
         text-align: right;
         border: 0;
         color: #3c3f41; 
@@ -716,7 +715,7 @@
         cursor: pointer;
     }
     .add-proper{
-        position: initial;
+        position: static;
         font-size: 1em;
         display: inline-block;
         margin: 0.2em 0.2em;
@@ -762,6 +761,7 @@
         float: left;
         width: 15%;
         color: #69280c;
+        overflow: hidden;
         /*background-color: aliceblue;*/
     }
 
@@ -885,6 +885,7 @@
     background-color: #ffee76;
     box-shadow: 0.05em 0.05em 0.05em 0.05em;
     margin-right: 0.5em;
+    margin-bottom: 0.5em;
     width: 13.5em;
     position: relative;
 }

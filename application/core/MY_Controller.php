@@ -241,7 +241,13 @@ class  MY_Controller  extends  CI_Controller  {
 		$log['full_name'] = (string)$this->session->userdata('FullName'); //varchar 20
 		
 		$log['organization'] = $this->session->userdata('organization'); //varchar 20
+		if($log['organization'] == NULL){
+			$log['organization'] =	"";
+		}
 		$log['department'] 	= $this->session->userdata('department'); //varchar 20
+		if($log['department'] == NULL){
+			$log['department'] =	"";
+		}
 
 		$log['activity1']		= $activity1;
 		$log['activity2']		= $activity2;
