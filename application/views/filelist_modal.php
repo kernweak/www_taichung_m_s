@@ -209,7 +209,10 @@
                     <div class="panel-heading">案件家況敘述</div>
                         <!-- /.panel-heading -->
                     <div class="panel-body">
-                            <div class="h4-label-btn-group" id="View-att-0" afile="">
+                    <span style="cursor: pointer;" onclick="$('#Law_PDF').modal('toggle')"><span style="color:red;">(新功能)</span>PDF檔太小，閱讀困難嗎?</span>
+                    
+                <hr class="thin" style="clear: left;"/>    
+    <div class="h4-label-btn-group" id="View-att-0" afile="">
         <h4><span class="label label-danger">戶口名簿</span></h4>
         <div class="btn-group" role="group" aria-label="...">
           <button type="button" class="b1 btn btn-danger">直接瀏覽</button>

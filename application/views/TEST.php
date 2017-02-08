@@ -17,11 +17,11 @@
     <!--<link rel="stylesheet" type="text/css" href="/0MS/images/people/font/flaticon.css">-->
     <link href="/0MS/css/metro-icons.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/0MS/css/bootstrap-datetimepicker.css">
-    <link rel="stylesheet" type="text/css" href="/0MS/css/czchen.css">
+    <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-2017-02-07.css">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="/0MS/js/czchen-0-2017-01-25-1.js"></script>
+    <script src="/0MS/js/czchen-0-2017-02-08-1.js"></script>
     <script>
         var User_Level = <?php echo $User_Level ?>;
         var organization = '<?php echo $organization ?>';
@@ -115,6 +115,9 @@
                                     <li><a href="#" onclick="$('#Law_3').modal('toggle')">農林漁牧技藝</a></li>
                                     <li><a href="#" onclick="$('#Law_4').modal('toggle')">股票查詢</a></li>
                                     <li><a href="#" onclick="$('#Law_5').modal('toggle')">106年度各縣市低收入戶限制</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#" onclick="$('#Law_PDF').modal('toggle')">PDF設定教學</a></li>
+                                    
                                     <!--<li role="separator" class="divider"></li>
                                     <li><a href="#">Separated link</a></li>-->
                                 </ul>
@@ -184,6 +187,8 @@
     <?php include('Law_3.php');?>
     <?php include('Stock.php');?>
     <?php include('Law_5.php');?>
+    <?php include('Law_PDF.php');?>
+    
     <?php include('add_file_modal.php');?>
     
 </body>
