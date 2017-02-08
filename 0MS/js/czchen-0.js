@@ -315,7 +315,7 @@
     }
 
     function read_file_list_pending() {
-        CWait_Start();
+        
         $.ajax({
             url: '/file/read_file_list_pending',
             type: 'post',
@@ -429,6 +429,7 @@
                 //table.draw(false);
             });
             table.draw(false);
+            $("a[href='#filelist-navcon']").tab('show');
             setTimeout(function(){
                 $.each(responsive, function(index, file) {
                     var progress_temp = file.審批階段;
@@ -1537,6 +1538,7 @@
         $("#FView-PH-Land-num").text(numberWithCommas(responsive['土地列計筆數']));
         $("#FView-PH-Land-listtotal").text(numberWithCommas(responsive['土地列計總價']));
         $("#FView-PH-total-imm").text(numberWithCommas(responsive['不動產列計總額']));
+        $("#FView-PH-level").text(responsive['扶助級別']);
         $("#FView-PH-file_comm_1").val("");
         $("#FView-PH-file_comm_2").val("");
         $("#FView-PH-file_comm_1").val(responsive['整體家況敘述-公所']);
