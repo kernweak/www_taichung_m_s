@@ -6,7 +6,7 @@
                 <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
             <div class="modal-body" style="overflow: auto;">
-                <br><br><br><br>
+                <br>
                 <table style="width: 100%;">
                 <thead>
                 <tr style="border-bottom: 1px solid black;">
@@ -32,10 +32,10 @@
                 <td>陳宗儒</td>
                 <td>初審</td>
                 </tr></tbody></table>
-                <br><br><br>
+                <br>
                 <label for="log_comment">意見批註</label>
 
-                <textarea name="log_comment" id="log_comment" style="width: 100%;height: 15em;"></textarea>
+                <textarea name="log_comment" id="log_comment" style="width: 100%;height: 5em;"></textarea>
 
 
 
@@ -54,7 +54,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="File_list_View_ModalLabel"></h4>
             </div>
-            <div class="modal-body" style="height: 80vh;overflow: auto;">
+            <div class="modal-body" style="height: 80vh;overflow: auto;max-height: calc(80vh - 3em);">
                 <div class="panel panel-default">
                     <div class="panel-heading">案件基本資訊</div>
                         <!-- /.panel-heading -->
