@@ -13,7 +13,7 @@
 </div>
 <script>
 	//console.log(navigator.userAgent);
-	if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+	if (navigator.userAgent.match(/MSIE ([0-8]+)\./)) {
 		//alert("本系統在IE瀏覽器無法以最佳狀況運作運作!");
 		document.getElementById('IE_Checn_DIV').style.display = 'block';
 		document.write('<script type="text/undefined">');

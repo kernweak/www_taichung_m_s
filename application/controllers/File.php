@@ -83,7 +83,7 @@ class File extends MY_Controller {
 
 		$this->boy_model->update_new_boy_file_link($boy_key, $file_key);
 		
-		$this->add_member_newboy($file_key,$name,$id,$birthday,$address,$county,$town,$village,$echelon);
+		$this->add_member_newboy($file_key,$name,$id,$birthday,$address,$county,$town,$village);
 
 		$data= array(
 			'boy_key' => $boy_key,
@@ -92,6 +92,34 @@ class File extends MY_Controller {
 			);
 
 		echo json_encode($data);
+	}
+
+	public function recive_new_boy_file(){
+		$this->load->library('session');
+		$file_key = $this->input->post('file_key');
+		$files = $this->file_model->read_file($file_key);
+		$file_info = $files[0];
+		//var_dump($file_info);
+		//var_dump($file_info->身分證字號);
+
+		//增加家屬-役男本人
+		$this->add_member_newboy($file_key,$file_info->役男姓名,$file_info->身分證字號,$file_info->役男生日,$file_info->戶籍地址,$file_info->county,$file_info->town,$file_info->village);
+
+		//案件階段向上提升到承辦人
+		$file_info = $this->file_model->progress_file($file_key,"+");
+
+		//紀錄
+		$this->progress_log($file_key, "", "接收民眾案件",$file_info);
+		$this->log_activity("接收民眾案件", "file_key=$file_key");
+
+		//更新承辦人資訊-誰接收的就由誰主承辦
+		$FullName = $this->session->userdata('FullName');
+		$organization = $this->session->userdata('organization');
+		$department = $this->session->userdata('department');
+		$this->file_model->recive_file_update_editor($file_key,$FullName,$department,$organization);
+		echo json_encode("Success");
+
+
 	}
 
 	private function add_member_newboy($file_key,$name,$id,$birthday,$address,$county,$town,$village){

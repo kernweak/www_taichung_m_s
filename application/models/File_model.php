@@ -101,6 +101,16 @@ class File_model extends CI_Model {
     	//var_dump($this->db->last_query());
 	}
 
+	public function recive_file_update_editor($file_key,$FullName,$department,$organization){
+		$data = array(
+						'修改人姓名' => $FullName,
+						'修改人單位' => $department,
+						'修改人編號' => $organization
+					);
+		$this->db->where('案件流水號', $file_key);
+    	$this->db->update('files_info_table', $data);
+	}
+
 	public function progress_log($file_key,$log_comment, $progress_name, $progress_level,$organization,$department,$FullName,$User_Level,$datetime){
 		$data = array(
 			'案件流水號' => $file_key,

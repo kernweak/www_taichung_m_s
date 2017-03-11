@@ -60,7 +60,7 @@
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" role="tablist">
-                        <ul class="nav navbar-nav" style="width: calc(100% - 280px);">
+                        <ul class="nav navbar-nav" style="width: calc(99% - 280px);">
 
                             <li class="dropdown" id="file-list-nav">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="mif-files-empty icon"></span>案件 <span class="caret"></span></a>
