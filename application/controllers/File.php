@@ -229,11 +229,34 @@ class File extends MY_Controller {
 		}
 		//var_dump($act2);
 		$new_file_key = $this->file_model->clone_file_info($file_key, $act2);
+		
+		$members = $this->member_model->get_members_for_file($file_key);
+		$members_keys = array();
+		
+		foreach ($members as $member ){
+		  $new_member_key = $this->file_model->clone_member_info($member['key'],$new_file_key);
+		  $incomes = $this->income_model->get_incomes_for_member($member['key']);
+		  $propertys = $this->property_model->get_properties_for_member($member['key']);
+
+		  foreach ($incomes as $income){
+		  	//$income['key']
+		  	$new_income_key = $this->income_model->clone_income($income['key'],$new_member_key);
+		  }
+
+		  foreach ($propertys as $property){
+		  	//$property['key']
+		  	$new_property_key = $this->property_model->clone_property($property['key'],$new_member_key);
+		  }
+
+
+		}
+		
+
+
+
 
 		//$file_info = $this->file_model->progress_file($file_key,"+");
-
-		$this->progress_log($new_file_key, $log_comment, "新增複查案", 1);
-		
+		$this->progress_log($new_file_key, $log_comment, "新增複查案", 1);		
 		$this->log_activity("rebuild a file", $act ,"old_key=$file_key new_key=$new_file_key");
 
 		echo json_encode("Success");

@@ -262,14 +262,24 @@ class File_model extends CI_Model {
 
 		$this->db->where('役男系統編號', $boy_key);
 		$this->db->update('miliboy_table', $data);
-
-
-
-
-
-
-
     	return $new_file_key;
+	}
+
+	public function clone_member_info($member_key, $new_file_key){
+		$Qstring = "INSERT `family_members` (`案件流水號`, `稱謂`, `姓名`, `身分證字號`, `出生日期`, `建案時年紀`, `town`, `county`, `village`, `戶籍地址`, `行業`, `職業`, `職業備註`, `所得總額`, `財產總額`, `配偶`, `前配偶`, `area`, `area_key`, `個人描述`, `特殊身分類別_前`, `特殊身分類別`, `特殊身分代號`, `特殊身分備註`, `特殊身分追蹤日期`, `聯絡電話1`, `聯絡電話2`, `聯絡電話3`, `備注`, `家況圖ID`, `家況圖X`, `家況圖Y`, `修改人編號`, `修改人單位`, `修改人姓名`) SELECT `案件流水號`, `稱謂`, `姓名`, `身分證字號`, `出生日期`, `建案時年紀`, `town`, `county`, `village`, `戶籍地址`, `行業`, `職業`, `職業備註`, `所得總額`, `財產總額`, `配偶`, `前配偶`, `area`, `area_key`, `個人描述`, `特殊身分類別_前`, `特殊身分類別`, `特殊身分代號`, `特殊身分備註`, `特殊身分追蹤日期`, `聯絡電話1`, `聯絡電話2`, `聯絡電話3`, `備注`, `家況圖ID`, `家況圖X`, `家況圖Y`, `修改人編號`, `修改人單位`, `修改人姓名` FROM `family_members` WHERE `成員系統編號` = ".$member_key ;
+		//var_dump($Qstring);
+		$query = $this->db->query($Qstring);
+		$new_member_key = $this->db->insert_id();
+		date_default_timezone_set('Asia/Taipei');
+
+		$data = array(
+			'案件流水號' => $new_file_key
+		);
+
+    	$this->db->where('成員系統編號', $new_member_key);
+    	$this->db->update('family_members', $data);
+
+    	return $new_member_key;
 	}
 
 
@@ -464,9 +474,12 @@ class File_model extends CI_Model {
 			$this->db->where('area_town.Town_name', $user_organ);
 
 			//LV1 承辦人可以，檢視，編輯，呈核
-			$this->db->where('files_status_code.審批階段代號', $user_level);
+			/*
+			$this->db->where('files_status_code.審批階段代號', 1);
 			$this->db->or_where('files_status_code.審批階段代號', 0);
 			$this->db->or_where('files_status_code.審批階段代號', 8);
+			*/
+			$this->db->where_in('files_status_code.審批階段代號', array(0,1,8));
 
 
 		}

@@ -44,9 +44,10 @@
         })
         .done(function(responsive) {
             console.log("success");
-            read_file_list_supporting();
-            read_file_list_progress();
+            //read_file_list_supporting();
+            //read_file_list_progress();
             read_file_list_pending();
+            //CWait_End(1500);
         })
         .fail(function() {
             console.log("error");
@@ -63,6 +64,9 @@
         //console.log(file_list_action_pointer);
         $('#RefileModal').modal('show');
         $('#RefileModalLabel').text("新增複查案："+act);
+        if(act == "退役"){
+           $('#RefileModalLabel').text("役男退役登錄"); 
+        }
         var tr = $(event).parents("tr").get(0);
         update_RefileModal(tr);
     }

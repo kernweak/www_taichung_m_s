@@ -77,4 +77,21 @@ class Income_model extends CI_Model {
 		log_message('debug', 'incomes = '.print_r($incomes, true));
 		return $incomes;
 	}
+
+	public function clone_income($income_key, $new_member_key){
+		$Qstring = "INSERT `family_mem_income` (`成員系統編號`, `所得類別`, `來源`, `年或月收入`, `金額`, `利率`, `備註`) SELECT `成員系統編號`, `所得類別`, `來源`, `年或月收入`, `金額`, `利率`, `備註` FROM `family_mem_income` WHERE `所得系統編號` = ".$income_key ;
+		//var_dump($Qstring);
+		$query = $this->db->query($Qstring);
+		$new_income_key = $this->db->insert_id();
+		date_default_timezone_set('Asia/Taipei');
+
+		$data = array(
+			'成員系統編號' => $new_member_key
+		);
+
+    	$this->db->where('所得系統編號', $new_income_key);
+    	$this->db->update('family_mem_income', $data);
+
+    	return $new_income_key;
+	}
 }

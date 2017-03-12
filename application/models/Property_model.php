@@ -77,4 +77,21 @@ class Property_model extends CI_Model {
 		log_message('debug', 'properties = '.print_r($properties, true));
 		return $properties;
 	}
+
+	public function clone_property($property_key, $new_member_key){
+		$Qstring = "INSERT `family_mem_property` (`成員系統編號`, `財產類別`, `位於何處`, `縣市別`, `價值`, `自用`, `備註`) SELECT `成員系統編號`, `財產類別`, `位於何處`, `縣市別`, `價值`, `自用`, `備註` FROM `family_mem_property` WHERE `財產系統編號` = ".$property_key ;
+		//var_dump($Qstring);
+		$query = $this->db->query($Qstring);
+		$new_property_key = $this->db->insert_id();
+		date_default_timezone_set('Asia/Taipei');
+
+		$data = array(
+			'成員系統編號' => $new_member_key
+		);
+
+    	$this->db->where('財產系統編號', $new_property_key);
+    	$this->db->update('family_mem_property', $data);
+
+    	return $new_property_key;
+	}
 }
