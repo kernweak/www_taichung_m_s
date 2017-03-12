@@ -208,6 +208,16 @@ class File extends MY_Controller {
 	}
 
 	//新增複查檔案 + 退役處理
+	private function Retired($file_key){
+		$file_info = $this->file_model->read_file($file_key);
+		//var_dump($file_info[0]->役男系統編號);
+		$boy_key = $file_info[0]->役男系統編號;
+		$this->load->model('boy_model');
+		$this->boy_model->change_mili_status($boy_key, "已退役");
+		$this->log_activity("役男設為退役", "boy_key=$boy_key" ,"filekey=$file_key");
+
+	}
+
 	public function rebuildfile(){
 		$file_key = (int)$this->input->post('file_key');
 		$act = $this->input->post('act');
@@ -226,6 +236,13 @@ class File extends MY_Controller {
 		    case "中秋複查":
 		        $act2 = 5;
 		        break;
+		    case "退役":
+		        $act2 = 6;
+		        $this->Retired($file_key);
+		        echo json_encode("Success");
+		        return;
+		        break;
+		        
 		}
 		//var_dump($act2);
 		$new_file_key = $this->file_model->clone_file_info($file_key, $act2);

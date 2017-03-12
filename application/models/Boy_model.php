@@ -38,4 +38,11 @@ class Boy_model extends CI_Model {
 		$this->db->update('miliboy_table', $data);
 	}
 
+	public function change_mili_status($boy_key, $status){
+		$data = array('服役狀態' => $status);
+		$this->db->where('役男系統編號', $boy_key);
+		$this->db->update('miliboy_table', $data);
+	}
+	
+
 }
