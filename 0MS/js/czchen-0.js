@@ -45,8 +45,10 @@
         .done(function(responsive) {
             console.log("success");
             read_file_list_supporting();
-            read_file_list_progress();
-            read_file_list_pending();
+            //read_file_list_progress();
+            //read_file_list_pending();
+            //CWait_End(1500);
+
         })
         .fail(function() {
             console.log("error");
@@ -63,6 +65,9 @@
         //console.log(file_list_action_pointer);
         $('#RefileModal').modal('show');
         $('#RefileModalLabel').text("新增複查案："+act);
+        if(act == "退役"){
+           $('#RefileModalLabel').text("役男退役登錄"); 
+        }
         var tr = $(event).parents("tr").get(0);
         update_RefileModal(tr);
     }
@@ -333,9 +338,13 @@
             tbody = "";
             $.each(responsive, function(index, file) {
                 var edit_button = "";
-                if(file.審批階段 <= 1 || file.審批階段 == 8 || file.審批階段 == 4 || User_Level >= 8){
+                if(file.審批階段 == 1 || file.審批階段 == 8 || file.審批階段 == 4 || User_Level >= 8){
                     edit_button = "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-success' onclick='read_file_test("+file.案件流水號+")'>編輯</button>"+
+                  "</div>";
+                }else if(file.審批階段 == 0){
+                    edit_button = "<div class='btn-group' role='group'>"+
+                    "<button type='button' class='btn btn-success' onclick='receive_file("+file.案件流水號+")'>受理</button>"+
                   "</div>";
                 }
                 else{
@@ -355,13 +364,15 @@
                   "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-primary' onclick='progress_view("+file.案件流水號+",this)'>檢視</button>"+
                   "</div>"+
-                  edit_button+
-                  // "<div class='btn-group' role='group'>"+
-                  //   "<button type='button' class='btn btn-info'>意見</button>"+
-                  // "</div>"+
-                  "<div class='btn-group' role='group'>"+
+                  edit_button;
+
+                  if(file.審批階段 != 0){
+                    Button_str += "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-warning' onclick='progress_p_back("+file.案件流水號+",this)'>退回</button>"+
                   "</div>";
+                  }
+                  
+
                   if(file.審批階段 == 8){
                     edit_button3 = "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-info' onclick='progress_p_patch_re("+file.案件流水號+",this)'>補件</button>"+
@@ -370,6 +381,8 @@
                     edit_button3 = "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-info' onclick='progress_p_next("+file.案件流水號+",this)'>結案</button>"+
                   "</div>";
+                  }else if(file.審批階段 == 0){
+                    edit_button3 = "";
                   }else{
                     edit_button3 = 
                     "<div class='btn-group' role='group'>"+
@@ -642,6 +655,31 @@
         svg_redraw();
     }
 
+    function receive_file(file_key){
+
+
+        $.ajax({
+            url: '/file/recive_new_boy_file',//------------------------------
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : file_key,
+            },
+        })
+        .always(function() {
+            
+        })
+        .done(function(responsive) {
+            console.log("success");
+            read_file_list_pending();
+            
+
+
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
 
     function read_file_test(file_key){
         empty_members();

@@ -17,11 +17,11 @@
     <!--<link rel="stylesheet" type="text/css" href="/0MS/images/people/font/flaticon.css">-->
     <link href="/0MS/css/metro-icons.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/0MS/css/bootstrap-datetimepicker.css">
-    <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-2017-02-07.css">
+    <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-2017-02-07.css?<?php echo time(); ?>">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="/0MS/js/czchen-0-2017-03-13.js"></script>
+    <script src="/0MS/js/czchen-0.js?<?php echo time(); ?>"></script>
     <script>
         var User_Level = <?php echo $User_Level ?>;
         var organization = '<?php echo $organization ?>';
@@ -84,7 +84,7 @@
                                     <li><a href="#" onclick="reload_file()">放棄修改-重新載入</a></li>
                                     <li><a href="#" onclick="close_file()">放棄修改-關閉案件</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#" onclick="add_miliboy()">家屬編修-加入役男</a></li>
+                                    <!--<li><a href="#" onclick="add_miliboy()">家屬編修-加入役男</a></li>-->
                                     <?php if($User_Level == 1 || $User_Level >= 4 ){  ?>
                                     <li><a id="Access_Print_botton" href="/Report/Access_Print_Form/" target="_blank">紙本簽核單</a></li>
                                     <?php }  ?>
@@ -187,7 +187,7 @@
     <?php include('Law_3.php');?>
     <?php include('Stock.php');?>
     <?php include('Law_5.php');?>
-    <?php include('Law_PDF.php');?>
+    <?php //include('Law_PDF.php');?>
     
     <?php include('add_file_modal.php');?>
     
@@ -198,8 +198,8 @@
 <script src="/0MS/extensions/DataTables/jquery.dataTables.js"></script>
 <script src="/0MS/extensions/DataTables/dataTables.bootstrap.js"></script>
 <script src="/0MS/js/moment-with-locales.js"></script>
-<script src="/0MS/js/czchen.js"></script>
-<script src="/0MS/js/czchen-2.js"></script>
+<script src="/0MS/js/czchen.js?<?php echo time(); ?>"></script>
+<script src="/0MS/js/czchen-2.js?<?php echo time(); ?>"></script>
 <script type="text/javascript" src="/0MS/js/bootstrap-datetimepicker.js"></script>
 <!--<script type="text/javascript" src="js/bootstrap-datetimepicker.zh-TW.js"></script>-->
 

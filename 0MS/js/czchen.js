@@ -20,6 +20,12 @@ var Property_limit =[
 	["連江縣",106,10290,2700000]
 ];
 
+//property_move_limit = property_move_limit_base + (total_members_count) * property_move_limit_single; 
+//動產限額公式，含役男本身從250萬開始，多一個家屬多25萬。
+var property_move_limit_base = 2500000;
+
+var property_move_limit_single = 250000;
+
 Property_limit.getIndexbyName = function(){
 
 }
@@ -488,7 +494,7 @@ $(document).ready(function() {
             }
         }
         total_property_imm_count = total_property_land_value_con + total_property_house_value_con;
-        property_move_limit = 2500000 + (total_members_count - 1) * 250000;
+        property_move_limit = property_move_limit_base + (total_members_count ) * property_move_limit_single; //動產限額
         property_imm_limit = imm_area_array.min();
         //console.log(property_imm_limit);
         if(!isFinite(property_imm_limit)){   //抓不到的話，就用役男的戶籍地

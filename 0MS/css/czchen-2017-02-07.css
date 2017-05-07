@@ -230,6 +230,9 @@
         margin-bottom: 1em;
     }
     /***********************************************/
+    #Stock_table_wrapper tr{
+        cursor: pointer;
+    }
     .progress-bar{
         overflow: visible;
         white-space: nowrap;
@@ -491,6 +494,10 @@
         font-size: 110%;
         line-height: 170%;
     }
+    #Law_1 > div > div > div.modal-body > div > table ul{
+        list-style-type: cjk-ideographic;
+    }
+    
 
     .P100{
         width: 100%;
