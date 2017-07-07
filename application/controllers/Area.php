@@ -18,4 +18,12 @@ class Area extends MY_Controller {
 		$data['village_list'] = $villages;
 		echo json_encode($data);				
 	}
+
+	public function military_type_list(){
+		$this->load->model('area_model');
+		//$town_code = $this->input->post('ADF_town');		
+		$military_type_list = $this->area_model->military_type_list();
+		$data['military_type_list'] = $military_type_list;
+		echo json_encode($data);				
+	}
 }

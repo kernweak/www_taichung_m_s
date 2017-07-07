@@ -5,6 +5,18 @@ class Area_model extends CI_Model {
     {
             parent::__construct();
     }
+    function military_type_list(){
+		$this->db->select('name');
+		$this->db->from('military_type');
+		$this->db->order_by('sort');
+		//$this->db->where('Login_PW', $Login_PW);
+		$query = $this->db->get();
+		$result = $query->result();
+		log_message('debug', 'military type list:');
+		log_message('debug', print_r($result,true));		
+		return $result;
+	}
+
     function town_by_county($County_code){
 		$this->db->select('Town_code, Town_name');
 		$this->db->from('area_town');

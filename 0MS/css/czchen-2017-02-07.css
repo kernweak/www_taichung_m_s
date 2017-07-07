@@ -230,6 +230,10 @@
         margin-bottom: 1em;
     }
     /***********************************************/
+    .context-menu-active {
+        background-color: #d99b88 !important;
+    }
+
     #Stock_table_wrapper tr{
         cursor: pointer;
     }
@@ -586,19 +590,39 @@
         border: 0;
         color: #3c3f41; 
     }
+    
     .people-input-right:focus{
         outline: none; 
         border-bottom: 0.1em solid black;
     }
+
     .add-people{
-        position: absolute;
+        /*position: absolute;
         font-size: 2.5em;
         left: calc(50% - 2.5em);
         top: calc(50% - 1em);
         border: 0.1em;
         border-style: dotted;
         border-radius: 1em;
+        padding: 0.3em;*/
+        left: calc(50% - 2.5em);
+        top: calc(50% - 1em);
+        border-style: dotted;
+        border-radius: 0.5em;
         padding: 0.3em;
+        position: static;
+        font-size: 1.5em;
+        display: inline-block;
+        margin: 0.2em 0.2em;
+        border: 0.08em solid rgba(128, 128, 128, 0.8);
+        background-color: bisque;
+        color: rgba(31, 31, 31, 0.8);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .add-people:hover {
+        background-color: #c69153;
     }
 
 

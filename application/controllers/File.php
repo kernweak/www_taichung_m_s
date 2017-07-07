@@ -31,8 +31,8 @@ class File extends MY_Controller {
 		$this->load->model('area_model');
     } 
 
-	public function check_boy_exist()		//檢查此役男是否存在
-	{	
+	public function check_boy_exist(){		//檢查此役男是否存在
+		
 		$this->load->model('boy_model');		
 		$ADF_code = $this->input->post('ADF_code');		
 		$query = $this->boy_model->read_row_by_code($ADF_code);
@@ -94,6 +94,12 @@ class File extends MY_Controller {
 		echo json_encode($data);
 	}
 
+
+	private function get_members_num_for_file($file_key){
+		$members = $this->member_model->get_members_for_file($file_key);
+		return sizeof($members);
+	}
+
 	public function recive_new_boy_file(){
 		$this->load->library('session');
 		$file_key = $this->input->post('file_key');
@@ -102,8 +108,12 @@ class File extends MY_Controller {
 		//var_dump($file_info);
 		//var_dump($file_info->身分證字號);
 
-		//增加家屬-役男本人
-		$this->add_member_newboy($file_key,$file_info->役男姓名,$file_info->身分證字號,$file_info->役男生日,$file_info->戶籍地址,$file_info->county,$file_info->town,$file_info->village);
+		//新增判斷，若家屬含役男之成員數為0，表示全新收到的案件，就可以增加役男本人，否則就是移轉案件，不應該再增加役男一次
+		if($this->get_members_num_for_file($file_key)==0){
+			//增加家屬-役男本人
+			$this->add_member_newboy($file_key,$file_info->役男姓名,$file_info->身分證字號,$file_info->役男生日,$file_info->戶籍地址,$file_info->county,$file_info->town,$file_info->village);
+		}
+		
 
 		//案件階段向上提升到承辦人
 		$file_info = $this->file_model->progress_file($file_key,"+");
@@ -118,8 +128,6 @@ class File extends MY_Controller {
 		$department = $this->session->userdata('department');
 		$this->file_model->recive_file_update_editor($file_key,$FullName,$department,$organization);
 		echo json_encode("Success");
-
-
 	}
 
 	private function add_member_newboy($file_key,$name,$id,$birthday,$address,$county,$town,$village){
@@ -297,6 +305,19 @@ class File extends MY_Controller {
 		echo json_encode("Success");
 	}
 
+	public function progress_transfer(){
+		$file_key = (int)$this->input->post('file_key');
+		$target_code = (int)$this->input->post('target_code');
+		$log_comment = $this->input->post('log_comment');		
+		$file_info = $this->file_model->progress_transfer($file_key, $target_code);
+
+		$this->progress_log($file_key, $log_comment, "轉移別區",$file_info);
+		$this->log_activity("轉移別區", "file_key=$file_key");
+		echo json_encode("Success");
+	}
+
+	//
+
 	public function progress_patch(){
 		$file_key = (int)$this->input->post('file_key');
 		$log_comment = $this->input->post('log_comment');		
@@ -320,9 +341,18 @@ class File extends MY_Controller {
 	public function progress_back(){
 		$file_key = (int)$this->input->post('file_key');
 		$log_comment = $this->input->post('log_comment');		
-		$file_info = $this->file_model->progress_file($file_key,"1");
-		$this->progress_log($file_key, $log_comment, "退回承辦",$file_info);
-		$this->log_activity("退回承辦", "file_key=$file_key");
+		$file_info = $this->file_model->progress_file($file_key,"back");
+		$this->progress_log($file_key, $log_comment, "退回機關承辦",$file_info);
+		$this->log_activity("退回機關承辦", "file_key=$file_key");
+		echo json_encode("Success");
+	}
+
+	public function progress_get_back(){
+		$file_key = (int)$this->input->post('file_key');
+		$log_comment = $this->input->post('log_comment');		
+		$file_info = $this->file_model->progress_file($file_key,"-");
+		$this->progress_log($file_key, $log_comment, "撤回簽呈",$file_info);
+		$this->log_activity("撤回簽呈", "file_key=$file_key");
 		echo json_encode("Success");
 	}
 
@@ -339,6 +369,61 @@ class File extends MY_Controller {
 		$this->file_model->progress_log($file_key,$log_comment, $progress_name, $progress_level,$organization,$department,$FullName,$User_Level,$datetime);
 		//echo json_encode("Success");
 	}
+
+	public function get_calc_setting_by_year(){
+		$year = (int)$this->input->post('year');
+
+
+		//EXP
+
+		
+		$BankRate = $this->file_model->get_calc_BankRate($year);
+		$MProperty = $this->file_model->get_calc_Movable_Property($year);
+		$LowIncome = $this->file_model->get_calc_LowIncome($year);
+		$LowInArr = array();
+		foreach ($LowIncome as $LowIn){
+			$LowInArr[] = array($LowIn["縣市"],(int)$LowIn["年度"],(int)$LowIn["月均所得"],(int)$LowIn["不動產限額"]);
+		}
+		$data['LowIncome'] = $LowInArr;
+		$data['BankRate'] = $BankRate;
+		$data['MProperty'] = $MProperty;
+		echo json_encode($data);		
+
+
+	}
+
+	public function get_area_group_list(){
+		$get_area_group_list = $this->file_model->get_area_group_list();
+		//var_dump($get_area_group_list);
+
+		$AG_list = array();
+
+		foreach ($get_area_group_list as $AG){
+			//var_dump();
+			switch ($AG['town_group']) {
+				case 1:
+					$AG_list[0][$AG['Town_code']]['name']= $AG['name'];
+					break;
+				case 2:
+					$AG_list[1][$AG['Town_code']]['name']= $AG['name'];
+					break;
+				case 3:
+					$AG_list[2][$AG['Town_code']]['name']= $AG['name'];
+					break;
+				default:
+					# code...
+					break;
+			}
+			$AG_list[3][$AG['Town_code']]= $AG['name'];
+		}
+		//var_dump($AG_list1);
+		echo json_encode($AG_list);
+
+	}
+
+	
+
+
 
 // miliboy_table.入伍日期// <th style="width: 8em;">入伍日期</th>
 // area_town.Town_name//   	<th style="width: 7em;">行政區</th>

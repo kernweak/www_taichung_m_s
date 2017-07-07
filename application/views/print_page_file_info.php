@@ -92,6 +92,10 @@
     	h3{
     		margin-top: 0.4em;
     		margin-bottom: 0.15em;
+    		font-size: 1em;
+    	}
+    	.MT{
+    		font-size: 1.3em;
     	}
 		html, body {
 			margin: 0mm;
@@ -224,7 +228,7 @@
 	</div>-->
 
     <div id="paper_s">
-    	<label><h3 style="width: 100%;text-align: center;margin-top:0;margin-bottom:0.7em; ">服兵役役男家屬生活扶助案件---<?php echo $file_info->作業類別名稱; ?>案件</h3></label>
+    	<label><h3 class="MT" style="width: 100%;text-align: center;margin-top:0;margin-bottom:0.7em; ">服兵役役男家屬生活扶助案件---<?php echo $file_info->作業類別名稱; ?>案件</h3></label>
     	<table id="boy_info" border="1" style="text-align: center;width: 95%;margin:auto;/*margin-top: 0.5em;*/">
 			<tbody>
 			<tr>
@@ -328,7 +332,7 @@
 			</tr>
 			</tbody>
 			</table>
-			<br><hr style="width: 95%;margin:auto;">
+			
 			<label><h3 style="margin-left: 2.5%;">市政府複審記事</h3></label>
 			<textarea style="margin-left: 2.5%; width: 94%;height: 11em; resize:none;border: 1px solid black;" id="PH-file_comm_2"><?php echo $file_info->{'整體家況敘述-局處'}; ?></textarea>
 			<label><h3 style="margin-left: 2.5%;">市政府核章</h3></label>

@@ -349,7 +349,7 @@
             tbody = "";
             $.each(responsive, function(index, file) {
                 var edit_button = "";
-                if(file.審批階段 == 1 || file.審批階段 == 8 || file.審批階段 == 4 || (User_Level >= 8 && file.審批階段 != 0)){
+                if(file.審批階段 == 1 || file.審批階段 == 8 || file.審批階段 == 4 || User_Level >= 8){
                     edit_button = "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-success' onclick='read_file_test("+file.案件流水號+",this)'>編輯</button>"+
                   "</div>";
@@ -475,33 +475,13 @@
         });
     }
 
-
-    var TArea_code_list = {};
     //定義案件列表右鍵 
     $(function() {
-        $.ajax({
-            url: '/file/get_area_group_list',//------------------------------
-            type: 'post',
-            dataType: 'json',
-        })
-        .done(function(responsive) {
-            TArea_code_list = responsive[3];
-            RMenu_set_1(responsive);
-
-        });
-
-
-
-        
-    });
-
-    function RMenu_set_1(GG){
         $.contextMenu({
             selector: '#table_id > tbody > tr.LV1-Rmenu', 
             callback: function(key, options) {
-                // var m = "clicked: " + key + name;
-                // window.console && console.log(m) || alert(m); 
-                RMenu_set_1_handl(key,this);
+                var m = "clicked: " + key;
+                window.console && console.log(m) || alert(m); 
             },
             items: {
                 "edit": {name: "修改案件登記", icon: "edit"},
@@ -510,15 +490,47 @@
                 "sep1": "---------",
                 "transfer1": {
                     name: "案件移交(山)",
-                    items: GG[0]
+                    items: {
+                        "traf1": { name: "豐原區"},
+                        "traf2": { name: "后里區"},
+                        "traf3": { name: "石岡區"},
+                        "traf4": { name: "東勢區"},
+                        "traf5": { name: "新社區"},
+                        "traf6": { name: "潭子區"},
+                        "traf7": { name: "大雅區"},
+                        "traf8": { name: "神岡區"},
+                    }
                 },
                 "transfer2": {
                     name: "案件移交(海)",
-                    items: GG[1]
+                    items: {
+                        "traf9": { name: "大肚區"},
+                        "traf10": { name: "沙鹿區"},
+                        "traf11": { name: "龍井區"},
+                        "traf12": { name: "梧棲區"},
+                        "traf13": { name: "清水區"},
+                        "traf14": { name: "大甲區"},
+                        "traf15": { name: "外埔區"},
+                        "traf16": { name: "大安區"},
+                    }
                 },
                 "transfer3": {
                     name: "案件移交(市屯原)",
-                    items: GG[2]
+                    items: {
+                        "traf17": { name: "中區"},
+                        "traf18": { name: "東區"},
+                        "traf19": { name: "南區"},
+                        "traf20": { name: "西區"},
+                        "traf21": { name: "北區"},
+                        "traf22": { name: "北屯區"},
+                        "traf23": { name: "西屯區"},
+                        "traf24": { name: "南屯區"},
+                        "traf25": { name: "太平區"},
+                        "traf26": { name: "大里區"},
+                        "traf27": { name: "霧峰區"},
+                        "traf28": { name: "烏日區"},
+                        "traf29": { name: "和平區"},
+                    }
                 },
                 "sep2": "---------",
                 "quit": {name: "關閉", icon: function(){
@@ -527,48 +539,11 @@
             }
         });
 
-        
-    }
+        $('.LV1-Rmenu').on('click', function(e){
+            console.log('clicked', this);
+        })
+    });
 
-    
-
-    function RMenu_set_1_handl(key,e){
-        var file_key = $(e).attr('trkey');
-        switch(key) {
-            case "edit":
-                //code block
-                //console.log(file_key);
-                //console.log(TArea_code_list);
-                
-                
-                break;
-            case "paste":
-                //code block
-                break;
-            case "delete":
-                //code block
-                break;
-            default:
-                //code block
-                var isnum = /^\d+$/.test(key);
-                if(isnum){console.log('純數字');progress_transfer_showM(file_key,e,key);}
-                else{console.log('非純數字');}
-
-        }
-
-    }
-    var file_transfer_target = "";
-
-    function progress_transfer_showM(file_key,event,key){
-        file_list_pointer = file_key;
-        file_list_action_pointer = "transfer";
-        file_transfer_target = key
-
-        $('#myModal').modal('show');
-        $('#myModalLabel').html('將案件轉移至 ['+TArea_code_list[key]+']');
-        // var tr = $(event).parents("tr").get(0);
-        update_myModal($(event));
-    }
 
     function close_file(){
                     $("#family-edit-nav").fadeOut('400');
@@ -1466,31 +1441,6 @@
         });
     }
 
-    function progress_transfer(file_key, file_transfer_target){
-        $.ajax({
-            url: '/file/progress_transfer',
-            type: 'post',
-            dataType: 'json',
-            data: {
-                file_key        : file_key,
-                target_code     : file_transfer_target,
-                log_comment     : $("#log_comment").val()
-            },
-        })
-        .always(function() {
-            console.log("complete");
-        })
-        .done(function(responsive) {
-            console.log("success");
-            read_file_list_pending();
-        })
-        .fail(function() {
-            console.log("error");
-        });
-    }
-
-    //progress_transfer(file_list_pointer, file_transfer_target);
-
     function progress_patch(file_key){
         $.ajax({
             url: '/file/progress_patch',
@@ -1606,7 +1556,6 @@
 
     function progress_view(file_key,event){
         CWait_Start();
-        $("#pdf_viewer").attr("src","");
         file_list_pointer = file_key;
         file_list_action_pointer = "next";
         var tr = $(event).parents("tr").get(0);
@@ -1814,13 +1763,10 @@ $(document).ready(function() {
             progress_patch(file_list_pointer);
         }else if(file_list_action_pointer == "patch_re"){
             progress_patch_re(file_list_pointer);
-        }else if(file_list_action_pointer == "transfer"){
-            progress_transfer(file_list_pointer, file_transfer_target);
         }
         $('#myModal').modal('hide');
         /* Act on the event */
     });
-
 
     $("#Home_root").on('click', '#RefileModal button.btn.btn-primary',function(event) {
         event.preventDefault();
