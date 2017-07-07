@@ -44,9 +44,9 @@
                         <button class="button helper-button clear" onclick="$('#ADF-address').val('')"><span class="mif-cross"></span></button>
                     </div>
                     <div class="input-control password full-size" data-role="input">
-                        <label for="ADF-type">服役軍種:</label>
+                        <label for="ADF-type">服役役別:</label>
                         <!--<input type="text" name="user_password" id="user_password">-->
-                        <select name="ADF-type" id="ADF-type"><option value="陸軍">陸軍</option><option value="海軍">海軍</option><option value="空軍">空軍</option value=""><option value="一般替代役">一般替代役</option><option value="研發替代役">研發替代役</option></select>  
+                        <select name="ADF-type" id="ADF-type"></select>
                     </div>
                     <div class="input-control password full-size" data-role="input">
                         <label for="ADF-status">服役狀態:</label>
@@ -84,6 +84,8 @@
 </div>
 <script>
     $(document).ready(function() {
+        military_type_list();
+        //refresh_village();
 
         $("#Add_file").on('change', 'input', function(event) {
             event.preventDefault();
@@ -280,7 +282,7 @@
                 setTimeout(function(){
                     if(User_Level <= 3){
                         //把新增案件的區先選起來
-                        $("#ADF-town").val($("#ADF-town option:contains('"+organization+"')").val()).prop('disabled',true);
+                        $("#ADF-town").val($("#ADF-town option:contains('"+organization+"')").val()).prop('disabled',true).css('background', '#d6d6d6');
                         setTimeout(function(){
                             refresh_village();
                         },300);
@@ -320,6 +322,36 @@
                 });
 
                 $('#ADF-village').append(seloption);
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            }); //更新村里下拉選單
+        }
+
+        function military_type_list(){
+            //$("#theForm").ajaxForm({url: 'server.php', type: 'post'})
+            //$('#ADF-village').empty();
+            //$("#MSG").text("連線中...");
+            $.ajax({
+                url: '/area/military_type_list',
+                type: 'post',
+                dataType: 'json',
+            })
+            .always(function() {
+                console.log("complete");
+                  // remove loading image maybe
+            })
+            .done(function(responsive_) {
+                //var result = JSON.parse(responsive);
+                var responsive = responsive_['military_type_list'];
+                //console.log(responsive);
+                var seloption = "";
+                $.each(responsive, function(index, record){
+                    seloption += '<option value="'+record.name+'">'+record.name+'</option>'; 
+                });
+
+                $('#ADF-type').append(seloption);
                 console.log("success");
             })
             .fail(function() {

@@ -20,11 +20,68 @@ var Property_limit =[
 	["連江縣",106,10290,2700000]
 ];
 
+//銀行定存利率(用於反算存款)
+//var bank_interest_rate = 0.01355; //105年
+var bank_interest_rate = 0.0107; //106年
+
 //property_move_limit = property_move_limit_base + (total_members_count) * property_move_limit_single; 
 //動產限額公式，含役男本身從250萬開始，多一個家屬多25萬。
 var property_move_limit_base = 2500000;
 
 var property_move_limit_single = 250000;
+
+//不同案件要呼叫不同年份的規定
+        function update_calc_setting_by_year(year_in, file_key){
+            
+            $.ajax({
+                url: '/file/get_calc_setting_by_year',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    year: year_in
+                },
+            })
+            .always(function() {
+                console.log("complete");
+                  // remove loading image maybe
+            })
+            .done(function(responsive_) {
+
+                var LowIncome = responsive_['LowIncome'];
+                var BankRate = responsive_['BankRate'];
+                var MProperty = responsive_['MProperty'];
+
+                bank_interest_rate = parseFloat(BankRate[0].利率);
+                property_move_limit_base = parseInt(MProperty[0].起算額);
+                property_move_limit_single = parseInt(MProperty[0].每人增加額);
+
+                //console.log(responsive_);
+
+                for(i=0;i<LowIncome.length;i++){
+                    Property_limit[i] = LowIncome[i];
+                    if(i == LowIncome.length - 1){
+                        //run原本的讀取檔案
+                        read_file_test_1(file_key);
+                    }
+                }
+
+                
+                //console.log();
+
+            })
+            .fail(function() {
+                //console.log("error");
+            }); //更新村里下拉選單
+        }
+
+
+
+
+
+
+
+
+
 
 Property_limit.getIndexbyName = function(){
 
@@ -522,11 +579,11 @@ $(document).ready(function() {
         $(".TC-L-D3 .total-count-left-rc").eq(3).text(total_property_Others);
         $("#PH-others-Pro").text(total_property_Others);
          //console.log("動產總額："+total_property_move);
-         $("#total_property_move").text(total_property_move);
+         $("#total_property_move").text(numberWithCommas(total_property_move));
          $("#PH-total-pro").text(total_property_move);
          //console.log("不動產總額："+total_property_imm);
          //console.log("不動產列計總額："+total_property_imm_count);
-         $("#total_property_imm_count").text(total_property_imm_count);
+         $("#total_property_imm_count").text(numberWithCommas(total_property_imm_count));
          $("#PH-total-imm").text(total_property_imm_count);
         //console.log("房屋數："+total_property_house_num);  
         $(".TC-L-D4 .imm-total .imm-head3 span").eq(0).text(total_property_house_num);
@@ -554,9 +611,9 @@ $(document).ready(function() {
         $("#PH-Land-listtotal").text(total_property_land_value_con);
 
         //console.log("動產限額："+property_move_limit);
-        $("#property_move_limit").text(property_move_limit);
+        $("#property_move_limit").text(numberWithCommas(property_move_limit));
         //console.log("不動產限額："+property_imm_limit);
-        $("#property_imm_limit").text(property_imm_limit);
+        $("#property_imm_limit").text(numberWithCommas(property_imm_limit));
         
         if(property_move_limit < total_property_move) {
             $("#property_move_limit").css('color', 'red');
@@ -692,6 +749,7 @@ $(document).ready(function() {
         $(new_pro).find('.proper-inc-div-6').val(area).trigger('change');
         $(new_pro).find('.proper-inc-div-1').val($(this).attr("value")).trigger('change');
         $("#right_tab_property > div").animate({scrollTop:$("#right_tab_property > div").scrollTop()+170}, '500', 'swing');
+
     });
 
     //右面板.財產.自動帶入按鈕點擊事件
@@ -915,9 +973,9 @@ $(document).ready(function() {
                 $(this).parent().find(".proper-inc-div-4").val("y");
                 $(this).parent().find(".proper-inc-div-7").addClass('in');
                 if($(this).children("option:selected").text() == '存款利息'){
-                    $(this).parent().find(".proper-inc-div-7").val(0.01355);
+                    $(this).parent().find(".proper-inc-div-7").val(bank_interest_rate); 
                 }else{
-                    $(this).parent().find(".proper-inc-div-7").val(0);
+                    $(this).parent().find(".proper-inc-div-7").val("");
                 }
             }else{
                 $(this).parent().find(".proper-inc-div-7").removeClass('in');
@@ -1246,6 +1304,7 @@ $(document).ready(function() {
         svg_redraw();
         var index_g = $(".group-div").length - 2;
         $(".group-div").eq(index_g).find('.people-id-address input').trigger('change');
+        $(".group-div").eq(index_g).find('.people-title > input').val($(this).attr("value")).trigger('change');
         $(".center-total-count > div").animate({scrollTop:$(".center-total-count > div").scrollTop()+270}, '500', 'swing');
         //recount_left_family_panel();
     });

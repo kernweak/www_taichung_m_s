@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/0MS/css/bootstrap-theme.min.css">
     <!-- <link rel="stylesheet" type="text/css" href="css/metro-icons.css"> -->
     <!--<link rel="stylesheet" href="/0MS/fonts/notosanstc.css">-->
+    <link rel="stylesheet" type="text/css" href="/0MS/extensions/ContextMenu/jquery.contextMenu.min.css">
+
     <link rel="stylesheet" type="text/css" href="/0MS/extensions/DataTables/dataTables.bootstrap.min.css">
     <!--<link rel="stylesheet" type="text/css" href="/0MS/images/people/font/flaticon.css">-->
     <link href="/0MS/css/metro-icons.css" rel="stylesheet">
@@ -199,10 +201,11 @@
 <script src="/0MS/extensions/DataTables/dataTables.bootstrap.js"></script>
 <script src="/0MS/js/moment-with-locales.js"></script>
 <script src="/0MS/js/czchen.js?<?php echo time(); ?>"></script>
-<script src="/0MS/js/czchen-2.js?<?php echo time(); ?>"></script>
+<!--<script src="/0MS/js/czchen-2.js?<?php echo time(); ?>"></script>-->
 <script type="text/javascript" src="/0MS/js/bootstrap-datetimepicker.js"></script>
+<script src="/0MS/extensions/ContextMenu/jquery.contextMenu.min.js"></script>
+<script src="/0MS/extensions/ContextMenu/jquery.ui.position.min.js"></script>
 <!--<script type="text/javascript" src="js/bootstrap-datetimepicker.zh-TW.js"></script>-->
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.js"></script>
 <script type="text/javascript">

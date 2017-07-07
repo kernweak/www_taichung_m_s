@@ -10,7 +10,7 @@
             <th>立案日期</th>
             <th>主要承辦人</th>
             <th>作業類別</th>
-            <th style="width: 5em; min-width: 5em;">可選用操作</th>
+            <th style="width: 8em; min-width: 8em;">可選用操作</th>
         </tr>
     </thead>
     <tbody>

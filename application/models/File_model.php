@@ -58,10 +58,32 @@ class File_model extends CI_Model {
 
 			
 
-		}elseif($oper == "1"){
-			$data = array(
-			'審批階段' => 1
-			);
+		}elseif($oper == "-"){
+			if($result[0]->審批階段 == 1){
+				$data = array(
+					'審批階段' => 1
+				);
+			}
+			else{
+				$data = array(
+					'審批階段' => ($result[0]->審批階段 - 1)
+				);
+			}
+			
+		}elseif($oper == "back"){
+			if($result[0]->審批階段 <= 4){
+				$back = 1;
+				$data = array(
+					'審批階段' => 1
+				);
+			}
+			elseif($result[0]->審批階段 <= 6){
+				$back = 4;
+				$data = array(
+					'審批階段' => 4
+				);
+			}
+			
 		}elseif($oper == "p"){
 			$data = array(
 			'審批階段' => 8
@@ -90,15 +112,28 @@ class File_model extends CI_Model {
 
     	if ($oper == "+"){
 			return $result[0]->審批階段 + 1;
-		}elseif($oper == "1"){
-			return 1;
+		}elseif($oper == "-"){
+			return $data['審批階段'];
 		}elseif($oper == "p"){
 			return 8;
 		}elseif($oper == "r"){
 			return 4;
+		}elseif($oper == "back"){
+			return $back;
 		}
 
+
     	//var_dump($this->db->last_query());
+	}
+
+	public function progress_transfer($file_key, $target_code){
+		$data = array(
+						'審批階段' => 0,
+						'town' => $target_code,
+					);
+		$this->db->where('案件流水號', $file_key);
+    	$this->db->update('files_info_table', $data);
+    	return 0;
 	}
 
 	public function recive_file_update_editor($file_key,$FullName,$department,$organization){
@@ -577,4 +612,56 @@ class File_model extends CI_Model {
 		// var_dump($result);
 		// var_dump($this->db->last_query());
 	}
+
+	//EXP
+	function get_calc_LowIncome($year){
+		$this->db->select('年度, 縣市, 月均所得, 不動產限額');
+		$this->db->from('cnf_low_income_f1');
+		$this->db->where('年度', $year);
+		//$this->db->where('Login_PW', $Login_PW);
+		$query = $this->db->get();
+		$result = $query->result_array();
+		log_message('debug', 'town query result:');
+		log_message('debug', print_r($result,true));		
+		return $result;
+	}
+
+	function get_calc_BankRate($year){
+		$this->db->select('年度, 利率');
+		$this->db->from('cnf_bank_rate');
+		$this->db->where('年度', $year);
+		//$this->db->where('Login_PW', $Login_PW);
+		$query = $this->db->get();
+		$result = $query->result();
+		log_message('debug', 'town query result:');
+		log_message('debug', print_r($result,true));		
+		return $result;
+	}
+
+	function get_calc_Movable_Property($year){
+		$this->db->select('年度, 起算額, 每人增加額');
+		$this->db->from('cnf_low_income_f2');
+		$this->db->where('年度', $year);
+		//$this->db->where('Login_PW', $Login_PW);
+		$query = $this->db->get();
+		$result = $query->result();
+		log_message('debug', 'town query result:');
+		log_message('debug', print_r($result,true));		
+		return $result;
+	}
+
+	function get_area_group_list(){
+		$this->db->select('Town_code, Town_name as name, town_group');
+		$this->db->from('area_town');
+		$this->db->order_by('town_group, Town_id');
+		
+		//$this->db->where('Login_PW', $Login_PW);
+		$query = $this->db->get();
+		$result = $query->result_array();
+		//log_message('debug', 'town query result:');
+		//log_message('debug', print_r($result,true));		
+		return $result;
+	}
+
+
 }
