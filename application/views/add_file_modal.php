@@ -109,7 +109,7 @@
                 },
             })
             .always(function() {
-                console.log("complete");
+                //console.log("complete");
                   // remove loading image maybe
             })
             .done(function(responsive) {
@@ -224,7 +224,7 @@
                     $("#ADF-clear").trigger('click');
                     //CWait_Start();
                 }
-                read_file_test(responsive['file_key']);
+                read_file_new(responsive['file_key']);
                 
                 
 
@@ -265,7 +265,7 @@
                 },
             })
             .always(function() {
-                console.log("complete");
+                //console.log("complete");
 
                   // remove loading image maybe
             })
@@ -339,7 +339,7 @@
                 dataType: 'json',
             })
             .always(function() {
-                console.log("complete");
+                //console.log("complete");
                   // remove loading image maybe
             })
             .done(function(responsive_) {
@@ -352,7 +352,9 @@
                 });
 
                 $('#ADF-type').append(seloption);
-                console.log("success");
+                $('#CE-New-type').append(seloption);
+                
+                //console.log("success");
             })
             .fail(function() {
                 console.log("error");

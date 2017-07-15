@@ -59,3 +59,6 @@
 .mif-cross:before {
   content: "\ea0f";
 }
+.mif-undo:before {
+  content: "\e965";
+}

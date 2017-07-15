@@ -229,6 +229,12 @@
         margin-right: 3em;
         margin-bottom: 1em;
     }
+
+    .helper-button {
+        height: 1.81em;
+        position: relative;
+        top: -0.155em;
+    }
     /***********************************************/
     .context-menu-active {
         background-color: #d99b88 !important;

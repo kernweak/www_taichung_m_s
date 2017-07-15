@@ -24,6 +24,11 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="/0MS/js/czchen-0.js?<?php echo time(); ?>"></script>
+    <script src="/0MS/js/cz-progress.js?<?php echo time(); ?>"></script>
+    <script src="/0MS/js/cz-pre-edit-file.js?<?php echo time(); ?>"></script>
+    <script src="/0MS/js/cz-ReadFiles-list.js?<?php echo time(); ?>"></script>
+    <script src="/0MS/js/cz-Fmenu.js?<?php echo time(); ?>"></script>
+    
     <script>
         var User_Level = <?php echo $User_Level ?>;
         var organization = '<?php echo $organization ?>';
@@ -70,6 +75,8 @@
                                     <li><a href="#filelist-navcon" role="tab" data-toggle="tab" onclick="">待辦案件</a></li>
                                     <li><a href="#filelist-progress" role="tab" data-toggle="tab" onclick="read_file_list_progress()">呈核中案件</a></li>
                                     <li><a href="#filelist-supporting" role="tab" data-toggle="tab" onclick="read_file_list_supporting()">補助中案件</a></li>
+                                    <li><a href="#filelist-Fail" role="tab" data-toggle="tab" onclick="read_file_list_fail()">資格不符案件</a></li>
+                                    
                                     <!--<li><a href="#">已結案案件</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">進階查詢</a></li>-->
@@ -152,19 +159,18 @@
             </nav>
         </div>
         <div class="tab-content" id="Home_root">
-            <div id="filelist-navcon" role="tabpanel" class="tab-pane active fade in nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
+            <div id="filelist-navcon"       role="tabpanel" class="tab-pane active fade in nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
                 <?php include('filelist.php');?>
             </div>
-            <div id="filelist-progress" role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
+            <div id="filelist-progress"     role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
                 <?php include('filelist_in_progress.php');?>
             </div>
-            <div id="filelist-supporting" role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
+            <div id="filelist-supporting"   role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
                 <?php include('filelist_supporting.php');?>
             </div>
-
-
-
-            
+            <div id="filelist-Fail"         role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
+                <?php include('filelist_fail.php');?>
+            </div>
             <div id="edit-home" role="tabpanel" class="tab-pane fade nav-container" style="overflow-y: scroll;height: 100vh;">
                 <?php include('people_home.php');?>
             </div>
@@ -200,6 +206,7 @@
 <script src="/0MS/extensions/DataTables/jquery.dataTables.js"></script>
 <script src="/0MS/extensions/DataTables/dataTables.bootstrap.js"></script>
 <script src="/0MS/js/moment-with-locales.js"></script>
+<script src="/0MS/js/cz-rmenu.js?<?php echo time(); ?>"></script>
 <script src="/0MS/js/czchen.js?<?php echo time(); ?>"></script>
 <!--<script src="/0MS/js/czchen-2.js?<?php echo time(); ?>"></script>-->
 <script type="text/javascript" src="/0MS/js/bootstrap-datetimepicker.js"></script>

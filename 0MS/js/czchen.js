@@ -1,109 +1,82 @@
-//區域,年度,最低生活費,不動產限額
-var Property_limit =[
-	["臺北市",106,15544,7400000],
-	["新北市",106,13700,3620000],
-	["桃園市",106,13692,3600000],
-	["臺中市",106,13084,3520000],
-	["臺南市",106,11448,3500000],
-	["高雄市",106,12941,3530000],
-	["基隆市",106,11448,3500000],
-	["新竹縣",106,11448,3500000],
-	["苗栗縣",106,11448,3500000],
-	["彰化縣",106,11448,3500000],
-	["雲林縣",106,11448,3500000],
-	["嘉義縣",106,11448,3500000],
-	["屏東縣",106,11448,3500000],
-	["宜蘭縣",106,11448,3500000],
-	["花蓮縣",106,11448,3500000],
-	["臺東縣",106,11448,3500000],
-	["金門縣",106,10290,2700000],
-	["連江縣",106,10290,2700000]
-];
 
-//銀行定存利率(用於反算存款)
-//var bank_interest_rate = 0.01355; //105年
-var bank_interest_rate = 0.0107; //106年
+    //計算目前歲數
+    function _calculateAge(birthday) { // birthday is a date
+        var ageDifMs = Date.now() - birthday.getTime();
+        var ageDate = new Date(ageDifMs); // miliseconds from epoch
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
 
-//property_move_limit = property_move_limit_base + (total_members_count) * property_move_limit_single; 
-//動產限額公式，含役男本身從250萬開始，多一個家屬多25萬。
-var property_move_limit_base = 2500000;
-
-var property_move_limit_single = 250000;
-
-//不同案件要呼叫不同年份的規定
-        function update_calc_setting_by_year(year_in, file_key){
+    //重新計算成員面板上的財產數字
+    function recount_member_pro(MDIV){      
+        var IGContiv = $(MDIV).find('.property-cont').eq(0);     //income-cont -> property-cont
+        var IGCD = $(IGContiv).children('div');
+        // console.log(IGCD);
+        var Inc_Title   =  "";
+        var Inc_Value   =  "";
+        var Inc_from    =  "";
+        var Inc_self   =  "";
+        var Inc_area   =  "";
+        var Income = 0;
+        for (i=0;i<IGCD.length;i++){
+            Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
+            Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
+            Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
+            Inc_self   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
+            Inc_area   =   $(IGCD).eq(i).find(".proper-inc-div-6 option:selected").text();
             
-            $.ajax({
-                url: '/file/get_calc_setting_by_year',
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    year: year_in
-                },
-            })
-            .always(function() {
-                console.log("complete");
-                  // remove loading image maybe
-            })
-            .done(function(responsive_) {
-
-                var LowIncome = responsive_['LowIncome'];
-                var BankRate = responsive_['BankRate'];
-                var MProperty = responsive_['MProperty'];
-
-                bank_interest_rate = parseFloat(BankRate[0].利率);
-                property_move_limit_base = parseInt(MProperty[0].起算額);
-                property_move_limit_single = parseInt(MProperty[0].每人增加額);
-
-                //console.log(responsive_);
-
-                for(i=0;i<LowIncome.length;i++){
-                    Property_limit[i] = LowIncome[i];
-                    if(i == LowIncome.length - 1){
-                        //run原本的讀取檔案
-                        read_file_test_1(file_key);
+                if(Inc_Title == '房屋' || Inc_Title == '土地' ){
+                    if(Inc_self == "自住"){
+                        Income += parseInt(0);
+                    }else{
+                        Income += parseInt(Inc_Value);
                     }
+                }else{
+                    Income += parseInt(Inc_Value);
                 }
-
-                
-                //console.log();
-
-            })
-            .fail(function() {
-                //console.log("error");
-            }); //更新村里下拉選單
+            // console.log(Inc_Title);
+            // console.log(Inc_Value);
+            // console.log(Inc_from);
+            // console.log(Inc_self);
         }
+        Income = parseInt(Income);
+        // console.log(Income);
+        $(MDIV).find('.people-property-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
+        svg_redraw();
+    }
 
-
-
-
-
-
-
-
-
-
-Property_limit.getIndexbyName = function(){
-
-}
-
-Property_limit.getImmLimitbyName = function(area_string){
-	//為了相容於舊版JS引擎，參數預設值改成在內部定義
-	area_string = typeof area_string !== 'undefined' ? area_string : "";
-	//....................................
-    var result = 9999999999999;     //抓不到回傳值，就給一個超大值(爆掉)
-    $.each(this, function(index, area) {
-        if(area[0] == area_string){
-            result = area[3];
+    function recount_member_inc(MDIV){      //重新計算成員面板上的所得數字
+        var IGContiv = $(MDIV).find('.income-cont').eq(0);     //income-cont -> property-cont
+        var IGCD = $(IGContiv).children('div');
+        var Inc_Title   =  "";
+        var Inc_Value   =  "";
+        var Inc_from    =  "";
+        var Inc_Cycle   =  "";
+        var Income = 0;
+        for (i=0;i<IGCD.length;i++){
+            Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
+            Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
+            Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
+            Inc_Cycle   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
+            if(Inc_Cycle == "年收"){
+                Income += parseInt(Inc_Value)/12;
+            }else{
+                Income += parseInt(Inc_Value);
+            }
+            // console.log(Inc_Title);
+            // console.log(Inc_Value);
+            // console.log(Inc_from);
+            // console.log(Inc_Cycle);
         }
-    });
-    return result;    
-}
-
+        Income = parseInt(Income);
+        // console.log(Income);
+        $(MDIV).find('.people-income-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
+        svg_redraw();
+    }
 
 $(document).ready(function() {
-/*************************全網站初始化****************************************/
-    recount_left_family_panel();
+
+    /*************************全網站初始化****************************************/
+    
 
     //重繪所有SVG，變成內嵌，這樣才能著色
     svg_redraw();
@@ -112,15 +85,17 @@ $(document).ready(function() {
      //啟用"案件編輯"下拉選單 (最終... 必須要開啟案件/新增案件 才能觸發 "案件編輯" )
      //$("#family-edit-nav").fadeIn(400);
 
-/*************************全網站通用      TEST.php****************************************/
+    /*************************全網站通用      TEST.php****************************************/
     //重新計算家屬編修左面板
+    recount_left_family_panel();
+
     function recount_left_family_panel(){
         total_count_members();
         total_count_incomes();
         total_count_property();
     }
 
-/*************************待辦案件      filelist.php****************************************/
+    /*************************待辦案件      filelist.php****************************************/
     //彈出窗--點擊開啟檔案
     $("#myModal-table_id > tbody > tr:nth-child(1) > td:nth-child(2) > button").click(function(event) {
         $('#myModal').modal('hide');
@@ -172,6 +147,20 @@ $(document).ready(function() {
                 "search": "粗搜索:",
                 "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
             }
+        });
+        $('#table_fail').dataTable({
+            "lengthMenu": [100, 75, 50, 25, 10, 1],
+            "language": {
+                "paginate": {
+                    "previous": "前頁",
+                    "next": "後頁"
+                },
+                "lengthMenu": "每頁顯示 _MENU_ 筆",
+                "info": "第 _PAGE_ / _PAGES_ 頁",
+                "search": "粗搜索:",
+                "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
+            },
+            "order": [[ 7, "desc" ]]
         });
     }, 0);
 

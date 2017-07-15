@@ -52,6 +52,9 @@ class Welcome extends MY_Controller {
 		}
 
 		if($User_Login == 1){
+			$this->load->helper('url');
+			$this->load->library('user_agent');
+			$Browser = $this->agent->browser();
 			$Login_ID = $this->session->userdata('Login_ID');
 			$FullName = $this->session->userdata('FullName');
 			$organization = $this->session->userdata('organization');
@@ -61,11 +64,12 @@ class Welcome extends MY_Controller {
 			$Auto_Logout_Time = $this->SC('Auto_Logout_Time');
 			$this->output->set_header('Cache-Control: max-age=2592000');	//快取儲存一個月
 			$this->load->view('TEST', Array(
-				'FullName' 		=> 	$FullName,
+				'FullName' 			=> 	$FullName,
 				'organization' 		=> 	$organization,
 				'User_Level' 		=> 	$User_Level,
 				'Auto_Logout_Time' 	=> 	$Auto_Logout_Time,
-				'SSO' 		=> 	$this->session->userdata('SSO'),
+				'SSO' 				=> 	$this->session->userdata('SSO'),
+				'Browser' 			=> 	$Browser,
 			));
 
 			if($this->IF_PW_Expired($Last_time_CPW)){

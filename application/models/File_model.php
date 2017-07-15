@@ -55,9 +55,6 @@ class File_model extends CI_Model {
 					'審批階段' => ($result[0]->審批階段 + 1)
 				);
 			}
-
-			
-
 		}elseif($oper == "-"){
 			if($result[0]->審批階段 == 1){
 				$data = array(
@@ -74,16 +71,23 @@ class File_model extends CI_Model {
 			if($result[0]->審批階段 <= 4){
 				$back = 1;
 				$data = array(
-					'審批階段' => 1
+					'審批階段' => 1,
+					'是否扶助' => NULL
 				);
 			}
 			elseif($result[0]->審批階段 <= 6){
 				$back = 4;
 				$data = array(
-					'審批階段' => 4
+					'審批階段' => 4,
+					'是否扶助' => NULL
 				);
 			}
-			
+		}elseif($oper == "reborn"){
+				$data = array(
+					'審批階段' => 1,
+					'是否扶助' => NULL,
+					'扶助級別' => "本案重啟審查中",
+				);
 		}elseif($oper == "p"){
 			$data = array(
 			'審批階段' => 8
@@ -92,7 +96,14 @@ class File_model extends CI_Model {
 			$data = array(
 			'審批階段' => 4
 			);
+		}elseif($oper == "DClose"){
+			$data = array(
+				'扶助級別' => "資格不符，逕行結案",
+				'審批階段' => 8,
+				'是否扶助' => 0
+			);
 		}
+
 		$this->db->where('案件流水號', $file_key);
     	$this->db->update('files_info_table', $data);
 
@@ -101,14 +112,9 @@ class File_model extends CI_Model {
 			$data = array(
 				'最新案件流水號' => $file_key
 			);
-
 	    	$this->db->where('役男系統編號', $boy_key);
 	    	$this->db->update('miliboy_table', $data);	
     	}
-
-
-
-
 
     	if ($oper == "+"){
 			return $result[0]->審批階段 + 1;
@@ -120,9 +126,11 @@ class File_model extends CI_Model {
 			return 4;
 		}elseif($oper == "back"){
 			return $back;
+		}elseif($oper == "DClose"){
+			return 9;
+		}elseif($oper == "reborn"){
+			return 1;
 		}
-
-
     	//var_dump($this->db->last_query());
 	}
 
@@ -469,18 +477,8 @@ class File_model extends CI_Model {
 			((`FTNEW`.`是否扶助` IS true) OR (`FTNEW`.`是否扶助` IS NOT true AND `FTOLD`.`是否扶助` IS true))
 		) as `tableQ1`
 		LEFT JOIN `area_town` ON `area_town`.`Town_code` = `tableQ1`.`town`
-		LEFT JOIN `files_type` ON `files_type`.`作業類別` = `tableQ1`.`作業類別` ".$localQ;
-
-
-
-
-
-
-		
+		LEFT JOIN `files_type` ON `files_type`.`作業類別` = `tableQ1`.`作業類別` ".$localQ;	
 		//$this->db->where('files_info_table.案件流水號', $file_key);
-		
-
-
 		// ini_set('xdebug.var_display_max_depth', 5);
 		// ini_set('xdebug.var_display_max_children', 256);
 		// ini_set('xdebug.var_display_max_data', 4096);
@@ -495,14 +493,24 @@ class File_model extends CI_Model {
 		// var_dump($this->db->last_query());
 	}
 	
-
 	public function read_file_list_pending($user_level, $user_organ){
-		$this->db->select("miliboy_table.入伍日期,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別,files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,files_info_table.可否編修,`files_status_code`.`案件階段名稱`,files_type.作業類別名稱");
+		// $this->db
+  //       ->select('役男系統編號, Count(*) as 案件數')
+  //       ->from('files_info_table')
+  //       ->group_by('役男系統編號');
+  //       $subquery = $this->db->_compile_select();
+
+
+
+		// $this->db->_reset_select(); 
+
+		$this->db->select("miliboy_table.入伍日期,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.役男系統編號,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別,files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,`TOB`.`案件數`, files_info_table.可否編修,`files_status_code`.`案件階段名稱`,files_type.作業類別名稱");
 		$this->db->from('files_info_table');
 		$this->db->join('miliboy_table', '`miliboy_table`.`役男系統編號` = `files_info_table`.`役男系統編號`');
 		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
 		$this->db->join('files_status_code', '`files_status_code`.`審批階段代號` = `files_info_table`.`審批階段`','left');
 		$this->db->join('files_type', 'files_type.作業類別 = files_info_table.作業類別','left');
+		$this->db->join("(SELECT 役男系統編號, Count(*) as 案件數 FROM files_info_table GROUP BY 役男系統編號) as TOB", '`TOB`.`役男系統編號` = `files_info_table`.`役男系統編號`','left');
 		$this->db->where('是否扶助', null);
 		if($user_level <= 1){	
 			//區公所使用者登入，應該只能看到自己公所
@@ -552,6 +560,46 @@ class File_model extends CI_Model {
 		// ini_set('xdebug.var_display_max_children', 256);
 		// ini_set('xdebug.var_display_max_data', 1024);
 
+		$query = $this->db->get();
+		$result = $query->result_array();
+		return $result;
+		// var_dump($result);
+		// var_dump($this->db->last_query());
+	}
+
+	public function read_file_list_fail($user_level, $user_organ){
+		$this->db->select("miliboy_table.入伍日期,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.役男生日,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別, miliboy_table.最新案件流水號, files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,files_info_table.可否編修,`files_status_code`.`案件階段名稱`,files_type.作業類別名稱");
+		$this->db->from('files_info_table');
+		$this->db->join('miliboy_table', '`miliboy_table`.`役男系統編號` = `files_info_table`.`役男系統編號`');
+		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
+		$this->db->join('files_status_code', '`files_status_code`.`審批階段代號` = `files_info_table`.`審批階段`','left');
+		$this->db->join('files_type', 'files_type.作業類別 = files_info_table.作業類別','left');
+		$this->db->where('是否扶助', 0);
+		if($user_level <= 1){	
+			//區公所使用者登入，應該只能看到自己公所
+			$this->db->where('area_town.Town_name', $user_organ);
+			//LV1 承辦人可以，檢視，編輯，呈核
+			/*
+			*/
+			$this->db->where_in('files_status_code.審批階段代號', array(0,1,8));
+		}
+		elseif($user_level <= 3){	
+			//區公所使用者登入，應該只能看到自己公所
+			$this->db->where('area_town.Town_name', $user_organ);
+
+		}
+		elseif($user_level <= 6){	
+			//市府局處以上可觀看到所有區的檔案
+			//可以檢視，加入意見，退回，呈核，但只能看到自己階段的檔案
+		}
+		elseif($user_level <= 8){	
+			//工程師模式-可完全瀏覽
+			//$this->db->where('files_status_code.審批階段代號', $user_level);
+		}
+		//$this->db->where('files_info_table.案件流水號', $file_key);
+		// ini_set('xdebug.var_display_max_depth', 5);
+		// ini_set('xdebug.var_display_max_children', 256);
+		// ini_set('xdebug.var_display_max_data', 1024);
 		$query = $this->db->get();
 		$result = $query->result_array();
 		return $result;

@@ -31,8 +31,7 @@ class File extends MY_Controller {
 		$this->load->model('area_model');
     } 
 
-	public function check_boy_exist(){		//檢查此役男是否存在
-		
+	public function check_boy_exist(){		//檢查此役男是否存在		
 		$this->load->model('boy_model');		
 		$ADF_code = $this->input->post('ADF_code');		
 		$query = $this->boy_model->read_row_by_code($ADF_code);
@@ -42,6 +41,19 @@ class File extends MY_Controller {
 			else{
 			    echo json_encode("不存在");
 			}
+	}
+
+	public function read_boy_file_by_id(){		//		
+		$this->load->model('boy_model');		
+		$boyid = $this->input->post('boyid');		
+		$query = $this->boy_model->read_boy_file_by_id($boyid);
+		echo json_encode($query);
+		 // 	if ($query->num_rows() >= 1){				//若抓到相同使用者成功
+			// 	echo json_encode("已存在");
+			// }
+			// else{
+			//     echo json_encode("不存在");
+			// }
 	}
 
 	/*
@@ -215,6 +227,21 @@ class File extends MY_Controller {
 		//LV 7 工程模式，全部狀態都能看到
 	}
 
+	public function read_file_list_fail(){
+		$this->load->library('session');
+		//var_dump($this->session);
+		$user_level = $this->session->User_Level;
+		$user_organ = $this->session->organization;
+		$file_list = $this->file_model->read_file_list_fail($user_level, $user_organ);
+		$this->log_activity('list files in supporting');
+		echo json_encode($file_list);
+		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
+		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
+		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
+		//LV 7 工程模式，全部狀態都能看到
+	}
+
+
 	//新增複查檔案 + 退役處理
 	private function Retired($file_key){
 		$file_info = $this->file_model->read_file($file_key);
@@ -272,13 +299,7 @@ class File extends MY_Controller {
 		  	//$property['key']
 		  	$new_property_key = $this->property_model->clone_property($property['key'],$new_member_key);
 		  }
-
-
 		}
-		
-
-
-
 
 		//$file_info = $this->file_model->progress_file($file_key,"+");
 		$this->progress_log($new_file_key, $log_comment, "新增複查案", 1);		
@@ -300,7 +321,12 @@ class File extends MY_Controller {
 		$file_key = (int)$this->input->post('file_key');
 		$log_comment = $this->input->post('log_comment');		
 		$file_info = $this->file_model->progress_file($file_key,"+");
-		$this->progress_log($file_key, $log_comment, "向上呈核",$file_info);
+		if($file_info == 7){
+			$this->progress_log($file_key, $log_comment, "案件審核完成，結案",$file_info);
+		}else{
+			$this->progress_log($file_key, $log_comment, "向上呈核",$file_info);
+		}
+		
 		$this->log_activity("向上呈核", "file_key=$file_key");
 		echo json_encode("Success");
 	}
@@ -347,6 +373,33 @@ class File extends MY_Controller {
 		echo json_encode("Success");
 	}
 
+	public function progress_reborn(){
+		$file_key = (int)$this->input->post('file_key');
+		$log_comment = $this->input->post('log_comment');		
+		$file_info = $this->file_model->progress_file($file_key,"reborn");
+		$this->progress_log($file_key, $log_comment, "取消結案狀態，發還公所承辦人",$file_info);
+		$this->log_activity("取消結案狀態，發還公所承辦人", "file_key=$file_key");
+		echo json_encode("Success");
+	}
+
+	public function progress_directly_close(){
+		$file_key = (int)$this->input->post('file_key');
+		$log_comment = $this->input->post('log_comment');		
+		$file_info = $this->file_model->progress_file($file_key,"DClose");
+
+		$this->progress_log($file_key, $log_comment, "明顯資格不符，逕行結案",$file_info);
+		$this->log_activity("明顯資格不符，逕行結案", "file_key=$file_key");
+
+		//更新承辦人資訊-誰逕行結案的就由誰主承辦
+		$FullName = $this->session->userdata('FullName');
+		$organization = $this->session->userdata('organization');
+		$department = $this->session->userdata('department');
+		$this->file_model->recive_file_update_editor($file_key,$FullName,$department,$organization);
+
+		echo json_encode("Success");
+	}
+	
+
 	public function progress_get_back(){
 		$file_key = (int)$this->input->post('file_key');
 		$log_comment = $this->input->post('log_comment');		
@@ -372,11 +425,6 @@ class File extends MY_Controller {
 
 	public function get_calc_setting_by_year(){
 		$year = (int)$this->input->post('year');
-
-
-		//EXP
-
-		
 		$BankRate = $this->file_model->get_calc_BankRate($year);
 		$MProperty = $this->file_model->get_calc_Movable_Property($year);
 		$LowIncome = $this->file_model->get_calc_LowIncome($year);
