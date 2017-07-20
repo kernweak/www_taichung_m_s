@@ -495,10 +495,10 @@ class File_model extends CI_Model {
 	
 	public function read_file_list_pending($user_level, $user_organ){
 		// $this->db
-  //       ->select('役男系統編號, Count(*) as 案件數')
-  //       ->from('files_info_table')
-  //       ->group_by('役男系統編號');
-  //       $subquery = $this->db->_compile_select();
+		  //       ->select('役男系統編號, Count(*) as 案件數')
+		  //       ->from('files_info_table')
+		  //       ->group_by('役男系統編號');
+		  //       $subquery = $this->db->_compile_select();
 
 
 
@@ -711,5 +711,43 @@ class File_model extends CI_Model {
 		return $result;
 	}
 
+	function updateboy($indata){
+  // 'boy_key' => string '28' (length=2)
+  // 'CE_New_name' => string '益貳參' (length=9)
+  // 'CE_New_code' => string 'B123456788' (length=10)
+  // 'CE_New_birthday' => string '1995-05-12' (length=10)
+  // 'CE_New_milidate' => string '2016-11-29' (length=10)
+  // 'CE_New_echelon' => string '' (length=0)
+  // 'CE_New_county' => string '66000' (length=5)
+  // 'CE_New_town' => string '66000030' (length=8)
+  // 'CE_New_village' => string '6973' (length=4)
+  // 'CE_New_address' => string '永興街1號' (length=13)
+  // 'CE_New_type' => string '一般替代役(6個月役期)' (length=30)
+  // 'CE_New_status' => string '服役中' (length=9)
+  // 'CE_New_phone' => string '0921128256' (length=10)
+  // 'CE_New_email' => string 'a123@yahoo.com.tw' (length=17)
+		$data1 = array(
+			'役男姓名' 	=> $indata['CE_New_name'],
+			'身分證字號'=> $indata['CE_New_code'],
+			'役男生日' 	=> $indata['CE_New_birthday'],
+			'入伍日期' 	=> $indata['CE_New_milidate'],
+			'梯次' 		=> $indata['CE_New_echelon'],
+			'服役軍種' 	=> $indata['CE_New_type'],
+			'服役狀態' 	=> $indata['CE_New_status']
+		);
 
+    	$this->db->where('役男系統編號', $indata['boy_key']);
+    	$this->db->update('miliboy_table', $data1);
+
+    	$data2 = array(
+			'county' 	=> $indata['CE_New_county'],
+			'town'		=> $indata['CE_New_town'],
+			'village' 	=> $indata['CE_New_village']
+		);
+
+    	$this->db->where('役男系統編號', $indata['boy_key']);
+    	$this->db->update('files_info_table', $data2);
+    	return 1;
+
+	}
 }

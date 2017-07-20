@@ -73,7 +73,7 @@
 		<tr>
 		<td colspan="2">動產列計總額</td>
 		<td colspan="4">不動產列計總額</td>
-		<td colspan="3">月均所得總額</td>
+		<td colspan="3">全年所得總額</td>
 		<td>扶助等級</td>
 		</tr>
 		<tr>

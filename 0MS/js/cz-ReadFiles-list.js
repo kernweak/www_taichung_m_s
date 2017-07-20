@@ -130,7 +130,7 @@
             dataType: 'json',
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
             // console.log("success");
@@ -219,7 +219,7 @@
             dataType: 'json',
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
             CWait_End();
@@ -352,7 +352,7 @@
             dataType: 'json',
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
             CWait_End();

@@ -13,10 +13,10 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             //console.log(responsive);
             $("#view_log_comment tbody").empty();
             tbody = "";
@@ -32,7 +32,7 @@
             $("#view_log_comment tbody").html(tbody);
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -49,11 +49,11 @@
             
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_pending();
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -68,14 +68,14 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_pending();
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -91,14 +91,14 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_pending();
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -113,14 +113,14 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_pending();
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -135,14 +135,14 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_pending();
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -157,14 +157,14 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_pending();
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
     function progress_reborn(file_key){
@@ -178,14 +178,14 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_fail();
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -200,14 +200,14 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_pending();
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -222,14 +222,14 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_pending();
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -245,10 +245,10 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
-            console.log("success");
+            //console.log("success");
             read_file_list_supporting();
             //read_file_list_progress();
             //read_file_list_pending();
@@ -256,7 +256,7 @@
 
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
@@ -272,12 +272,12 @@
         $('#myModal .modal-body tbody tr').children('td').eq(7).html($(tr).children('td').eq(7).text());
         $('#myModal .modal-body tbody tr').children('td').eq(8).html($(tr).children('td').eq(8).text());
     }
-
+    var REditBoyKey = 0;
     function update_ReEditModal(tr){
         CWait_Start();
         //console.log(tr);
         var trkey = $(tr).attr("trkey");    //案件流水號,
-        var boykey = $(tr).attr("boykey");  //役男系統編號
+        var boykey = $(tr).attr("boykey"); REditBoyKey = boykey;  //役男系統編號
         var PLV = $(tr).attr("PLV");        //審批階段
         var FNum = $(tr).attr("FNum");      //案件數
         //console.log(FNum);
@@ -431,11 +431,11 @@
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive) {
             CWait_End();
-            console.log("success");
+            //console.log("success");
             $.each(responsive.members, function(index, member) {
             });
 
@@ -446,12 +446,12 @@
             $('#File_list_View_ModalLabel').html('案件檢視');
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         });
     }
 
     function progress_view_rf_file_info(responsive){
-        console.log(responsive);
+        //console.log(responsive);
 
         $('#File_list_View_Modal .modal-body .t2 tbody tr').children('td').eq(0).html(responsive['役男生日']);//役男生日
         $('#File_list_View_Modal .modal-body .t2 tbody tr').children('td').eq(1).html(responsive['服役軍種']);//服役軍種
@@ -572,7 +572,6 @@
         $('#RefileModal .modal-body tbody tr').children('td').eq(8).html($(tr).children('td').eq(8).html());
     }
 
-
     $(document).ready(function() {       
         $("#Home_root").on('click', '#myModal button.btn.btn-primary',function(event) {
             event.preventDefault();
@@ -612,5 +611,9 @@
             event.preventDefault();
             progress_review(file_list_pointer);
             $('#RefileModal').modal('hide');
+        });
+
+        $("#Home_root").on('click', '#ReEditModal button.btn.btn-primary',function(event) {
+            ENsubmitCheck();
         });
     });

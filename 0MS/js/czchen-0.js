@@ -133,6 +133,7 @@
     function numberWithCommas(x) {  //numberWithCommas  轉換成有千分號的數字字串
         x = x + "";
         x = x.replace(/,/g , "");
+        x = x.replace(/！/g , "");   // 個人面板上的！標記代表強制以最低薪資所得計算
         if((typeof stringValue) != "string"){
             x = parseInt(x);
             x = x.toString();

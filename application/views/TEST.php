@@ -40,7 +40,7 @@
 <?php include('ie.php');?>
 <div id="preloader">
     <div id="status">
-        <img src="/0MS/images/loader.gif" alt=""/><h1 class="noSubtitle">系統載入中</h1>
+        <img /><div id = "Floading"></div><h1 class="noSubtitle">系統載入中</h1>
     </div>
 </div>
 
@@ -203,9 +203,9 @@
 <!-- 最新編譯和最佳化的 JavaScript -->
 
 <script src="/0MS/js/bootstrap.min.js"></script>
-<script src="/0MS/extensions/DataTables/jquery.dataTables.js"></script>
+<script src="/0MS/extensions/DataTables/jquery.dataTables.min.js"></script>
 <script src="/0MS/extensions/DataTables/dataTables.bootstrap.js"></script>
-<script src="/0MS/js/moment-with-locales.js"></script>
+<script src="/0MS/js/moment-with-locales.min.js"></script>
 <script src="/0MS/js/cz-rmenu.js?<?php echo time(); ?>"></script>
 <script src="/0MS/js/czchen.js?<?php echo time(); ?>"></script>
 <!--<script src="/0MS/js/czchen-2.js?<?php echo time(); ?>"></script>-->

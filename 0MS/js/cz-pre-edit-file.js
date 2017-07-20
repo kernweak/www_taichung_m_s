@@ -41,6 +41,9 @@ var This_Year = 106;
 //var bank_interest_rate = 0.01355; //105年
 var bank_interest_rate = 0.0107; //106年
 
+//最低月薪所得(106年7月)
+var monthly_minimum_wage = 21009;
+
 //property_move_limit = property_move_limit_base + (total_members_count) * property_move_limit_single; 
 //動產限額公式，含役男本身從250萬開始，多一個家屬多25萬。
 var property_move_limit_base = 2500000;
@@ -51,7 +54,7 @@ var property_move_limit_single = 250000;
 function update_calc_setting_by_year(year_in, file_key){
     //為了相容於舊版JS引擎，參數預設值改成在內部定義
     year_in = typeof year_in !== 'undefined' ? year_in : This_Year;
-    console.log(year_in, file_key);
+    //console.log(year_in, file_key);
     $.ajax({
         url: '/file/get_calc_setting_by_year',
         type: 'post',
@@ -61,7 +64,7 @@ function update_calc_setting_by_year(year_in, file_key){
         },
     })
     .done(function(responsive_) {
-         console.log(responsive_);
+        //console.log(responsive_);
         var LowIncome = responsive_['LowIncome'];
         var BankRate = responsive_['BankRate'];
         var MProperty = responsive_['MProperty'];
@@ -111,7 +114,7 @@ function read_file_test_1(file_key){
         },
     })
     .done(function(responsive) {
-        console.log("success");
+        //console.log("success");
         update_Access_Print_botton(file_key);
         count = responsive.members.length;
         $.each(responsive.members, function(index, member) {
@@ -154,7 +157,7 @@ function update_Access_Print_botton(file_key){
 
 //讀取案件整體資訊
 function rf_file_info(responsive){
-    console.log(responsive);
+    //console.log(responsive);
     $("#PH-filetype").text(responsive['作業類別名稱']);
     $("#PH-name").text(responsive['役男姓名']);
     $("#PH-code").text(responsive['身分證字號']);

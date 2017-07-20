@@ -469,6 +469,34 @@ class File extends MY_Controller {
 
 	}
 
+	public function updateboy(){
+		$data = array();
+		$data['boy_key'] 			= $this->input->post('boy_key');
+		$data['CE_New_name']		= $this->input->post("CE_New_name");
+		$data['CE_New_code']		= $this->input->post("CE_New_code");
+		$data['CE_New_birthday']	= $this->input->post("CE_New_birthday");
+		$data['CE_New_milidate']	= $this->input->post("CE_New_milidate");
+		$data['CE_New_echelon']		= $this->input->post("CE_New_echelon");
+		$data['CE_New_county']		= $this->input->post("CE_New_county");
+		$data['CE_New_town']		= $this->input->post("CE_New_town");
+		$data['CE_New_village']		= $this->input->post("CE_New_village");
+		$data['CE_New_address']		= $this->input->post("CE_New_address");
+		$data['CE_New_type']		= $this->input->post("CE_New_type");
+		$data['CE_New_status']		= $this->input->post("CE_New_status");
+		$data['CE_New_phone']		= $this->input->post("CE_New_phone");
+		$data['CE_New_email']		= $this->input->post("CE_New_email");
+
+		//var_dump($data);
+		$res = $this->file_model->updateboy($data);
+		echo json_encode($res);
+
+
+
+
+ 
+
+	}
+
 	
 
 

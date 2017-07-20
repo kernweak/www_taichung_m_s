@@ -1,4 +1,5 @@
-
+	var M_Y = 12;	//以年收顯示:12		以月收顯示:1
+	
     //計算目前歲數
     function _calculateAge(birthday) { // birthday is a date
         var ageDifMs = Date.now() - birthday.getTime();
@@ -46,37 +47,78 @@
 
     function recount_member_inc(MDIV){      //重新計算成員面板上的所得數字
         var IGContiv = $(MDIV).find('.income-cont').eq(0);     //income-cont -> property-cont
+        var Special = $(MDIV).find(".people-special .people-input-left").val();
+        var arr1= Special.split(',');
         var IGCD = $(IGContiv).children('div');
         var Inc_Title   =  "";
         var Inc_Value   =  "";
         var Inc_from    =  "";
         var Inc_Cycle   =  "";
         var Income = 0;
-        for (i=0;i<IGCD.length;i++){
-            Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
-            Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
-            Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
-            Inc_Cycle   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
-            if(Inc_Cycle == "年收"){
-                Income += parseInt(Inc_Value)/12;
-            }else{
-                Income += parseInt(Inc_Value);
+        var Income_Sal = 0;
+        var Income_NonSal = 0;
+        var SalaryWaring = "" ;
+        if (arr1[0] == '0' ){
+            //console.log("身分0");
+            for (i=0;i<IGCD.length;i++){
+                Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
+                Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
+                Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
+                Inc_Cycle   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
+                if(Inc_Title == "薪資"){
+                    if(Inc_Cycle == "年收"){
+                        Income_Sal += parseInt(Inc_Value)/(12/M_Y);
+                    }else{
+                        Income_Sal += parseInt(Inc_Value)*M_Y;
+                    }
+                }else{
+                    if(Inc_Cycle == "年收"){
+                        Income_NonSal += parseInt(Inc_Value)/(12/M_Y);
+                    }else{
+                        Income_NonSal += parseInt(Inc_Value)*M_Y;
+                    }
+                }
+                // console.log(Inc_Title);
+                // console.log(Inc_Value);
+                // console.log(Inc_from);
+                // console.log(Inc_Cycle);
             }
-            // console.log(Inc_Title);
-            // console.log(Inc_Value);
-            // console.log(Inc_from);
-            // console.log(Inc_Cycle);
+            SalaryWaring = (Income_Sal < monthly_minimum_wage*12) ? "<span class='Salary-Waring  cz-tooltip' data-toggle='tooltip' data-placement='right' title='一般身分下，薪資合計未達基本工資者，依基本工資計算'>！</span>" : "";
+            Income_Sal = (Income_Sal <= monthly_minimum_wage*12)?monthly_minimum_wage*12:Income_Sal;
+            Income = Income_Sal + Income_NonSal;
+            //console.log(SalaryWaring);
+        }else{
+            for (i=0;i<IGCD.length;i++){
+                Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
+                Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
+                Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
+                Inc_Cycle   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
+                if(Inc_Cycle == "年收"){
+                    Income += parseInt(Inc_Value)/(12/M_Y);
+                }else{
+                    Income += parseInt(Inc_Value)*M_Y;
+                }
+                // console.log(Inc_Title);
+                // console.log(Inc_Value);
+                // console.log(Inc_from);
+                // console.log(Inc_Cycle);
+            }
         }
         Income = parseInt(Income);
         // console.log(Income);
-        $(MDIV).find('.people-income-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
+        $(MDIV).find('.people-income-total-value').html(SalaryWaring + numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
+        $('[data-toggle="tooltip"]').tooltip();
         svg_redraw();
+
     }
 
 $(document).ready(function() {
 
     /*************************全網站初始化****************************************/
     
+    //按鈕小說明
+    $('[data-toggle="tooltip"]').tooltip(); 
+
 
     //重繪所有SVG，變成內嵌，這樣才能著色
     svg_redraw();
@@ -87,7 +129,7 @@ $(document).ready(function() {
 
     /*************************全網站通用      TEST.php****************************************/
     //重新計算家屬編修左面板
-    recount_left_family_panel();
+    //recount_left_family_panel();
 
     function recount_left_family_panel(){
         total_count_members();
@@ -260,6 +302,8 @@ $(document).ready(function() {
 
             }
         }
+		limit_income = limit_income * M_Y;	//總收入以年或月計算
+		
         //console.log(members_area_array);
         redraw_left_total_members(members_area_array,total_members_num,list_members_num,limit_income);
     }
@@ -275,7 +319,7 @@ $(document).ready(function() {
         $(".TC-L-D1-allpeople").text(total_members_num);
         $(".TC-L-D1-listpeople").text(list_members_num);
         $(".TC-L-D1-lastincome").text(numberWithCommas(limit_income));
-        $("#PH-need").text(limit_income);
+        $("#PH-need").text(numberWithCommas(limit_income));
     }
     //左面板-總收入計算
     function total_count_incomes(){ 
@@ -283,7 +327,7 @@ $(document).ready(function() {
         var total_members_num = 0;  //總人數
         var total_income = 0    //所得總和
         var GDIV = $(".center-total-count .group-div");
-        total_members_num = $(GDIV).length-1;   //要扣掉 新增家屬 按鈕
+        total_members_num = $(GDIV).length-1;   //要扣掉 新增家屬 按鈕  
         //console.log(total_members_num);
         for(i=0;i < total_members_num;i++){
             //console.log($(GDIV));
@@ -297,7 +341,64 @@ $(document).ready(function() {
             }
             var arr1= Special.split(',');
             var title = $(GDIV).eq(i).find(".people-title input").val();
-            if (arr1[0] == '0' || arr1[0] == '3' || title == "役男"){    //-------------------一般&依實際所得-----------------------------------------------------------------------------------------    
+            if (arr1[0] == '0'){    //-------------------一般-----------------------------------------------------------------------------------------    
+                //console.log(arr1[0]);
+                var Income_Sal = 0; //薪資部分初始化
+                for(j=0;j<$(Income_Div).length;j++){
+                    var income_ex_flag = 0;
+                    var Inc_Title = $(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text();
+                    var Inc_Value = $(Income_Div).eq(j).find(".proper-inc-div-2").val();
+                    var Inc_Cycle = $(Income_Div).eq(j).find(".proper-inc-div-4 option:selected").text();
+
+                    if(Inc_Title == "薪資"){      //同一人各薪資獨立統計，
+                        if(Inc_Cycle == "年收"){
+                            Income_Sal += parseInt(Inc_Value)/(12/M_Y);
+                        }else{
+                            Income_Sal += parseInt(Inc_Value)*M_Y;
+                        }
+                    }
+
+                    //console.log("test1");
+                    for(k=0;k<incomes_array.length;k++){
+                        //console.log($(Income_Div).eq(j).find(".proper-inc-div-1").text());
+                        
+                        //console.log("test");
+                        if(incomes_array[k][0] == Inc_Title){
+                            income_ex_flag = 1;
+                            if(Inc_Cycle=="月收"){
+                                incomes_array[k][1] += parseInt(Inc_Value*M_Y);
+
+                            }else{
+                                incomes_array[k][1] += parseInt(parseInt(Inc_Value)/(12 / M_Y));
+
+                            }
+                            
+                        }
+                    }
+                    if(income_ex_flag == 0){
+                            
+                            if(Inc_Cycle == "月收"){
+                                incomes_array.push([Inc_Title, parseInt(Inc_Value*M_Y)]);
+
+                            }else{
+                                incomes_array.push([Inc_Title, parseInt(parseInt(Inc_Value)/(12 / M_Y))]);
+
+                            }
+                    }
+                }
+                //console.log(incomes_array);
+                if(Income_Sal > 0){
+                    //console.log(incomes_array['薪資']);
+                    if (Income_Sal < monthly_minimum_wage*12){
+                        for(k=0;k<incomes_array.length;k++){
+                            if(incomes_array[k][0]=='薪資'){
+                                incomes_array[k][1] += monthly_minimum_wage*12 - Income_Sal;
+                            }
+                        }
+                    }
+                }
+
+            }else if (arr1[0] == '3' || title == "役男"){    //-------------------役男&依實際所得-----------------------------------------------------------------------------------------    
                 //console.log(arr1[0]);
                 
                 for(j=0;j<$(Income_Div).length;j++){
@@ -310,9 +411,9 @@ $(document).ready(function() {
                         if(incomes_array[k][0] == $(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text()){
                             income_ex_flag = 1;
                             if((Income_Div).eq(j).find(".proper-inc-div-4 option:selected").text()=="月收"){
-                                incomes_array[k][1] += parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val());
+                                incomes_array[k][1] += parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val()*M_Y);
                             }else{
-                                incomes_array[k][1] += parseInt(parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val())/12);
+                                incomes_array[k][1] += parseInt(parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val())/(12 / M_Y));
                             }
                             
                         }
@@ -320,9 +421,9 @@ $(document).ready(function() {
                     if(income_ex_flag == 0){
                             
                             if((Income_Div).eq(j).find(".proper-inc-div-4 option:selected").text()=="月收"){
-                                incomes_array.push([$(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text(), parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val())]);
+                                incomes_array.push([$(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text(), parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val()*M_Y)]);
                             }else{
-                                incomes_array.push([$(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text(), parseInt(parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val())/12)]);
+                                incomes_array.push([$(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text(), parseInt(parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val())/(12 / M_Y))]);
                             }
                     }
                 }
@@ -355,28 +456,28 @@ $(document).ready(function() {
         $("#PH-others-int").text("0");
 
         for(i=0;i<incomes_array.length;i++){
-            outs += '<div class="total-count-left-lc">' + incomes_array[i][0] + '</div><div class="total-count-left-rc">' + incomes_array[i][1] + '</div>';
+            outs += '<div class="total-count-left-lc">' + incomes_array[i][0] + '</div><div class="total-count-left-rc">' + numberWithCommas(incomes_array[i][1]) + '</div>';
             sum +=  parseInt(incomes_array[i][1]);
             if(incomes_array[i][0]=="薪資"){
-                $("#PH-Salary").text(incomes_array[i][1]);
+                $("#PH-Salary").text(numberWithCommas(incomes_array[i][1]));
             }
             if(incomes_array[i][0]=="股票配息"){
-                $("#PH-Stock-int").text(incomes_array[i][1]);
+                $("#PH-Stock-int").text(numberWithCommas(incomes_array[i][1]));
             }
             if(incomes_array[i][0]=="營利"){
-                $("#PH-Profit").text(incomes_array[i][1]);
+                $("#PH-Profit").text(numberWithCommas(incomes_array[i][1]));
             }
             if(incomes_array[i][0]=="存款利息"){
-                $("#PH-Bank-int").text(incomes_array[i][1]);
+                $("#PH-Bank-int").text(numberWithCommas(incomes_array[i][1]));
             }
             if(incomes_array[i][0]=="其他"){
-                $("#PH-others-int").text(incomes_array[i][1]);
+                $("#PH-others-int").text(numberWithCommas(incomes_array[i][1]));
             }
         }
         $("#PH-Property-int").text("0");
         $(".TC-L-D2").append(outs);
         $(".TC-L-D2-sum").text(numberWithCommas(sum));
-        $("#PH-total-inc").text(sum);
+        $("#PH-total-inc").text(numberWithCommas(sum));
         var Thonscomm = $(".TC-L-D1-lastincome").text();
         var TInt = Thonscomm.replace(",", "");
         //console.log(parseInt(TInt));
@@ -731,7 +832,7 @@ $(document).ready(function() {
     //右面板.財產.新增財產按鈕點擊事件
     $("#right_tab_property").on('click', '.add-proper', function(event) {
         //console.log($(this).attr("value"));
-        var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4 fade"><option value="y" selected="">非自住</option><option value="m">自住</option></select><select class="proper-inc-div-6 fade"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
+        var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value=""><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4 fade"><option value="y" selected="">非自住</option><option value="m">自住</option></select><select class="proper-inc-div-6 fade"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
         $(PRO_DIV).appendTo('#right_tab_property .pro-div-cont');
         var area = $(".center-total-count .group-div").eq(0).find(".member_area").val();
         var new_pro = $('#right_tab_property .pro-div-cont .proper-inc-div').last();
@@ -761,7 +862,7 @@ $(document).ready(function() {
                  //存款 = 年入金額 / 息率
                  //股票 = 年入金額 / 息率 * 10
                  //prepend() 和 prependTo()   從上方插入
-                var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4 fade"><option value="y" selected="">非自住</option><option value="m">自住</option></select><select class="proper-inc-div-6 fade"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
+                var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value=""><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4 fade"><option value="y" selected="">非自住</option><option value="m">自住</option></select><select class="proper-inc-div-6 fade"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
                 $(PRO_DIV).prependTo('#right_tab_property .pro-div-cont');
                 var area = $(".center-total-count .group-div").eq(0).find(".member_area").val();
                 var new_pro = $('#right_tab_property .pro-div-cont .proper-inc-div').eq(0);
@@ -849,11 +950,11 @@ $(document).ready(function() {
                 if($(this).children("option:selected").text() == '房屋' || $(this).children("option:selected").text() == '土地' ){
                     // $(this).parent().find(".proper-inc-div-6").fadeIn();         //fadein fadeout 是改變透明度，有動畫過程，導致瞬間寫回去的時候，都還是0而消失
                     // $(this).parent().children(".proper-inc-div-4").fadeIn();     //
-                    $(this).parent().find(".proper-inc-div-6").addClass('in');
-                    $(this).parent().children(".proper-inc-div-4").addClass('in');
+                    $(this).parent().find(".proper-inc-div-6").addClass('in').removeClass('display-none');
+                    $(this).parent().children(".proper-inc-div-4").addClass('in').removeClass('display-none');
                 }else{
-                    $(this).parent().find(".proper-inc-div-6").removeClass('in');
-                    $(this).parent().children(".proper-inc-div-4").removeClass('in');
+                    $(this).parent().find(".proper-inc-div-6").removeClass('in').addClass('display-none');
+                    $(this).parent().children(".proper-inc-div-4").removeClass('in').addClass('display-none');
                 }
             }
         }
@@ -899,11 +1000,47 @@ $(document).ready(function() {
 
 
     //右面板.所得.新增所得按鈕被點擊後
-    $("#right_tab_income .add-proper-inc").click(function(event) {
-        var INC_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-inc" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Salary" selected>薪資</option><option value="Stock-int">股票配息</option><option value="Profit">營利</option><option value="Bank-int" >存款利息</option><option value="others">其他</option></select><input placeholder="額度-新台幣(元)" class="people-input-right proper-inc-div-2" value="0"><input placeholder="來源單位(企業或機構)" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"><option value="m">月收</option><option value="y" selected>年收</option></select><input placeholder="利率/值" class="people-input-right proper-inc-div-7 fade"></div>';
+    $("#right_tab_income").on('click', '.add-inc', function(event) {
+        var INC_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-inc" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Salary" selected>薪資</option><option value="Stock-int">股票配息</option><option value="Profit">營利</option><option value="Bank-int" >存款利息</option><option value="others">其他</option></select><input placeholder="額度-新台幣(元)" class="people-input-right proper-inc-div-2" value=""><input placeholder="來源單位(企業或機構)" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4"><option value="m">月收</option><option value="y" selected>年收</option></select><input placeholder="利率/值" class="people-input-right proper-inc-div-7 fade"></div>';
         $(INC_DIV).appendTo('#right_tab_income .inc-div-cont');
+
+    //     var area = $(".center-total-count .group-div").eq(0).find(".member_area").val();
+        var new_pro = $('#right_tab_income .inc-div-cont .proper-inc-div').last();
+    //     $(new_pro).find('.proper-inc-div-6').val(area).trigger('change');
+        $(new_pro).find('.proper-inc-div-1').val($(this).attr("value")).trigger('change');
+        if($(this).text()=="＋基本薪資"){  
+            $(new_pro).find('.proper-inc-div-5').val("無薪資證明，依"+This_Year+"年度基本工資計算");
+            $(new_pro).find('.proper-inc-div-4').val("m").trigger('change');
+            $(new_pro).find('.proper-inc-div-2').val(monthly_minimum_wage).trigger('change');
+        }
+        if($(this).text()=="＋職類別薪資"){  
+            $(new_pro).find('.proper-inc-div-5').val("依105年勞動部職類別薪資調查報告-...(後續請依需要自填)").addClass('worker');
+            $(new_pro).find('.proper-inc-div-4').val("m").trigger('change');
+            $(new_pro).find('.proper-inc-div-2').val("").trigger('change');
+        }//＋職類別薪資
+
+
+
+
         $("#right_tab_income > div").animate({scrollTop:$("#right_tab_income > div").scrollTop()+170}, '500', 'swing');
     });
+
+
+//右面板.財產.新增財產按鈕點擊事件
+    // $("#right_tab_property").on('click', '.add-proper', function(event) {
+    //     //console.log($(this).attr("value"));
+    //     var PRO_DIV = '<div class="proper-inc-div" code=new edit=new><button type="button" class="close" data-toggle="modal" data-target="#confirm-delete-pro" aria-label="Close" style="top: 0.2em;right: 0.2em;position: absolute;"><span aria-hidden="true">×</span></button><select class="proper-inc-div-1"><option value="Deposits" selected="">儲蓄存款</option><option value="Securities">有價證券</option><option value="Investment">投資</option><option value="Houses">房屋</option><option value="Land">土地</option><option value="others">其他</option></select><input placeholder="價值" class="people-input-right proper-inc-div-2" value="0"><input placeholder="地址/地號/銀行/公司" class="people-input-left proper-inc-div-3" value=""><input placeholder="備註欄" class="people-input-left proper-inc-div-5" value=""><select class="proper-inc-div-4 fade"><option value="y" selected="">非自住</option><option value="m">自住</option></select><select class="proper-inc-div-6 fade"><option value="" selected>縣市</option><option value="臺北市">臺北市</option><option value="新北市">新北市</option><option value="桃園縣">桃園縣</option><option value="臺中市">臺中市</option><option value="臺南市">臺南市</option><option value="高雄市">高雄市</option><option value="基隆市">基隆市</option><option value="新竹縣">新竹縣</option><option value="苗栗縣">苗栗縣</option><option value="彰化縣">彰化縣</option><option value="雲林縣">雲林縣</option><option value="嘉義縣">嘉義縣</option><option value="屏東縣">屏東縣</option><option value="宜蘭縣">宜蘭縣</option><option value="花蓮縣">花蓮縣</option><option value="臺東縣">臺東縣</option><option value="金門縣">金門縣</option><option value="連江縣">連江縣</option></select></div>';
+    //     $(PRO_DIV).appendTo('#right_tab_property .pro-div-cont');
+    //     var area = $(".center-total-count .group-div").eq(0).find(".member_area").val();
+    //     var new_pro = $('#right_tab_property .pro-div-cont .proper-inc-div').last();
+    //     $(new_pro).find('.proper-inc-div-6').val(area).trigger('change');
+    //     $(new_pro).find('.proper-inc-div-1').val($(this).attr("value")).trigger('change');
+    //     $("#right_tab_property > div").animate({scrollTop:$("#right_tab_property > div").scrollTop()+170}, '500', 'swing');
+
+    // });
+
+
+
 
     //右面板.所得.所得面板-刪除紐點擊時，將此div selected，並更新提示面板內的資料
     $('.right-total-count').on('click', '#right_tab_income .proper-inc-div .close', function(event) {
@@ -952,6 +1089,25 @@ $(document).ready(function() {
         //recount_left_family_panel();
     });
 
+    //所得種類切換
+    $('.right-total-count').on('change', '#right_tab_income .proper-inc-div-1', function(event) {
+        //console.log("抓到");
+        //console.log($(this).children("option:selected").text());
+        var Pan_div = $(this).parents('.proper-inc-div').eq(0);
+        var Sel_Val = $(this).children("option:selected").text();
+        if(Sel_Val == '薪資' || Sel_Val == '營利'){
+            //console.log("進入薪資");
+            Pan_div.find('.proper-inc-div-5').addClass('Salary');
+            Pan_div.find('.proper-inc-div-7').addClass('display-none');
+        }else{
+            Pan_div.find('.proper-inc-div-5').removeClass('Salary').removeClass('worker');
+            Pan_div.find('.proper-inc-div-7').removeClass('display-none');
+            //display-none
+        }
+        //var P_Spec  = $(this).parents('.people-special').children('span').eq(0);
+        //var PJob    = Pan_div.find('.people-job input');
+    });
+
     //右面板.所得.輸入欄位有變動觸發，立即寫回成員隱藏面板，並更新此家屬所得總額(轉換為月收入)
     $('.right-total-count').on('change', '#right_tab_income .proper-inc-div input, #right_tab_income .proper-inc-div select', function(event) {
         if ($(this).is('select')){
@@ -977,35 +1133,77 @@ $(document).ready(function() {
         }
         //複製回成員隱藏面板
         var MDIV = $(".group-div.selected").eq(0);
+
+
+        // var Special = $(".group-div.selected").find(".people-special .people-input-left").val();
+        // var arr1= Special.split(',');
+
         var IGContiv = $(MDIV).find('.income-cont').eq(0);
         $(IGContiv).empty();
         $("#right_tab_income .inc-div-cont > div").clone().appendTo($(IGContiv));
         //更新成員面板所得月薪
-        var IGCD = $(IGContiv).children('div');
-        var Inc_Title   =  "";
-        var Inc_Value   =  "";
-        var Inc_from    =  "";
-        var Inc_Cycle   =  "";
-        var Income = 0;
-        for (i=0;i<IGCD.length;i++){
-            Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
-            Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
-            Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
-            Inc_Cycle   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
-            if(Inc_Cycle == "年收"){
-                Income += parseInt(Inc_Value)/12;
-            }else{
-                Income += parseInt(Inc_Value);
-            }
-            console.log(Inc_Title);
-            console.log(Inc_Value);
-            console.log(Inc_from);
-            console.log(Inc_Cycle);
-        }
-        Income = parseInt(Income);
-        console.log(Income);
-        $(".group-div.selected").find('.people-income-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
-        svg_redraw();
+        // var IGCD = $(IGContiv).children('div');
+        // var Inc_Title   =  "";
+        // var Inc_Value   =  "";
+        // var Inc_from    =  "";
+        // var Inc_Cycle   =  "";
+        // var Income = 0;
+        // var Income_Sal = 0;
+        // var Income_NonSal = 0;
+
+        // if (arr1[0] == '0' ){
+        //     console.log("身分0");
+        //     for (i=0;i<IGCD.length;i++){
+        //         Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
+        //         Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
+        //         Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
+        //         Inc_Cycle   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
+        //         if(Inc_Title == "薪資"){
+        //             if(Inc_Cycle == "年收"){
+        //                 Income_Sal += parseInt(Inc_Value)/(12/M_Y);
+        //             }else{
+        //                 Income_Sal += parseInt(Inc_Value)*M_Y;
+        //             }
+        //         }else{
+        //             if(Inc_Cycle == "年收"){
+        //                 Income_NonSal += parseInt(Inc_Value)/(12/M_Y);
+        //             }else{
+        //                 Income_NonSal += parseInt(Inc_Value)*M_Y;
+        //             }
+        //         }
+        //         console.log(Inc_Title);
+        //         console.log(Inc_Value);
+        //         console.log(Inc_from);
+        //         console.log(Inc_Cycle);
+        //     }
+        //     Income_Sal = (Income_Sal <= monthly_minimum_wage*12)?monthly_minimum_wage*12:Income_Sal;
+        //     Income = Income_Sal + Income_NonSal;
+
+        // }else{
+
+        //     for (i=0;i<IGCD.length;i++){
+        //         Inc_Title   =   $(IGCD).eq(i).find(".proper-inc-div-1 option:selected").text();
+        //         Inc_Value   =   $(IGCD).eq(i).find(".proper-inc-div-2").val();
+        //         Inc_from    =   $(IGCD).eq(i).find(".proper-inc-div-3").val();
+        //         Inc_Cycle   =   $(IGCD).eq(i).find(".proper-inc-div-4 option:selected").text();
+        //         if(Inc_Cycle == "年收"){
+        //             Income += parseInt(Inc_Value)/(12/M_Y);
+        //         }else{
+        //             Income += parseInt(Inc_Value)*M_Y;
+        //         }
+        //         console.log(Inc_Title);
+        //         console.log(Inc_Value);
+        //         console.log(Inc_from);
+        //         console.log(Inc_Cycle);
+        //     }
+        // }
+
+
+
+        // Income = parseInt(Income);
+        // console.log(Income);
+        // $(".group-div.selected").find('.people-income-total-value').html(numberWithCommas(Income) + '<img class="svg social-link NTD" src="/0MS/images/NTD.svg">');
+        // svg_redraw();
         recount_member_inc(MDIV);
         //total_count_incomes();
         recount_left_family_panel();
@@ -1026,10 +1224,9 @@ $(document).ready(function() {
         var name =  $(".group-div.selected .people-name input").val();
         var age =   $(".group-div.selected .people-birthday input").attr('age');
         var job = $.trim($(".group-div.selected .people-job input").val());
-        job = job?job:'無';
-        var income = $.trim($(".group-div.selected .people-income-total-value").text());       
-        income = (income === '0')?'查無所得資料':'月均所得：$'+numberWithCommas(income);
-
+        job = job?job:'無業';
+        var income = $.trim($(".group-div.selected .people-income-total-value").text());
+        income = (income === '0')?'查無所得資料':'全年所得：$'+numberWithCommas(income);
         var special = $(".group-div.selected .people-special select option:selected").val();
         var status = $(".group-div.selected .people-special select option:selected").text();
         var status_result =  $(".group-div.selected .people-special span").text();
@@ -1038,17 +1235,21 @@ $(document).ready(function() {
         if(status_result == "實際所得"){
             status_result = "依實際所得計算";
         }
+        var minimum_wage = "";
+        if ($(".group-div.selected > div.income-total > div.people-income-total-value > span") && $(".group-div.selected > div.income-total > div.people-income-total-value > span").length ) {
+            minimum_wage = "(其薪資部分未達每月最低工資標準故依每月最低薪資所得：$"+numberWithCommas(monthly_minimum_wage)+"計算) ";
+        }
         switch(special){
             case '1,15':
                 description = title+'：'+name+'，歿。';
                 break;
             case '0,0':
             case '0,2':
-                description = title+'：'+name+'，'+age+'歲，職業：'+job+'，'+income+'。';                
+                description = title+'：'+name+'，'+age+'歲，'+job+'，'+income+'。'+minimum_wage;                
                 break;
             default:
                 special_txt = '，因其為'+status+'，故'+status_result+'。';
-                description = title+'：'+name+'，'+age+'歲，職業：'+job+'，'+income+special_txt;      
+                description = title+'：'+name+'，'+age+'歲，'+job+'，'+income+special_txt;      
         }
         //財產
         var properties = $(".group-div.selected .property-cont").children('.proper-inc-div');
@@ -1192,47 +1393,53 @@ $(document).ready(function() {
 
     //中面板.家屬.特殊身份狀態更新時，判斷是否要列入口數，是否為學生狀態，男學生或女學生，是否服役中，轉換重繪SVG，以便著色
     $('.center-total-count').on('change', '.people-special .people-input-left', function(event) {
+        var Pan_div = $(this).parents('.group-div').eq(0);
+        var P_Spec  = $(this).parents('.people-special').children('span').eq(0);
+        var PJob    = Pan_div.find('.people-job input');
+
         var arr = $(this).val();
         //console.log(arr.split());
         var arr1= arr.split(',');
         // console.log(arr1);
         // console.log(arr1[0]);
         if (arr1[0] == 0){
-            $(this).parents('.people-special').children('span').text('一般');
+            P_Spec.text('一般');
         }else if(arr1[0] == 1){
-            $(this).parents('.people-special').children('span').text('不列口數');
+            P_Spec.text('不列口數');
         }else if(arr1[0] == 2){
-            $(this).parents('.people-special').children('span').text('不計收入');
+            P_Spec.text('不計收入');
         }else if(arr1[0] == 3){
-            $(this).parents('.people-special').children('span').text('實際所得');
+            P_Spec.text('實際所得');
         }
 
-        var Title = $(this).parents('.group-div').find('.people-title .people-input-center').val();
+        var Title = Pan_div.find('.people-title .people-input-center').val();
         var female = Title.match(/母|姨|姑|嬸|嫂|姊|妹|姐|娘|婆/g);
         var student_g = '<img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/female-graduate-student.svg">';
         var student_b = '<img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/graduate-student-avatar.svg">';
         var woman = '<img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/woman-avatar.svg">';
         var man = '<img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/man-avatar.svg">';
         var captain = '<img id="Picon-man" class="svg social-link svg-people" src="/0MS/images/people/custom/captain.svg">';
-        $(this).parents('.group-div').find('.svg-people').remove();
+        Pan_div.find('.svg-people').remove();
         if(arr1[1] == 33 || arr1[1] == 4){  //是否學生
             if(female != null){ //女或男
-                $(student_g).appendTo($(this).parents('.group-div'));
+                $(student_g).appendTo(Pan_div);
             }else{
-                $(student_b).appendTo($(this).parents('.group-div'));
+                $(student_b).appendTo(Pan_div);
             }
+            PJob.val("學生"); 
             svg_redraw();
         }
         else{
            if(female != null){ //女或男
-                $(woman).appendTo($(this).parents('.group-div'));
+                $(woman).appendTo(Pan_div);
             }else{//是否役男
                 if(arr1[1] == 1){
-                    $(captain).appendTo($(this).parents('.group-div'));
+                    $(captain).appendTo(Pan_div);
                 }else{
-                    $(man).appendTo($(this).parents('.group-div')); 
+                    $(man).appendTo(Pan_div); 
                 }
-            } 
+            }
+            PJob.val("");  
         }
         svg_redraw();
         recount_left_family_panel();
@@ -1336,7 +1543,7 @@ $(document).ready(function() {
     });
 
     $('.center-total-count').on('blur', '.birthday', function(event) {
-        console.log("選擇生日");
+        //console.log("選擇生日");
         if($(this).val()!=""){
             if($(this).attr("yyyymmdd") == yyy_to_date($(this).val()) ){
                 $(this).trigger('change');

@@ -320,6 +320,9 @@
         border: 1px solid darkgrey;
         height: 1.75em;
     }
+    .EW{
+        outline: red auto 5px;
+    }
 </style>
 <div class="modal fade" id="ReEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document" style="width: 90%;">
@@ -378,12 +381,12 @@
                 <div class="input-control text full-size" data-role="input">
                     <label for="CE-New-name">役男姓名:</label>
                     <input type="text" name="CE-New-name" id="CE-New-name" placeholder="(必填)" style="outline-color: #ad00ff;">
-                    <button class="button helper-button clear" onclick="$('#CE-New-name').val($('#CE-Old-name').val())"><span class="mif-undo"></span></button>
+                    <button class="button helper-button clear" onclick="$('#CE-New-name').val($('#CE-Old-name').val()).change()"><span class="mif-undo"></span></button>
                 </div>
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-code">身份字號:</label>
                     <input type="text" name="CE-New-code" id="CE-New-code" placeholder="(必填)">
-                    <button class="button helper-button clear" onclick="$('#CE-New-code').val($('#CE-Old-code').val())"><span class="mif-undo"></span></button>
+                    <button class="button helper-button clear" onclick="$('#CE-New-code').val($('#CE-Old-code').val()).change()"><span class="mif-undo"></span></button>
                 </div>
 <?php  
 //***************************************************************************************************************
@@ -392,12 +395,12 @@ if($Browser == "Internet Explorer"){
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-birthday">役男生日:</label>
                     <input type="text" name="CE-New-birthday" id="CE-New-birthday" placeholder="(範例)1990-03-05">
-                    <button class="button helper-button clear" onclick="$('#CE-New-birthday').val('')"><span class="mif-undo"></span></button>
+                    <button class="button helper-button clear" onclick="$('#CE-New-birthday').val('').change()"><span class="mif-undo"></span></button>
                 </div>
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-milidate">入伍日期:</label>
                     <input type="text" name="CE-New-milidate" id="CE-New-milidate" placeholder="(範例)2017-09-13">
-                    <button class="button helper-button clear" onclick="$('#CE-New-milidate').val('')"><span class="mif-undo"></span></button>
+                    <button class="button helper-button clear" onclick="$('#CE-New-milidate').val('').change()"><span class="mif-undo"></span></button>
                 </div>
 
 <?php 
@@ -406,12 +409,12 @@ if($Browser == "Internet Explorer"){
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-birthday">役男生日:</label>
                     <input type="date" name="CE-New-birthday" id="CE-New-birthday" placeholder="西元年-月-日" val="1986-5-3" style="width: 11.15em;">
-                    <button class="button helper-button clear" onclick="$('#CE-New-birthday').val($('#CE-Old-birthday').val());"><span class="mif-undo"></span></button>
+                    <button class="button helper-button clear" onclick="$('#CE-New-birthday').val($('#CE-Old-birthday').val()).change();"><span class="mif-undo"></span></button>
                 </div>
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-milidate">入伍日期:</label>
                     <input type="date" name="CE-New-milidate" id="CE-New-milidate" placeholder="西元年-月-日" style="width: 11.15em;">
-                    <button class="button helper-button clear" onclick="$('#CE-New-milidate').val($('#CE-Old-milidate').val());"><span class="mif-undo"></span></button>
+                    <button class="button helper-button clear" onclick="$('#CE-New-milidate').val($('#CE-Old-milidate').val()).change();"><span class="mif-undo"></span></button>
                 </div>
 <?php 
 }   //***************************************************************************************************************
@@ -419,7 +422,7 @@ if($Browser == "Internet Explorer"){
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-echelon">服役梯次:</label>
                     <input type="text" name="CE-New-echelon" id="CE-New-echelon" placeholder="(選填)">
-                    <button class="button helper-button clear" onclick="$('#CE-New-echelon').val($('#CE-Old-echelon').val());"><span class="mif-undo"></span></button>
+                    <button class="button helper-button clear" onclick="$('#CE-New-echelon').val($('#CE-Old-echelon').val()).change();"><span class="mif-undo"></span></button>
                 </div>
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-address">戶籍地址:</label>
@@ -429,21 +432,21 @@ if($Browser == "Internet Explorer"){
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-type">服役役別:</label>
                     <!--<input type="text" name="user_password" id="user_password">-->
-                    <select name="CE-New-type" id="CE-New-type" style="height: 1.75em; width: 11.15em; margin-right: 0.25em;"></select><button class="button helper-button clear" onclick="$('#CE-New-type').val('')"><span class="mif-undo"></span>
+                    <select name="CE-New-type" id="CE-New-type" style="height: 1.75em; width: 11.15em; margin-right: 0.25em;"></select><button class="button helper-button clear" onclick="$('#CE-New-type').val($('#CE-Old-type').val()).change()"><span class="mif-undo"></span>
                 </div>
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-status">服役狀態:</label>
-                    <select name="CE-New-status" id="CE-New-status" style="height: 1.75em; width: 11.15em; margin-right: 0.25em;"><option value="服役中">服役中</option><option value="停役中">停役中</option><option value="已退役">已退役</option></select><button class="button helper-button clear" onclick="$('#CE-New-status').val($('#CE-Old-status').val())"><span class="mif-undo"></span>
+                    <select name="CE-New-status" id="CE-New-status" style="height: 1.75em; width: 11.15em; margin-right: 0.25em;"><option value="服役中">服役中</option><option value="停役中">停役中</option><option value="已退役">已退役</option></select><button class="button helper-button clear" onclick="$('#CE-New-status').val($('#CE-Old-status').val()).change()"><span class="mif-undo"></span>
                 </div>
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-phone">家屬電話:</label>
                     <input type="text" name="CE-New-phone" id="CE-New-phone" placeholder="(可多筆)">
-                    <button class="button helper-button clear" onclick="$('#CE-New-phone').val($('#CE-Old-phone').val());"><span class="mif-undo"></span></button>
+                    <button class="button helper-button clear" onclick="$('#CE-New-phone').val($('#CE-Old-phone').val()).change();"><span class="mif-undo"></span></button>
                 </div>
                 <div class="input-control password full-size" data-role="input">
                     <label for="CE-New-email">電子信箱:</label>
                     <input type="text" name="CE-New-email" id="CE-New-email" placeholder="(選填)" style="width: 20em;">
-                    <button class="button helper-button clear" onclick="$('#CE-New-email').val($('#CE-Old-email').val());"><span class="mif-undo"></span></button>
+                    <button class="button helper-button clear" onclick="$('#CE-New-email').val($('#CE-Old-email').val()).change();"><span class="mif-undo"></span></button>
                 </div>
             </div>
             </div>
@@ -467,6 +470,11 @@ if($Browser == "Internet Explorer"){
     //**************************************************
     $(document).ready(function(){
         ENfresh_town();
+        $("#REM-New input[type=text], #REM-New input[type=date], #REM-New select").on('change', function(event) {
+            event.preventDefault();
+            //console.log("change.checkpoint");
+            CheckENInput();
+        });
     });
 
 
@@ -488,7 +496,7 @@ if($Browser == "Internet Explorer"){
             .done(function(responsive_) {
                 var responsive = responsive_['town_list'];
                 var seloption = "";
-                console.log(responsive.length);
+                //console.log(responsive.length);
                 var i=0;
                 $.each(responsive, function(index, record){
                     seloption += '<option value="'+record.Town_code+'">'+record.Town_name+'</option>';
@@ -510,10 +518,10 @@ if($Browser == "Internet Explorer"){
                 });
                 
                 
-                console.log("success");
+                //console.log("success");
             })
             .fail(function() {
-                console.log("error");
+                //console.log("error");
             });//更新區鎮下拉選單
     }
 
@@ -530,7 +538,7 @@ if($Browser == "Internet Explorer"){
             },
         })
         .always(function() {
-            console.log("complete");
+            //console.log("complete");
         })
         .done(function(responsive_) {
             var responsive = responsive_['village_list'];
@@ -547,19 +555,79 @@ if($Browser == "Internet Explorer"){
             });
 
             $('#CE-New-village').append(seloption);
-            console.log("success");
+            //console.log("success");
         })
         .fail(function() {
-            console.log("error");
+            //console.log("error");
         }); //更新村里下拉選單
     }
 
     function ENAddrCopy(){
         $('#CE-New-town').val($('#CE-Old-town').val()).trigger('change');
+        $('#CE-New-address').val($('#CE-Old-address').val()).trigger('chenge');
     }
     function ENAllReset(){
         $("#REM-New button").each(function(index, el) {
             $(this).trigger('click');
+        });
+        $("#REM-New input[type=text], #REM-New input[type=date], #REM-New select").each(function(index, el) {
+            $(this).removeClass('EW');
+        });
+    }
+    function CheckENInput(){
+        $("#REM-New input[type=text], #REM-New input[type=date], #REM-New select").each(function(index, el) {
+            if((this.value == "" || this.value == null) && this.id != "CE-New-echelon" && this.id != "CE-New-email"){
+                $(this).addClass('EW');
+            }else{
+                $(this).removeClass('EW');
+            }
+            
+        });
+    }
+    function ENsubmitCheck(){
+        var EW = 0;
+        var elems = $("#REM-New input[type=text], #REM-New input[type=date], #REM-New select").nextAll(), count = elems.length;
+        $("#REM-New input[type=text], #REM-New input[type=date], #REM-New select").each(function(index, el) {
+            if($(this).hasClass('EW')){
+                EW = 1;
+            }
+            if (!--count){
+                if(EW == 1){
+                    console.log("有缺漏");
+                }else{
+                    console.log("都完成");
+                    //推送AJAX + 關閉視窗
+                    $.ajax({
+                        url: '/File/updateboy',
+                        type: 'post',
+                        dataType: 'json',
+                        data: {
+                            boy_key             :REditBoyKey,               //蠢蠢的用全域變數傳遞
+                            CE_New_name         :$("#CE-New-name").val(),
+                            CE_New_code         :$("#CE-New-code").val(),
+                            CE_New_birthday     :$("#CE-New-birthday").val(),
+                            CE_New_milidate     :$("#CE-New-milidate").val(),
+                            CE_New_echelon      :$("#CE-New-echelon").val(),
+                            CE_New_county       :$("#CE-New-county").val(),
+                            CE_New_town         :$("#CE-New-town").val(),
+                            CE_New_village      :$("#CE-New-village").val(),
+                            CE_New_address      :$("#CE-New-address").val(),
+                            CE_New_type         :$("#CE-New-type").val(),
+                            CE_New_status       :$("#CE-New-status").val(),
+                            CE_New_phone        :$("#CE-New-phone").val(),
+                            CE_New_email        :$("#CE-New-email").val()
+                        },
+                    })
+                    .done(function(responsive_) {
+                        $('#ReEditModal').modal('hide');
+                        read_file_list_pending();
+                    })
+                    .fail(function() {
+                        //console.log("error");
+                    }); //更新村里下拉選單
+                    
+                }
+            } 
         });
     }
 </script>

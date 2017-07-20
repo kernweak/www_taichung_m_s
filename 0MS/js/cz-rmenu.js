@@ -31,7 +31,7 @@
                     }},
                 "paste": {name: "逕行結案", icon: "paste"
                 },
-                "delete": {name: "刪除-封存", icon: "delete"},
+                "delete": {name: "刪除-封存", icon: "delete", disabled:true},
                 "sep1": "---------",
                 "transfer1": {
                     name: "案件移交(山)",

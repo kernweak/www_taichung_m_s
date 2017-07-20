@@ -401,8 +401,8 @@
   <!-- Tab panes -->
   <div class="tab-content" style="height: 100%;">
   <div role="tabpanel" class="tab-pane fade in active" id="right_tab_area">
-    <div style="height: initial;"></div> 
-    <div style="display: block;clear: left;padding-top:2em;">
+    <div style="height: initial;width: 100%;"></div>
+    <div style="display: block;clear: left;padding-top:2em;width: 100%;">
         <div class="local-cost-limit-span">每月最低生活費：<span id="area_cost"></span></div>
         <div class="local-cost-limit-span">每年最低生活費：<span id="area_cost_year"></span></div>
         <div class="local-cost-limit-span">不動產限額：<span id="area_limit"></span></div>
@@ -410,12 +410,38 @@
     
   </div>
   <div role="tabpanel" class="tab-pane fade" id="right_tab_income">
-    <div>
-        <div class="inc-div-cont">
+    <div style="width: 100%;">
+        <div class="inc-div-cont add-i-p-cont">
             
         </div>
-        <div class="proper-inc-div add-new-button">
-            <sapn class="add-proper-inc">新增所得</sapn>
+        <div class="proper-inc-div add-i-p-cont" style="
+    height: 9.8em;
+">
+            <div style="
+    position: static;
+    font-size: 1em;
+    display: inline-grid;
+    float: left;
+    text-align: left;
+    width: 8em;
+    margin-left: 2.5em;
+"><sapn class="add-inc add-new-button" value="Salary">＋薪資</sapn>
+            <sapn class="add-inc add-new-button cz-tooltip" value="Salary" data-toggle="tooltip" data-placement="right" title="一般身分下，若查無任何薪資收入，則使用此項">＋基本薪資</sapn>
+            <sapn class="add-inc add-new-button cz-tooltip" value="Salary" data-toggle="tooltip" data-placement="right" title="請搭配右上角[參考資料-職類薪資]使用，或參照105年度職類薪資調查報告紙本">＋職類別薪資</sapn></div><div style="
+    position: static;
+    font-size: 1em;
+    display: inline-block;
+    text-align: left;
+    float: left;
+    width: calc(100% - 11.5em);
+">
+            <sapn class="add-inc add-new-button" value="Stock-int">＋股票配息</sapn>
+            <sapn class="add-inc add-new-button" value="Profit">＋營利</sapn>
+            <sapn class="add-inc add-new-button" value="Bank-int">＋存款利息</sapn>
+            
+            <sapn class="add-inc add-new-button" value="others" style="
+    /* display: none; */
+">＋新增其他</sapn></div>
               <div class="miliboy-add-new-inc-comm fade" style="position: absolute;bottom: 0;right: 0; color:red;">役男服役薪資所得請勿登錄列計<span>
             </span>
         </div>
@@ -441,7 +467,7 @@
 
   </div>
   <div role="tabpanel" class="tab-pane fade" id="right_tab_property">
-    <div>
+    <div style="width: 100%;">
         <div class="proper-inc-div">
             <sapn class="auto-proper">自動帶入</sapn>
         </div>
@@ -511,7 +537,7 @@
     </div>
   </div>
   <div role="tabpanel" class="tab-pane fade" id="right_tab_membercomm">
-    <div>
+    <div style="width: 100%;">
       <div class="proper-inc-div" >
                 <sapn class="auto-comm">自動帶入</sapn>
       </div>

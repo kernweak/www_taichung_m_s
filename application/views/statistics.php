@@ -48,88 +48,87 @@
   <br><br><br>
 
 <script type="text/javascript">
-      function Date_today(year){    //傳回今天日期 2016-05-13 變數調整年
+  function Date_today(year){    //傳回今天日期 2016-05-13 變數調整年
 	  //為了相容於舊版JS引擎，參數預設值改成在內部定義
 		year = typeof year !== 'undefined' ? year : 0;
 		//....................................
-        var today = new Date();
-        // today += (1000 * 60 * 60 * 24) * offsetDay;
-        // today = new Date(today);
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
-        var yyyy = today.getFullYear();
-        yyyy = (parseInt(yyyy) + year);
-        console.log(today);
-        if(dd<10) {
-            dd='0'+dd
-        } 
+    var today = new Date();
+    // today += (1000 * 60 * 60 * 24) * offsetDay;
+    // today = new Date(today);
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    yyyy = (parseInt(yyyy) + year);
+    console.log(today);
+    if(dd<10) {
+        dd='0'+dd
+    } 
 
-        if(mm<10) {
-            mm='0'+mm
-        } 
+    if(mm<10) {
+        mm='0'+mm
+    } 
 
-        today = yyyy+'-'+mm+'-'+dd;
-        console.log(today);
-        return today;
-      }
+    today = yyyy+'-'+mm+'-'+dd;
+    console.log(today);
+    return today;
+  }
 
-      google.charts.load('current', {'packages':['corechart', 'bar']});
-      function PieColumnChart(chart_data, chart1_main_title, type) {
+  google.charts.load('current', {'packages':['corechart', 'bar']});
+  function PieColumnChart(chart_data, chart1_main_title, type) {
 		//為了相容於舊版JS引擎，參數預設值改成在內部定義
 		type = typeof type !== 'undefined' ? type : "Column";
 		//....................................
-        // var data = google.visualization.arrayToDataTable([
-        //   ['Task', 'Hours per Day'],
-        //   ['西屯區',     11],
-        //   ['南屯區',      2],
-        //   ['北屯區',  2],
-        //   ['豐原區', 2],
-        //   ['霧峰區',    7]
-        // ]);
+    // var data = google.visualization.arrayToDataTable([
+    //   ['Task', 'Hours per Day'],
+    //   ['西屯區',     11],
+    //   ['南屯區',      2],
+    //   ['北屯區',  2],
+    //   ['豐原區', 2],
+    //   ['霧峰區',    7]
+    // ]);
 
-        // var options = {
-        //   pieSliceText: 'label',
-        //   title: '各區案件申請數量'
-        // };
+    // var options = {
+    //   pieSliceText: 'label',
+    //   title: '各區案件申請數量'
+    // };
 
-        // chart1_main_title = '各區案件申請數量';
-        // chart_data = 
-        // [
-        //   ['Task', 'Hours per Day'],
-        //   ['西屯區',     11],
-        //   ['南屯區',      2],
-        //   ['北屯區',  2],
-        //   ['豐原區', 2],
-        //   ['霧峰區',    7]
-        // ];
-        //chart_data[0][2] = { role: 'annotation' };
-        var data = google.visualization.arrayToDataTable(chart_data);
-        
-        if(type == "Column"){
-          var options = {
-           pieSliceText: 'label',
-           animation:{
-            duration: 5000,
-            easing: 'out',
-           },
-           title: chart1_main_title,
-           isStacked: true,
-           colors: ['red', 'green','blue','CornflowerBlue','DarkCyan','DarkOrange','DarkOrchid','DarkSlateGray','DodgerBlue','GoldenRod','MediumPurple']
-         };
-          var chart = new google.visualization.ColumnChart(document.getElementById('piechart'));
-        }
-        if(type == "Pie"){
-          var options = {
-           title: chart1_main_title,
-           colors: ['red', 'green','blue','CornflowerBlue','DarkCyan','DarkOrange','DarkOrchid','DarkSlateGray','DodgerBlue','GoldenRod','MediumPurple']
-         };
-          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        }
-        
-        chart.draw(data, options);
-      }
-</script>
-<script type="text/javascript">
+    // chart1_main_title = '各區案件申請數量';
+    // chart_data = 
+    // [
+    //   ['Task', 'Hours per Day'],
+    //   ['西屯區',     11],
+    //   ['南屯區',      2],
+    //   ['北屯區',  2],
+    //   ['豐原區', 2],
+    //   ['霧峰區',    7]
+    // ];
+    //chart_data[0][2] = { role: 'annotation' };
+    var data = google.visualization.arrayToDataTable(chart_data);
+    
+    if(type == "Column"){
+      var options = {
+       pieSliceText: 'label',
+       animation:{
+        duration: 5000,
+        easing: 'out',
+       },
+       title: chart1_main_title,
+       isStacked: true,
+       colors: ['red', 'green','blue','CornflowerBlue','DarkCyan','DarkOrange','DarkOrchid','DarkSlateGray','DodgerBlue','GoldenRod','MediumPurple']
+     };
+      var chart = new google.visualization.ColumnChart(document.getElementById('piechart'));
+    }
+    if(type == "Pie"){
+      var options = {
+       title: chart1_main_title,
+       colors: ['red', 'green','blue','CornflowerBlue','DarkCyan','DarkOrange','DarkOrchid','DarkSlateGray','DodgerBlue','GoldenRod','MediumPurple']
+     };
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    }
+    
+    chart.draw(data, options);
+  }
+
   $("#piechart").fadeOut('fast');
   $("#statistics_type").on('change', function(event) {
     event.preventDefault();
@@ -322,9 +321,7 @@
 
 </script>
 
-    <script async defer
-       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAf3yYFNmlOV2vZnox1g0SkBMXajb6rL1o">
-    </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAf3yYFNmlOV2vZnox1g0SkBMXajb6rL1o"></script>
 <style type="text/css">
   #piechart > div, #map{
     box-shadow: 2px 2px 10px 1px;

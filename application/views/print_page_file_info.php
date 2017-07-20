@@ -305,7 +305,7 @@
 			<tr>
 			<td class="C1-1" colspan="2">動產列計總額</td>
 			<td class="C2-1" colspan="4">不動產列計總額</td>
-			<td class="C3-1" colspan="3">月均所得總額</td>
+			<td class="C3-1" colspan="3">全年所得總額</td>
 			<td class="C4-1">扶助等級</td>
 			</tr>
 			<tr>
@@ -315,7 +315,26 @@
 			<td><span id="PH-level"><?php echo $file_info->扶助級別; ?></span></td></tr>
 		</tbody></table>
 			<label><h3 style="margin-left: 2.5%;">區公所初審記事</h3></label>
-			<textarea style="margin-left: 2.5%; width: 94%;height: 11em;resize:none;border: 1px solid black;" id="PH-file_comm_1"><?php echo $file_info->{'整體家況敘述-公所'}; ?></textarea>
+			<?php
+				//echo mb_strlen($file_info->{'整體家況敘述-公所'});
+				if(mb_strlen($file_info->{'整體家況敘述-公所'}) > 300){
+			?>
+			<style>
+				@media print{
+					#PH-file_comm_1{
+						font-size: .7em;
+						line-height: 1.1;
+						overflow-y: hidden;
+					}
+					#PH-file_comm_2{
+						font-size: .7em;
+						line-height: 1.1;
+						overflow-y: hidden;
+					}
+				}
+			</style>
+			<?php	}	?>
+			<textarea style="margin-left: 2.5%; width: 94%;height: 9.2rem;resize:none;border: 1px solid black;" id="PH-file_comm_1"><?php echo $file_info->{'整體家況敘述-公所'}; ?></textarea>
 			<label><h3 style="margin-left: 2.5%;">區公所核章</h3></label>
 			<table id="seal_town" border="1" style="text-align: center;width: 95%;margin:auto;/*margin-top: 0.5em;*/">
 			<tbody><tr>
@@ -334,7 +353,7 @@
 			</table>
 			
 			<label><h3 style="margin-left: 2.5%;">市政府複審記事</h3></label>
-			<textarea style="margin-left: 2.5%; width: 94%;height: 11em; resize:none;border: 1px solid black;" id="PH-file_comm_2"><?php echo $file_info->{'整體家況敘述-局處'}; ?></textarea>
+			<textarea style="margin-left: 2.5%; width: 94%;height: 9.2rem; resize:none;border: 1px solid black;" id="PH-file_comm_2"><?php echo $file_info->{'整體家況敘述-局處'}; ?></textarea>
 			<label><h3 style="margin-left: 2.5%;">市政府核章</h3></label>
 			<table id="seal_county" border="1" style="text-align: center;width: 95%;margin:auto;/*margin-top: 0.5em;*/">
 			<tbody>
