@@ -237,19 +237,25 @@ $(document).ready(function() {
         var list_members_num = 0;   //總列計人數
         var limit_income = 0    //最低生活費總和
         var GDIV = $(".center-total-count .group-div");
+        
+        console.log(GDIV);
+        console.log(GDAI);
         total_members_num = $(GDIV).length-1;   //要扣掉 新增家屬 按鈕
         //console.log(total_members_num);
         for(i=0;i < total_members_num;i++){
+            var GDAI = $(GDIV).eq(i).find(".member_area").attr('area-index');
             var Special = $(GDIV).eq(i).find(".people-special .people-input-left").val();
-            if ($(GDIV).eq(i).find(".member_area").attr('area-index') == "" || $(GDIV).eq(i).find(".member_area").attr('area-index') == null){
+            console.log(Special);
+            if (GDAI == "" || GDAI == null){
                 break;
             }
+
             var arr1= Special.split(',');
             if (arr1[0] == '0'){    //-------------------一般-----------------------------------------------------------------------------------------    
 
                 list_members_num++;
                 var area = $(GDIV).eq(i).find(".member_area").val();
-                var area_income_limit_index = parseInt($(GDIV).eq(i).find(".member_area").attr('area-index'));
+                var area_income_limit_index = parseInt(GDAI);
                 limit_income += Property_limit[area_income_limit_index][2];
                 
                 var area_ex_flag = 0;
@@ -270,7 +276,7 @@ $(document).ready(function() {
                 //total_members_num++;
                 list_members_num++;
                 var area = $(GDIV).eq(i).find(".member_area").val();
-                var area_income_limit_index = parseInt($(GDIV).eq(i).find(".member_area").attr('area-index'));
+                var area_income_limit_index = parseInt(GDAI);
                 limit_income += Property_limit[area_income_limit_index][2];
                 var area_ex_flag = 0;
                 for(j=0;j<members_area_array.length;j++){
@@ -286,7 +292,7 @@ $(document).ready(function() {
 
                 list_members_num++;
                 var area = $(GDIV).eq(i).find(".member_area").val();
-                var area_income_limit_index = parseInt($(GDIV).eq(i).find(".member_area").attr('area-index'));
+                var area_income_limit_index = parseInt(GDAI);
                 limit_income += Property_limit[area_income_limit_index][2];
                 
                 var area_ex_flag = 0;
@@ -302,6 +308,7 @@ $(document).ready(function() {
 
             }
         }
+
 		limit_income = limit_income * M_Y;	//總收入以年或月計算
 		
         //console.log(members_area_array);
@@ -402,28 +409,25 @@ $(document).ready(function() {
                 //console.log(arr1[0]);
                 
                 for(j=0;j<$(Income_Div).length;j++){
+                    var Inc_Title = $(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text();
+                    var Inc_Value = $(Income_Div).eq(j).find(".proper-inc-div-2").val();
+                    var Inc_Cycle = $(Income_Div).eq(j).find(".proper-inc-div-4 option:selected").text();
                     var income_ex_flag = 0;
-                    //console.log("test1");
                     for(k=0;k<incomes_array.length;k++){
-                        //console.log($(Income_Div).eq(j).find(".proper-inc-div-1").text());
-                        $(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text();
-                        //console.log("test");
-                        if(incomes_array[k][0] == $(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text()){
+                        if(incomes_array[k][0] == Inc_Title){
                             income_ex_flag = 1;
-                            if((Income_Div).eq(j).find(".proper-inc-div-4 option:selected").text()=="月收"){
-                                incomes_array[k][1] += parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val()*M_Y);
+                            if(Inc_Cycle == "月收"){
+                                incomes_array[k][1] += parseInt(Inc_Value*M_Y);
                             }else{
-                                incomes_array[k][1] += parseInt(parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val())/(12 / M_Y));
+                                incomes_array[k][1] += parseInt(parseInt(Inc_Value)/(12 / M_Y));
                             }
-                            
                         }
                     }
                     if(income_ex_flag == 0){
-                            
-                            if((Income_Div).eq(j).find(".proper-inc-div-4 option:selected").text()=="月收"){
-                                incomes_array.push([$(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text(), parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val()*M_Y)]);
+                            if(Inc_Cycle == "月收"){
+                                incomes_array.push([Inc_Title, parseInt(Inc_Value*M_Y)]);
                             }else{
-                                incomes_array.push([$(Income_Div).eq(j).find(".proper-inc-div-1 option:selected").text(), parseInt(parseInt($(Income_Div).eq(j).find(".proper-inc-div-2").val())/(12 / M_Y))]);
+                                incomes_array.push([Inc_Title, parseInt(parseInt(Inc_Value)/(12 / M_Y))]);
                             }
                     }
                 }

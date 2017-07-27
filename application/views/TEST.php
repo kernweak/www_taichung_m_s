@@ -28,7 +28,6 @@
     <script src="/0MS/js/cz-pre-edit-file.js?<?php echo time(); ?>"></script>
     <script src="/0MS/js/cz-ReadFiles-list.js?<?php echo time(); ?>"></script>
     <script src="/0MS/js/cz-Fmenu.js?<?php echo time(); ?>"></script>
-    
     <script>
         var User_Level = <?php echo $User_Level ?>;
         var organization = '<?php echo $organization ?>';
