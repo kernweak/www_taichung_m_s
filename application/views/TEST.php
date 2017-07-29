@@ -89,7 +89,7 @@
                                     <li><a href="#edit-navcon" role="tab" data-toggle="tab">家屬編修</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#" onclick="save_file()">儲存案件</a></li>
-                                    <li><a href="#" onclick="reload_file()">放棄修改-重新載入</a></li>
+                                    <li><a id="reload_file_button" href="#" onclick="reload_file()">放棄修改-重新載入</a></li>
                                     <li><a href="#" onclick="close_file()">放棄修改-關閉案件</a></li>
                                     <li role="separator" class="divider"></li>
                                     <!--<li><a href="#" onclick="add_miliboy()">家屬編修-加入役男</a></li>-->

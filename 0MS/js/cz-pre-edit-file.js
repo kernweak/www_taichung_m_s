@@ -95,8 +95,12 @@ function read_file_test(file_key,e){
     var thisdate = $(e).parents('tr').find('td').eq(6).text();
     var d = new Date(thisdate);
     var n = d.getFullYear();
+    $("#reload_file_button").attr('onclick', 'reload_file('+n+')');
     update_calc_setting_by_year(n,file_key);
+
 }
+
+
 
 //
 function read_file_test_1(file_key){

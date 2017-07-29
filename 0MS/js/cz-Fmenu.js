@@ -123,9 +123,10 @@
     }
 
 	//放棄修改-重新讀取
-    function reload_file(){
+    function reload_file(year){
 
-        read_file_test($(".people_home").attr('file_id'));
+        //read_file_test($(".people_home").attr('file_id'));
+        update_calc_setting_by_year(year,$(".people_home").attr('file_id'));
     }
 
     //新增役男-停用

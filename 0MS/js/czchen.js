@@ -238,14 +238,14 @@ $(document).ready(function() {
         var limit_income = 0    //最低生活費總和
         var GDIV = $(".center-total-count .group-div");
         
-        console.log(GDIV);
-        console.log(GDAI);
+        //console.log(GDIV);
+        //console.log(GDAI);
         total_members_num = $(GDIV).length-1;   //要扣掉 新增家屬 按鈕
         //console.log(total_members_num);
         for(i=0;i < total_members_num;i++){
             var GDAI = $(GDIV).eq(i).find(".member_area").attr('area-index');
             var Special = $(GDIV).eq(i).find(".people-special .people-input-left").val();
-            console.log(Special);
+            //console.log(Special);
             if (GDAI == "" || GDAI == null){
                 break;
             }
@@ -483,8 +483,10 @@ $(document).ready(function() {
         $(".TC-L-D2-sum").text(numberWithCommas(sum));
         $("#PH-total-inc").text(numberWithCommas(sum));
         var Thonscomm = $(".TC-L-D1-lastincome").text();
-        var TInt = Thonscomm.replace(",", "");
-        //console.log(parseInt(TInt));
+        var TInt = Thonscomm.replace(/,/g , "");
+        // console.log("TintO:" + TInt);
+        // console.log("Tint:"+parseInt(TInt));
+        // console.log("sum:"+sum);
         var original = sum/parseInt(TInt);
        // console.log($(".TC-L-D1-lastincome").text());
         //console.log(original);
