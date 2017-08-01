@@ -1448,6 +1448,7 @@ $(document).ready(function() {
             PJob.val("");  
         }
         svg_redraw();
+        recount_member_inc(Pan_div);
         recount_left_family_panel();
 
     });
