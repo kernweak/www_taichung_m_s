@@ -75,6 +75,7 @@
                                     <li><a href="#filelist-progress" role="tab" data-toggle="tab" onclick="read_file_list_progress()">呈核中案件</a></li>
                                     <li><a href="#filelist-supporting" role="tab" data-toggle="tab" onclick="read_file_list_supporting()">補助中案件</a></li>
                                     <li><a href="#filelist-Fail" role="tab" data-toggle="tab" onclick="read_file_list_fail()">資格不符案件</a></li>
+                                    <li><a href="#filelist-Delete" role="tab" data-toggle="tab" onclick="read_file_list_delete()">已刪除之案件</a></li>
                                     
                                     <!--<li><a href="#">已結案案件</a></li>
                                     <li role="separator" class="divider"></li>
@@ -158,17 +159,20 @@
             </nav>
         </div>
         <div class="tab-content" id="Home_root">
-            <div id="filelist-navcon"       role="tabpanel" class="tab-pane active fade in nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
+            <div id="filelist-navcon"       role="tabpanel" class="tab-pane active fade in nav-container"><h2>我目前的待辦辦案件</h2>
                 <?php include('filelist.php');?>
             </div>
-            <div id="filelist-progress"     role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
+            <div id="filelist-progress"     role="tabpanel" class="tab-pane fade nav-container"><h2>流程進行中之案件</h2>
                 <?php include('filelist_in_progress.php');?>
             </div>
-            <div id="filelist-supporting"   role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
+            <div id="filelist-supporting"   role="tabpanel" class="tab-pane fade nav-container"><h2>審核通過之案件</h2>
                 <?php include('filelist_supporting.php');?>
             </div>
-            <div id="filelist-Fail"         role="tabpanel" class="tab-pane fade nav-container" style="overflow: scroll; height: calc(100vh + 1.15em); width: calc(100vw + 17px);">
+            <div id="filelist-Fail"         role="tabpanel" class="tab-pane fade nav-container"><h2>資格不符之案件</h2>
                 <?php include('filelist_fail.php');?>
+            </div>
+            <div id="filelist-Delete"         role="tabpanel" class="tab-pane fade nav-container"><h2>已刪除之案件</h2>
+                <?php include('filelist_delete.php');?>
             </div>
             <div id="edit-home" role="tabpanel" class="tab-pane fade nav-container" style="overflow-y: scroll;height: 100vh;">
                 <?php include('people_home.php');?>

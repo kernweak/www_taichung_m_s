@@ -1,4 +1,4 @@
-<div style="height: 100%;width: calc(100% + 1em);overflow-y: scroll;">
+<div>
     <div class="total-count-left-P P100">人口總計</div>
     <div class="detial TC-L-D1">
         
@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="total-count-left-lc bold">總計</div><div class="total-count-left-rc bold" id="total_property_imm_count">3,235,685</div>
-    <div class="total-count-left-lc bold gray-word" style="width:40%">不動產限額</div><div style="width:60%" class="total-count-left-rc bold gray-word" id="property_imm_limit">3,200,000</div>
+    <div class="total-count-left-lc bold gray-word" style="width:52%">不動產限額</div><div style="width:48%" class="total-count-left-rc bold gray-word" id="property_imm_limit">3,200,000</div>
     <div class="total-count-left-P P100">扶助級別</div>
     <div class="total-count-left-lc bold bg-danger">結果：</div><div class="total-count-left-rc bold bg-danger" id="LP-result"></div>
     <div></div>

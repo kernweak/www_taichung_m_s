@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');  
 class Area_model extends CI_Model {
 
-    public function __construct()
+    function __construct()
     {
             parent::__construct();
     }
@@ -64,6 +64,18 @@ class Area_model extends CI_Model {
 		$Village_name = $result->Village_name;
 
 		return $County_name.$Town_name.$Village_name;
+	}
 
+	function get_area_group_list(){
+		$this->db->select('Town_code, Town_name as name, town_group');
+		$this->db->from('area_town');
+		$this->db->order_by('town_group, Town_id');
+		
+		//$this->db->where('Login_PW', $Login_PW);
+		$query = $this->db->get();
+		$result = $query->result_array();
+		//log_message('debug', 'town query result:');
+		//log_message('debug', print_r($result,true));		
+		return $result;
 	}
 }

@@ -78,8 +78,8 @@
             //console.log("error");
         });
     }
-
-    function progress_transfer(file_key, file_transfer_target){
+    var file_transfer_target = "";  //要轉移到哪個區?(代碼)
+    function progress_transfer(file_key){
         $.ajax({
             url: '/file/progress_transfer',
             type: 'post',
@@ -233,6 +233,28 @@
         });
     }
 
+    function progress_delete(file_key){
+        $.ajax({
+            url: '/file/progress_delete',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                file_key        : file_key,
+                log_comment     : $("#log_comment").val()
+            },
+        })
+        .always(function() {
+            //console.log("complete");
+        })
+        .done(function(responsive) {
+            //console.log("success");
+            read_file_list_pending();
+        })
+        .fail(function() {
+            //console.log("error");
+        });
+    }
+
     function progress_review(file_key){
         $.ajax({
             url: '/file/rebuildfile',
@@ -251,7 +273,8 @@
             //console.log("success");
             read_file_list_supporting();
             //read_file_list_progress();
-            //read_file_list_pending();
+            read_file_list_pending();
+            read_file_list_fail();
             //CWait_End(1500);
 
         })
@@ -337,6 +360,15 @@
         update_myModal(tr);
     }
 
+    function progress_p_delete(file_key,event,key){
+        file_list_pointer = file_key;
+        file_list_action_pointer = "Delete";
+        $('#myModal').modal('show');
+        $('#myModalLabel').text('刪除/封存此案件');
+        var tr = $(event).parents("tr").get(0);
+        update_myModal(tr);
+    }
+
     function progress_p_back(file_key,event){
         file_list_pointer = file_key;
         file_list_action_pointer = "back";
@@ -394,7 +426,8 @@
     function progress_p_transfer(file_key,event,key){
         file_list_pointer = file_key;
         file_list_action_pointer = "transfer";
-        file_transfer_target = key
+        console.log(key);
+        file_transfer_target = key;
         $('#myModal').modal('show');
         $('#myModalLabel').html('將案件轉移至 ['+TArea_code_list[key]+']');
         update_myModal($(event));
@@ -600,7 +633,10 @@
                     progress_patch_re(FP);
                     break;
                 case "transfer":
-                    progress_transfer(FP, FA);
+                    progress_transfer(FP);
+                    break;
+                case "Delete":
+                    progress_delete(FP);
                     break;
                 default: 
             }

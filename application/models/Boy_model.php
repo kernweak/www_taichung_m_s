@@ -1,21 +1,22 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');  
 class Boy_model extends CI_Model {
 
-    public function __construct()
+    function __construct()
     {
-            parent::__construct();
+        parent::__construct();
     }
 
-    public function read_row_by_code($Boy_ID_code){
+    function read_row_by_code($Boy_ID_code){
 		$this->db->select('*');
 		$this->db->from('miliboy_table');
 		$this->db->where('身分證字號', $Boy_ID_code);
+		$this->db->where('役男刪除', 0);
 		//$this->db->where('Login_PW', $Login_PW);
 		$query = $this->db->get();
 		return $query;
 	}
 
-	public function read_boy_file_by_id($code){
+	function read_boy_file_by_id($code){
 		$this->db->select(
 			'`miliboy_table`.`役男系統編號` as `役男編號`, 
 			 `miliboy_table`.`役男姓名`, 
@@ -53,7 +54,7 @@ class Boy_model extends CI_Model {
 		return $result;
 	}
 
-	public function add_new_boy($name, $id, $birthday, $begin_date, $mili_type, $mili_status, $echelon){
+	function add_new_boy($name, $id, $birthday, $begin_date, $mili_type, $mili_status, $echelon){
 		$data = array(
 			'役男姓名' => $name,
 			'身分證字號' => $id,
@@ -70,17 +71,40 @@ class Boy_model extends CI_Model {
 		return $index;
 	}
 
-	public function update_new_boy_file_link($boy_key, $file_key){
+	function update_new_boy_file_link($boy_key, $file_key){
 		$data = array('最新案件流水號' => $file_key);
 		$this->db->where('役男系統編號', $boy_key);
 		$this->db->update('miliboy_table', $data);
 	}
 
-	public function change_mili_status($boy_key, $status){
+	function change_mili_status($boy_key, $status){
 		$data = array('服役狀態' => $status);
 		$this->db->where('役男系統編號', $boy_key);
 		$this->db->update('miliboy_table', $data);
 	}
 	
-
+	function updateboy($indata){
+		$data1 = array(
+			'役男姓名' 	=> $indata['CE_New_name'],
+			'身分證字號'=> $indata['CE_New_code'],
+			'役男生日' 	=> $indata['CE_New_birthday'],
+			'入伍日期' 	=> $indata['CE_New_milidate'],
+			'梯次' 		=> $indata['CE_New_echelon'],
+			'服役軍種' 	=> $indata['CE_New_type'],
+			'服役狀態' 	=> $indata['CE_New_status']
+		);
+    	$this->db->where('役男系統編號', $indata['boy_key']);
+    	$this->db->update('miliboy_table', $data1);
+    	$data2 = array(
+			'county' 	=> $indata['CE_New_county'],
+			'town'		=> $indata['CE_New_town'],
+			'village' 	=> $indata['CE_New_village'],
+			'聯絡電話1' => $indata['CE_New_phone'],
+			'email' 	=> $indata['CE_New_email'],
+			'戶籍地址' 	=> $indata['CE_New_address']
+		);
+    	$this->db->where('役男系統編號', $indata['boy_key']);
+    	$this->db->update('files_info_table', $data2);
+    	return 1;
+	}
 }

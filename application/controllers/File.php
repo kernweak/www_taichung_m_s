@@ -241,6 +241,20 @@ class File extends MY_Controller {
 		//LV 7 工程模式，全部狀態都能看到
 	}
 
+	public function read_file_list_delete(){
+		$this->load->library('session');
+		//var_dump($this->session);
+		$user_level = $this->session->User_Level;
+		$user_organ = $this->session->organization;
+		$file_list = $this->file_model->read_file_list_delete($user_level, $user_organ);
+		$this->log_activity('list files in supporting');
+		echo json_encode($file_list);
+		//承辦人 LV 1 看自己區的編輯中(1)案件ㄝ, 民眾線上申請(2)的案件
+		//科長LV2、主秘LV 3 ，可看到編輯完，跑流程中的案件
+		//民政局承辦 LV4 科長 LV5 ，可看到編輯完，跑流程中的案件
+		//LV 7 工程模式，全部狀態都能看到
+	}
+
 
 	//新增複查檔案 + 退役處理
 	private function Retired($file_key){
@@ -373,6 +387,15 @@ class File extends MY_Controller {
 		echo json_encode("Success");
 	}
 
+	public function progress_delete(){
+		$file_key = (int)$this->input->post('file_key');
+		$log_comment = $this->input->post('log_comment');		
+		$file_info = $this->file_model->progress_file($file_key,"delete");
+		$this->progress_log($file_key, $log_comment, "刪除並封存此案",$file_info);
+		$this->log_activity("刪除並封存此案", "file_key=$file_key");
+		echo json_encode("Success");
+	}
+
 	public function progress_reborn(){
 		$file_key = (int)$this->input->post('file_key');
 		$log_comment = $this->input->post('log_comment');		
@@ -436,37 +459,6 @@ class File extends MY_Controller {
 		$data['BankRate'] = $BankRate;
 		$data['MProperty'] = $MProperty;
 		echo json_encode($data);		
-
-
-	}
-
-	public function get_area_group_list(){
-		$get_area_group_list = $this->file_model->get_area_group_list();
-		//var_dump($get_area_group_list);
-
-		$AG_list = array();
-
-		foreach ($get_area_group_list as $AG){
-			//var_dump();
-			switch ($AG['town_group']) {
-				case 1:
-					$AG_list[0][$AG['Town_code']]['name']= $AG['name'];
-					break;
-				case 2:
-					$AG_list[1][$AG['Town_code']]['name']= $AG['name'];
-					break;
-				case 3:
-					$AG_list[2][$AG['Town_code']]['name']= $AG['name'];
-					break;
-				default:
-					# code...
-					break;
-			}
-			$AG_list[3][$AG['Town_code']]= $AG['name'];
-		}
-		//var_dump($AG_list1);
-		echo json_encode($AG_list);
-
 	}
 
 	public function updateboy(){
@@ -485,16 +477,9 @@ class File extends MY_Controller {
 		$data['CE_New_status']		= $this->input->post("CE_New_status");
 		$data['CE_New_phone']		= $this->input->post("CE_New_phone");
 		$data['CE_New_email']		= $this->input->post("CE_New_email");
-
-		//var_dump($data);
-		$res = $this->file_model->updateboy($data);
+		$this->load->model('boy_model');
+		$res = $this->boy_model->updateboy($data);
 		echo json_encode($res);
-
-
-
-
- 
-
 	}
 
 	

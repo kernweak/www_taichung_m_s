@@ -35,6 +35,20 @@
         $("#personnel > iframe").attr('src', 'http://mms.taichung.gov.tw/aup654rm6284gj4rm4/');
     }
 
+    //讓JQuery的delay可以接受call back function
+    $.fn.delay = function(time, callback) {
+        // Empty function:
+    jQuery.fx.step.delay = function() { };
+        // You can set the second argument as CSS properties
+        if (typeof callback == "object")
+        {
+            var cssObj = callback;
+            callback = function() { $(this).css(cssObj); }
+        }
+        // Return meaningless animation, (will be added to queue)
+        return this.animate({ delay: 1 }, time, callback);
+    }
+
     //重繪SVG成內碼以著色--- 準備用CSS內嵌SVG圖檔，以減少讀取
     function svg_redraw(){
         jQuery('img.svg').each(function() {

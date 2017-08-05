@@ -1,12 +1,12 @@
 //定義案件列表右鍵功能選單的項目和點選後的處理 
 
     var TArea_code_list = {};       //台中29區列表
-    var file_transfer_target = "";  //要轉移到哪個區?(代碼)
+    
   
     //用AJAX更新待處理案件列表右鍵選單的臺中市各區區列表
     $(function() {
         $.ajax({
-            url: '/file/get_area_group_list',//------------------------------
+            url: '/area/get_area_group_list',//------------------------------
             type: 'post',
             dataType: 'json',
         })
@@ -31,7 +31,7 @@
                     }},
                 "paste": {name: "逕行結案", icon: "paste"
                 },
-                "delete": {name: "刪除-封存", icon: "delete", disabled:true},
+                "delete": {name: "刪除-封存", icon: "delete"},
                 "sep1": "---------",
                 "transfer1": {
                     name: "案件移交(山)",
@@ -65,7 +65,7 @@
                 progress_p_directly_close(file_key,e,key);
                 break;
             case "delete":
-                //code block
+                progress_p_delete(file_key,e,key);
                 break;
             default:
                 //code block
@@ -73,6 +73,8 @@
                 if(isnum){
                     //console.log('純數字'); //表示為各區代碼
                     progress_p_transfer(file_key,e,key);
+                    //console.log($(e).text());
+                    //console.log(key);
                 }
                 else{
                 //console.log('非純數字');

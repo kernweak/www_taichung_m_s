@@ -142,6 +142,7 @@ function read_file_test_1(file_key){
                     }else{
                         $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
                     }
+                    $("#edit-navcon > div.center-total-count > div > div.group-div").first().find("button.close").remove();
                     CWait_End();
                 },300);
             }
@@ -266,13 +267,13 @@ function rf_member(member){
         '<div class="people-job"><input class="people-input-left" placeholder="所得職業" value="' + member.job + '"></div>' +
         '<div class="people-title"><input class="people-input-center" value="' + member.title + '"></div>' +
         '<div class="people-name"><input class="people-input-left" value="' + member.name + '"></div>' +
-        '<div class="people-id"><input class="people-input-left" value="' + member.code + '"></div>' +
+        '<div class="people-id"><input class="people-input-left" placeholder="所得職業" value="' + member.code + '"></div>' +
         '<div class="people-id-address"><input class="people-input-left" value="' + member.address + '"></div>' +
         '<div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="' + member.marriage + '"></div>' +
         '<div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="' + member.marriage_ex + '"></div>' +
-        '<div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="' + date_to_yyy(member.birthday) + '" style="width: 7em;">　　<span></span></div>' +
+        '<div class="people-birthday"><span>生日：</span><input placeholder="7位數民國生日" class="people-input-left birthday" value="' + date_to_yyy(member.birthday) + '" >　　<span class="color-age"></span><span class="input-group-addon age-button"><span class="glyphicon glyphicon-calendar"></span></span></div>' +
         '<div class="people-special">身分：<span style="color: #a47523;">一般</span>' +
-            '<div style="width: 7.5em;position: relative;left: 1em;display: inline-block;">' +
+            '<div>' +
                 '<select class="people-input-left">' +
                   '<option value="0,0" selected>一般</option>' +
                   '<option value="0,2">產業訓儲或第3階段替代</option>' +
@@ -443,13 +444,13 @@ function rf_mem_property(propertys){
 function rf_mem_income(incomes){
     var incomes_str = '<div class="income-cont">';
     $.each(incomes, function(index, income) {
-        var D_none = "", SS = "" , ST = "", SP = "", SB = "", SO = "", SY = "", SM = "";
+        var D_none = "", SS = "" , ST = "", SP = "", SB = "", SO = "", SY = "", SM = "", SA = "";
         if (income.type == "股票配息" || income.type == "存款利息"){
             D_none = 'in';
         }
-        if(income.type == "薪資"){ SS = 'selected="selected"'; };
+        if(income.type == "薪資"){ SS = 'selected="selected"'; SA = "Salary";};
         if(income.type == "股票配息"){ ST = 'selected="selected"'; };
-        if(income.type == "營利"){ SP = 'selected="selected"'; };
+        if(income.type == "營利"){ SP = 'selected="selected"'; SA = "Salary";};
         if(income.type == "存款利息"){ SB = 'selected="selected"'; };
         if(income.type == "其他"){ SO = 'selected="selected"'; };
         if(income.m_or_y == "m"){ SM = 'selected="selected"'; };
@@ -465,7 +466,7 @@ function rf_mem_income(incomes){
                         '</select>' +
                         '<input placeholder="額度-新台幣(元)" class="people-input-right proper-inc-div-2" value="'+income.value+'">' +
                         '<input placeholder="來源單位(企業或機構)" class="people-input-left proper-inc-div-3" value="'+income.from+'">' +
-                        '<input placeholder="備註欄" class="people-input-left proper-inc-div-5" value="'+income.note+'">' +
+                        '<input placeholder="備註欄" class="people-input-left proper-inc-div-5 '+ SA +'" value="'+income.note+'">' +
                         '<select class="proper-inc-div-4">' +
                             '<option value="m" '+ SM +'>月收</option>' +
                             '<option value="y" '+ SY +'>年收</option>' +

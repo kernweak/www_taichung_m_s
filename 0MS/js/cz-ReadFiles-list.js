@@ -46,7 +46,7 @@
                   "</div>"+
                   edit_button;
 
-                  if(file.審批階段 != 0){
+                  if(file.審批階段 != 0 && file.審批階段 != 1){
                     Button_str += "<div class='btn-group' role='group'>"+
                     "<button type='button' class='btn btn-warning' onclick='progress_p_back("+file.案件流水號+",this)'>退回</button>"+
                   "</div>";
@@ -399,6 +399,61 @@
                   
 
                   Button_str = Button_str + "</div>" ; 
+                //"";
+
+                var data = [
+                    yyy_dash(date_to_yyy(file.入伍日期)),
+                    file.Town_name,
+                    file.役男姓名,
+                    file.身分證字號,
+                    file.役男生日,
+                    file.扶助級別,
+                    yyy_dash(date_to_yyy(file.建案日期)),
+                    file.修改人姓名,
+                    file.作業類別名稱,
+                    Button_str
+                ];
+
+                var row = table.row.add(data).node();
+                $(row).attr('trkey', file.案件流水號);
+                //table.draw(false);
+            });
+            table.draw(false);
+            //$("#table_supporting tbody").html(tbody);
+
+        })
+        .fail(function() {
+            console.log("error");
+        });
+    }
+
+    //已刪除案件
+    function read_file_list_delete(){ //table_fail
+        $.ajax({
+            url: '/file/read_file_list_delete',
+            type: 'post',
+            dataType: 'json',
+        })
+        .always(function() {
+            //console.log("complete");
+        })
+        .done(function(responsive) {
+            CWait_End();
+            $("#table_delete tbody").empty();
+            var table = $('#table_delete').DataTable();     //DataTable
+            table.clear();                              //DataTable 清空
+
+            tbody = "";
+            
+            $.each(responsive, function(index, file) {
+
+                //console.log(file.審批階段);
+                    var Button_str = 
+                        '<div class="btn-group" role="group" aria-label="...">'+
+                          '<div class="btn-group" role="group">'+
+                            '<button type="button" class="btn btn-primary" onclick="progress_view('+file.案件流水號+',this)">檢視</button>'+
+                          '</div>'+
+                        '</div></div>';
                 //"";
 
                 var data = [
