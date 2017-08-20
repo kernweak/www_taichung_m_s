@@ -80,8 +80,9 @@
         });
     }
 
-    function date_to_yyy(date_string){ //西元日期轉民國7碼
-        //date_string = "2016-05-03";
+    function date_to_yyy(date_string, trim){ //西元日期轉民國7碼
+        trim = typeof trim !== 'undefined' ? trim : 1;
+        if(trim == 1){date_string = NTW(date_string);}
         var date_a = date_string.split("-");
         var yyy_date = (parseInt(date_a[0])-1911) + date_a[1] + date_a[2];
         if(yyy_date.length==6){
@@ -96,14 +97,27 @@
     function yyy_to_date(date_string){  //民國6/7碼轉西元日期
         //date_string = "1040310";
         date_string += "";
+        date_string = NTW(date_string);
         if(date_string.length == 6){
            var yyyy_date = (parseInt(date_string.substr(0,2))+1911)+"-"+date_string.substr(2,2)+"-"+date_string.substr(4,2);
         }
-        if(date_string.length == 7){
+        else if(date_string.length == 7){
             var yyyy_date = (parseInt(date_string.substr(0,3))+1911)+"-"+date_string.substr(3,2)+"-"+date_string.substr(5,2);
         }
-        //console.log(yyyy_date);
-        return yyyy_date;
+        else{
+            console.log("民國日期格式錯誤");
+            return false;
+        }
+
+        if (Date.parse(yyyy_date)) {
+           console.log(yyyy_date);
+           return yyyy_date;
+        }
+        else {
+           console.log("非有效日期");
+           return false;
+        }
+        
     }
 
     function yyy_dash(date_string){  //1050305 -> 105-03-05
@@ -162,6 +176,99 @@
         x = x.replace(/,/g , "");
         return x;
     }
+
+/** 台灣身份證字號格式檢查程式 **/       
+
+    function TW_PersonalCodeCheck(value){
+        console.log(value);
+        var a = new Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'W', 'Z', 'I', 'O');
+        var b = new Array(1, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+        var c = new Array(2);
+        var d;
+        var e;
+        var f;
+        var g = 0;
+        var h = /^[a-z](1|2)\d{8}$/i;
+        if (value.search(h) == -1)
+        {
+            return false;
+        }
+        else
+        {
+            d = value.charAt(0).toUpperCase();
+            f = value.charAt(9);
+        }
+        for (var i = 0; i < 26; i++)
+        {
+            if (d == a[i])//a==a
+            {
+                e = i + 10; //10
+                c[0] = Math.floor(e / 10); //1
+                c[1] = e - (c[0] * 10); //10-(1*10)
+                break;
+            }
+        }
+        for (var i = 0; i < b.length; i++)
+        {
+            if (i < 2)
+            {
+                g += c[i] * b[i];
+            }
+            else
+            {
+                g += parseInt(value.charAt(i - 1)) * b[i];
+            }
+        }
+        if ((g % 10) == f)
+        {
+            return true;
+        }
+        if ((10 - (g % 10)) != f)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    function NTW(value){    //全形轉半形 + 消除空格
+        var result = "";
+        value = String(value);
+        for(i=0; i<value.length; i++){
+    　　　　if(value.charCodeAt(i) == 12288 || value.charCodeAt(i) == 32){
+    　　　　　　result += "";
+    　　　　}else{
+    　　　　　　if(value.charCodeAt(i) > 65280 && value.charCodeAt(i) < 65375){
+    　　　　　　　　result += String.fromCharCode(value.charCodeAt(i) - 65248);
+    　　　　　　}else{
+    　　　　　　　　result += String.fromCharCode(value.charCodeAt(i));
+    　　　　　　}
+    　　　　}
+    　　}
+    　　return result;
+    }
+
+    $(document).ready(function() {
+        /*$(':input').on('propertychange input', function (e) {
+            //console.log(e);
+            //console.log(e.target.value);
+            var valueChanged = false;
+
+            if (e.type=='propertychange') {
+                valueChanged = e.originalEvent.propertyName=='value';
+            } else {
+                valueChanged = true;
+            }
+            if (valueChanged) {
+
+                e.target.value=NTW(e.target.value);
+            }
+        });*/
+        $("body").on('change', 'input', function(event) {
+            event.preventDefault();
+            this.value = NTW(this.value);
+            /* Act on the event */
+        });
+    });
 
 
 

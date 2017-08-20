@@ -74,7 +74,7 @@
                 "</div>";
 
                 var data = [
-                    yyy_dash(date_to_yyy(file.入伍日期)),
+                    yyy_dash(date_to_yyy(file.入伍日期,0)),
                     file.Town_name,
                     file.役男姓名,
                     file.身分證字號,
@@ -83,7 +83,7 @@
                                     ''+file.案件階段名稱+'</div>' +
                             '</div>',
                     file.扶助級別,
-                    yyy_dash(date_to_yyy(file.建案日期)),
+                    yyy_dash(date_to_yyy(file.建案日期,0)),
                     file.修改人姓名,
                     file.作業類別名稱,
                     Button_str
@@ -171,7 +171,7 @@
 
 
                 var data = [
-                    yyy_dash(date_to_yyy(file.入伍日期)),
+                    yyy_dash(date_to_yyy(file.入伍日期,0)),
                     file.Town_name,
                     file.役男姓名,
                     file.身分證字號,
@@ -180,7 +180,7 @@
                                     '<span style="display:none;">20</span>'+file.案件階段名稱+'</div>' +
                             '</div>',
                     file.扶助級別,
-                    yyy_dash(date_to_yyy(file.建案日期)),
+                    yyy_dash(date_to_yyy(file.建案日期,0)),
                     file.修改人姓名,
                     file.作業類別名稱,
                     Button_str
@@ -317,10 +317,10 @@
                 */
 
                 var data = [
-                    yyy_dash(date_to_yyy(file.入伍日期)),
+                    yyy_dash(date_to_yyy(file.入伍日期,0)),
                     file.Town_name,
                     file.役男姓名,
-                    yyy_dash(date_to_yyy(file.役男生日)),
+                    yyy_dash(date_to_yyy(file.役男生日,0)),
                     file.身分證字號,
                     file.扶助級別,
                     '<div class="progress">' +
@@ -402,13 +402,13 @@
                 //"";
 
                 var data = [
-                    yyy_dash(date_to_yyy(file.入伍日期)),
+                    yyy_dash(date_to_yyy(file.入伍日期,0)),
                     file.Town_name,
                     file.役男姓名,
                     file.身分證字號,
                     file.役男生日,
                     file.扶助級別,
-                    yyy_dash(date_to_yyy(file.建案日期)),
+                    yyy_dash(date_to_yyy(file.建案日期,0)),
                     file.修改人姓名,
                     file.作業類別名稱,
                     Button_str
@@ -457,13 +457,13 @@
                 //"";
 
                 var data = [
-                    yyy_dash(date_to_yyy(file.入伍日期)),
+                    yyy_dash(date_to_yyy(file.入伍日期,0)),
                     file.Town_name,
                     file.役男姓名,
                     file.身分證字號,
                     file.役男生日,
                     file.扶助級別,
-                    yyy_dash(date_to_yyy(file.建案日期)),
+                    yyy_dash(date_to_yyy(file.建案日期,0)),
                     file.修改人姓名,
                     file.作業類別名稱,
                     Button_str

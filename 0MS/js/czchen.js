@@ -115,11 +115,14 @@
 
     //檢查成員面板的稱謂、姓名、生日三項必填欄位有沒有填
     function members_must_input_check(){
-        $('.center-total-count .group-div').find(".people-title>input, .people-name>input, .people-birthday>input").each(function(index, el) {
-            if($(this).val() == ""){
-                $(this).addClass('EmptyWar');
-            }else{
-                $(this).removeClass('EmptyWar');
+        $('.center-total-count .group-div').find(".people-title, .people-name, .people-birthday").each(function(index, el) {
+            Input = $(this).children('input').eq(0);
+
+            if($(Input).val() == ""){
+                $(Input).addClass('EmptyWar');
+            }
+            else if($(this).hasClass('people-title') || $(this).hasClass('people-name')){
+                $(Input).removeClass('EmptyWar');
             }
         });
     }
@@ -1507,7 +1510,7 @@ $(document).ready(function() {
 
     //中面板.家屬.生日改變：計算其歲數
     $('.center-total-count').on('change', '.birthday', function(event) {
-        var dateString = parseInt($(this).val());
+        var dateString = parseInt(NTW($(this).val()));
         dateString = dateString.toString();
         if(dateString.length == 6){ dateString = "0" + dateString;}
         var YYY = dateString.substring(0, 3);
@@ -1518,6 +1521,19 @@ $(document).ready(function() {
 
         var YYYY = parseInt(YYY) + 1911;
         var YYYYMMDD = "" + YYYY + "-" + MM + "-" + DD +"";
+
+        if (Date.parse(YYYYMMDD)) {
+           //console.log(YYYYMMDD);
+           $(this).removeClass('EmptyWar');
+        }
+        else {
+           console.log("非有效日期");
+           $(this).addClass('EmptyWar');
+        }
+
+
+                    
+
         $(this).attr('YYYYMMDD', YYYYMMDD);
         // console.log(YYYYMMDD);
         var age_ = new Date(YYYYMMDD);
@@ -1554,6 +1570,22 @@ $(document).ready(function() {
     //稱謂、姓名、生日有改變時觸發
     $('.center-total-count').on('change', '.people-title>input, .people-name>input, .people-birthday>input', function(event) {
         members_must_input_check();
+    });
+
+    //家屬身分證字號改變時觸發
+    $('.center-total-count').on('change', '.people-id>input', function(event) {
+        //setTimeout(function(){ 
+            value = NTW(this.value);
+            if(value != ""){
+                if(TW_PersonalCodeCheck(value)){
+                    $(this).removeClass('EmptyWar');
+                }else{
+                    $(this).addClass('EmptyWar');
+                }
+            }else{
+                $(this).removeClass('EmptyWar');
+            }
+        //}, 500);
     });
 
     //統計頁面，範圍起始日期，選擇器初始化        

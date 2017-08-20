@@ -98,6 +98,12 @@
                 alert("請輸入完整身分證字號!");
                 return;
             }
+            if(TW_PersonalCodeCheck($('#ADF-code').val()) == false){
+                //alert("請先輸入身分證字號!");
+                $("#ADF-Msg").text('身分證字號有誤!').addClass('btn-warning');
+                return;
+            }
+
             $("#ADF-wait-icon").addClass('in');
             $("#ADF-Msg").text('連線檢查中...')
             $.ajax({
@@ -123,7 +129,7 @@
                     $("#ADF-Msg").text('役男資料已存在，請利用其他功能產生案件')
                 }else{
                     $("#ADF-toggle").slideDown('slow');
-                    $("#ADF-Msg").text('新增扶助案件');
+                    $("#ADF-Msg").text('新增扶助案件').removeClass('btn-warning');
                 }
                 $("#ADF-wait-icon").removeClass('in');
                 refresh_town();
@@ -145,8 +151,23 @@
             
             /* Act on the event */
         });
+        $("#ADF-birthday").on('change', function(event) {
+            if(!yyy_to_date($("#ADF-birthday").val())){
+                //alert("請先輸入役男生日!");
+                $("#ADF-Msg").text('役男生日有誤!').addClass('btn-warning');
+            }else{
+                $("#ADF-Msg").text('').removeClass('btn-warning');
+            }
+        });
+        $("#ADF-milidate").on('change', function(event) {
+            if(!yyy_to_date($("#ADF-milidate").val())){
+                //alert("請先輸入役男生日!");
+                $("#ADF-Msg").text('役男入伍日期有誤!').addClass('btn-warning');
+            }else{
+                $("#ADF-Msg").text('').removeClass('btn-warning');
+            }
+        });
         
-
 
         $("#ADF-clear").on('click', function(event) {
             event.preventDefault();
@@ -173,14 +194,34 @@
                 $("#ADF-Msg").text('請先輸入身分證字號!').addClass('btn-warning');
                 return;
             }
+            if(TW_PersonalCodeCheck($('#ADF-code').val()) == false){
+                //alert("請先輸入身分證字號!");
+                $("#ADF-Msg").text('身分證字號有誤!').addClass('btn-warning');
+                return;
+            }
             if($('#ADF-birthday').val() == ""){
                 //alert("請先輸入役男生日!");
                 $("#ADF-Msg").text('請先輸入役男生日!').addClass('btn-warning');
                 return;
             }
+            if(!yyy_to_date($("#ADF-birthday").val())){
+                //alert("請先輸入役男生日!");
+                $("#ADF-Msg").text('役男生日有誤!').addClass('btn-warning');
+                return;
+            }
             if($('#ADF-milidate').val() == ""){
                 //alert("請先輸入役男入伍日期!");
                 $("#ADF-Msg").text('請先輸入役男入伍日期!').addClass('btn-warning');
+                return;
+            }
+            if(!yyy_to_date($("#ADF-milidate").val())){
+                //alert("請先輸入役男生日!");
+                $("#ADF-Msg").text('役男入伍日期有誤!').addClass('btn-warning');
+                return;
+            }
+            if($('#ADF-address').val() == ""){
+                //alert("請先輸入役男入伍日期!");
+                $("#ADF-Msg").text('地址為必填項目!').addClass('btn-warning');
                 return;
             }
             
@@ -283,10 +324,12 @@
                     if(User_Level <= 3){
                         //把新增案件的區先選起來
                         $("#ADF-town").val($("#ADF-town option:contains('"+organization+"')").val()).prop('disabled',true).css('background', '#d6d6d6');
-                        setTimeout(function(){
-                            refresh_village();
-                        },300);
                     }
+                    setTimeout(function(){
+                        refresh_village();
+                    },300);
+
+
                 },300);
                 
                 console.log("success");

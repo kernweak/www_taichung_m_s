@@ -86,8 +86,8 @@ function update_calc_setting_by_year(year_in, file_key){
 }
 
 //點擊編輯之後的處理，先讀取該案件的所屬年分，然後讀取該年分設定檔，讀取完再讀取檔案
-function read_file_new(file_key){
 
+function read_file_new(file_key){
     update_calc_setting_by_year(This_Year,file_key);
 }
 
@@ -97,7 +97,6 @@ function read_file_test(file_key,e){
     var n = d.getFullYear();
     $("#reload_file_button").attr('onclick', 'reload_file('+n+')');
     update_calc_setting_by_year(n,file_key);
-
 }
 
 
@@ -121,6 +120,10 @@ function read_file_test_1(file_key){
         //console.log("success");
         update_Access_Print_botton(file_key);
         count = responsive.members.length;
+        console.log(count);
+        if (count == 0){
+            zero_member_bug = 1;
+        }
         $.each(responsive.members, function(index, member) {
             var GROUP_DIV = rf_member(member);
             $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
@@ -146,8 +149,19 @@ function read_file_test_1(file_key){
                     CWait_End();
                 },300);
             }
+
         });
         rf_file_info(responsive.file_info);
+        if (zero_member_bug){
+            setTimeout(function(){
+                add_miliboy();  //Fmenu中停用的功能，改用於此
+                $('#Add_file').modal('hide');
+                $("#family-edit-nav").fadeIn('400');
+                $("#family-edit-nav > ul > li:nth-child(2) > a").tab('show');
+                $("#edit-navcon > div.center-total-count > div > div.group-div").first().find("button.close").remove();
+                CWait_End();
+            },300);
+        }
     })
     .fail(function() {
         console.log("error");
@@ -267,7 +281,7 @@ function rf_member(member){
         '<div class="people-job"><input class="people-input-left" placeholder="所得職業" value="' + member.job + '"></div>' +
         '<div class="people-title"><input class="people-input-center" value="' + member.title + '"></div>' +
         '<div class="people-name"><input class="people-input-left" value="' + member.name + '"></div>' +
-        '<div class="people-id"><input class="people-input-left" placeholder="所得職業" value="' + member.code + '"></div>' +
+        '<div class="people-id"><input class="people-input-left" placeholder="身分證字號" value="' + member.code + '"></div>' +
         '<div class="people-id-address"><input class="people-input-left" value="' + member.address + '"></div>' +
         '<div class="people-marriage"><input style="width: 5em;" class="people-input-left" placeholder="配偶姓名" value="' + member.marriage + '"></div>' +
         '<div class="people-marriage2"><input style="width: 5em;" class="people-input-left" value="" placeholder="' + member.marriage_ex + '"></div>' +
