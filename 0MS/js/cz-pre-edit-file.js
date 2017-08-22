@@ -120,6 +120,7 @@ function read_file_test_1(file_key){
         //console.log("success");
         update_Access_Print_botton(file_key);
         count = responsive.members.length;
+        zero_member_bug = 0;
         console.log(count);
         if (count == 0){
             zero_member_bug = 1;
