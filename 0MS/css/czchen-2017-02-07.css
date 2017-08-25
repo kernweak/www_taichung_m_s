@@ -476,7 +476,7 @@
     }
 
     .people-birthday > input{
-        width: 15em;
+        width: 14.9em;
     }
     
     .color-age{
@@ -1263,4 +1263,10 @@
 
 #File_list_View_Modal .modal-body tbody tr.odd td{
     color:gray;
+}
+
+#All_User_Setting .thumbnail{
+    background-color: #d9ffce;
+    border-color: #4f7145;
+    padding: 4px 0.5em;
 }

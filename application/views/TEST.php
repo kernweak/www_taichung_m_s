@@ -21,6 +21,8 @@
     <link rel="stylesheet" type="text/css" href="/0MS/css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-2017-02-07.css?<?php echo time(); ?>">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
+    <link rel="stylesheet" type="text/css" href="/0MS/css/bootstrap-toggle.min.css">
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="/0MS/js/czchen-0.js?<?php echo time(); ?>"></script>
@@ -28,6 +30,7 @@
     <script src="/0MS/js/cz-pre-edit-file.js?<?php echo time(); ?>"></script>
     <script src="/0MS/js/cz-ReadFiles-list.js?<?php echo time(); ?>"></script>
     <script src="/0MS/js/cz-Fmenu.js?<?php echo time(); ?>"></script>
+    <script src="/0MS/js/bootstrap-toggle.min.js"></script>
     <script>
         var User_Level = <?php echo $User_Level ?>;
         var organization = '<?php echo $organization ?>';
@@ -144,7 +147,7 @@
                                     <li><a href="#personnel" role="tab" data-toggle="tab">修改密碼</a></li>
                                     <?php }  ?>
                                     <?php if($User_Level >= 4){  ?>
-                                    <li><a href="http://mms.taichung.gov.tw/aup654rm6284gj4rm4/" target="_blank">帳號權限設定</a></li>
+                                    <li><a href="#All_User_Setting" role="tab" data-toggle="tab">帳號權限設定</a></li>
                                     <?php }  ?>
                                     <!--<li role="separator" class="divider"></li>
                                     <li><a href="#">Separated link</a></li>-->
@@ -186,6 +189,11 @@
             <div id="personnel" role="tabpanel" class="tab-pane fade nav-container" style="overflow-y: scroll;height: 100vh;">
                 <?php include('changePW.php');?>
             </div>
+            <?php if($User_Level >= 4){  ?>
+             <div id="All_User_Setting" role="tabpanel" class="tab-pane fade nav-container" style="height: 100vh;">
+                <?php include('All_User_Setting.php');?>
+            </div>
+            <?php }  ?>
             <div role="tabpanel" class="tab-pane fade" id="project_edit">編輯</div>
             <div role="tabpanel" class="tab-pane fade" id="project_progress">進度</div>
             <div role="tabpanel" class="tab-pane fade" id="project_search">進階搜尋</div>

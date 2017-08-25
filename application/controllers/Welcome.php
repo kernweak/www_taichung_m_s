@@ -121,15 +121,20 @@ class Welcome extends MY_Controller {
 		$client = new SoapClient("http://eip.taichung.gov.tw/ldapService.do?wsdl");
 
 		//$handle1 = $client->authUser(array("in0" => "tccght5026","in1"=>"r123456789"));
-		
 		//$handle2 = $client->getAttr(array("in0" => "tccght5026","in1"=>"r123456789","in2"=>"department"));
-		$handle2 = $client->getAttr(array("in0" => "f58213","in1"=>"Qq791029801224","in2"=>"displayName"));
+		// $handle1 = $client->authUser(array("in0" => "pinina","in1"=>"@WSXcde31024"));
+		// $handle2 = $client->getAttr(array("in0" => "pinina","in1"=>"@WSXcde31024","in2"=>"displayName"));
+		// $handle3 = $client->getAttr(array("in0" => "pinina","in1"=>"@WSXcde31024","in2"=>"department"));
+		$handle1 = $client->authUser(array("in0" => "jck11","in1"=>"Ab1234567890"));
+		$handle2 = $client->getAttr(array("in0" => "jck11","in1"=>"Ab1234567890","in2"=>"displayName"));
+		$handle3 = $client->getAttr(array("in0" => "jck11","in1"=>"Ab1234567890","in2"=>"department"));
 
-		echo ((int)($handle2->out))."<br>";
+		echo ((int)($handle1->out))."<br>";
 
 		echo $handle2->out."<br>";
+		echo $handle3->out."<br>";
 		
-		var_dump($handle2->out);
+		//var_dump($handle2->out);
 		
 		//範例2：驗証sessionId是否有效,若sessionId有效時，則回傳使用者帳號,其它情況回傳空字串
 		//註:請將主機名稱入口網網址與sessionId替換成實際主機名稱與使用者的sessionId值
@@ -144,6 +149,7 @@ class Welcome extends MY_Controller {
 		var_dump($handle1->out);
 		*/
 	}
+
 	public function sso(){					//首頁
 		$this->load->library('session');
 		if(!isset($_SESSION)) 
@@ -151,19 +157,20 @@ class Welcome extends MY_Controller {
 			session_start(); 
 		} 
 		$sessionId = $this->input->post('sessionId');
-		//var_dump($sessionId);
 		$client = new SoapClient("http://eip.taichung.gov.tw/ldapService.do?wsdl");
-		$handle1 = $client->verifySessionId(array("in0" => $sessionId));
-		//$handle2 = $client->getAttr(array("in0" => "f58213","in1"=>"Qq791029801224","in2"=>"displayName"));
-		//echo $handle1->out."<br>";
-		//var_dump($handle1->out);
-		$handle2 = $client->verifySessionIdReturnAttr(array("in0" => $sessionId,"in1"=>"displayName"));
-		//var_dump($handle2->out);
 		
-		$id = $handle1->out;
-		$name = $handle2->out;
+		$handle1 = $client->verifySessionId(array("in0" => $sessionId));
+		$handle2 = $client->verifySessionIdReturnAttr(array("in0" => $sessionId,"in1"=>"displayName"));
+		$handle3 = $client->verifySessionIdReturnAttr(array("in0" => $sessionId,"in1"=>"ou"));
+		$handle4 = $client->verifySessionIdReturnAttr(array("in0" => $sessionId,"in1"=>"title"));
+		
+		$id 	= $handle1->out;
+		$name 	= $handle2->out;
+		$ou 	= $handle3->out;
+		$title 	= $handle4->out;
+		
 		if($id != ""){
-			$User_Login = $this->sso_login($id, $name, "1");
+			$User_Login = $this->sso_login($id, $name, $ou, $title, "1");
 		}else{
 			$this->load->view('login2');
 		}
@@ -189,7 +196,7 @@ class Welcome extends MY_Controller {
 		}
 		
 	}
-	private function sso_login($id, $name, $type = "0"){
+	private function sso_login($id, $name, $ou, $title, $type = "0"){
 		$If_Pass = false ;
 		$this->load->library('session');
 		$time_L = 0	;
@@ -218,6 +225,100 @@ class Welcome extends MY_Controller {
 
 			//
 			$this->load->model('user_model');
+			$OU = $this->user_model->Check_Dept_OU_ext($ou);
+			if($OU->OU_DeptCode){
+				// $ou->Town_name,
+				// $ou->OU_DeptName,
+				// $ou->OU_DeptCode,
+				// $ou->OU_OrganName,
+				// $ou->OU_OrganCode,
+				$system_level = 1;
+				if($OU->Organ_Level == 1){
+					switch ($title) {
+					    case '課長':
+					        $system_level = 2;
+					        break;
+					    case '主任秘書':
+					        $system_level = 3;
+					        break;
+					    case '秘書':
+					        $system_level = 3;
+					        break;
+					    case '副區長':
+					        $system_level = 3;
+					        break;
+					    default:
+       						$system_level = 1;
+					}
+				}
+				elseif($OU->Organ_Level == 2){
+					switch ($title) {
+					    case '科長':
+					        $system_level = 5;
+					        break;
+					    case '主任秘書':
+					        $system_level = 6;
+					        break;
+					    case '秘書':
+					        $system_level = 6;
+					        break;
+					    case '副局長':
+					        $system_level = 6;
+					        break;
+					    default:
+       						$system_level = 4;
+					}
+				}
+
+				$Insert_Val = array(
+					'User_account'		=> (string)$id,
+					'User_name'			=> (string)$name,
+					'機關'				=> (string)$OU->Town_name,
+					'單位'				=> (string)$OU->OU_DeptName,
+					'系統等級'			=> (int)$system_level,
+					'帳號啟用'			=> 1,
+					'User_OU_code'		=> (string)$OU->OU_DeptCode,
+					'User_OU_Title'		=> (string)$title,
+					'User_login_time'	=> (string)date('Y-m-d H:i:s', time())
+				);
+					
+				$Update_Val = array(						
+					'機關'				=> (string)$OU->Town_name,
+					'單位'				=> (string)$OU->OU_DeptName,
+					'User_OU_code'		=> (string)$OU->OU_DeptCode,
+					'User_OU_Title'		=> (string)$title,
+					'User_login_time'	=> (string)date('Y-m-d H:i:s', time())
+				);
+				$this->user_model->Insert_Update_ON_DUPLICATE("user_oss", $Insert_Val, $Update_Val);
+			}else{
+				//$id, $name, $ou, $title
+				$OU = $this->user_model->Find_Organ_by_OU($ou);
+				if($OU->OU_OrganCode){
+					//$OU->Town_name
+					$Insert_Val = array(
+						'User_account'		=> (string)$id,
+						'User_name'			=> (string)$name,
+						'機關'				=> (string)$OU->Town_name,
+						'系統等級'			=> 0,
+						'帳號啟用'			=> 1,
+						'User_OU_code'		=> (string)$ou,
+						'User_OU_Title'		=> (string)$title,
+						'User_login_time'	=> (string)date('Y-m-d H:i:s', time())
+					);
+						
+					$Update_Val = array(						
+						'機關'				=> (string)$OU->Town_name,
+						'User_OU_code'		=> (string)$ou,
+						'User_OU_Title'		=> (string)$title,
+						'User_login_time'	=> (string)date('Y-m-d H:i:s', time())
+					);
+					$this->user_model->Insert_Update_ON_DUPLICATE("user_oss", $Insert_Val, $Update_Val);
+				}
+				
+				
+			}
+
+
 			$query = $this->user_model->Login_IDNM_select($Login_ID, $Login_NM);
 			if ($query->num_rows() == 1){				//若抓到相同使用者成功
 				$Login_ID = $query->row()->User_account;

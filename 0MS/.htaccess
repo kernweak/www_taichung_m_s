@@ -1,0 +1,5 @@
+RedirectMatch 403 ^/.+\.(php|html|gif)$
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|pdf|bak)$">
+#Order Allow,Deny
+#Deny from all
+</FilesMatch>

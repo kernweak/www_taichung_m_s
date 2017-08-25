@@ -21,7 +21,7 @@ class Area_model extends CI_Model {
 		$this->db->select('Town_code, Town_name');
 		$this->db->from('area_town');
 		$this->db->where('Town_County_code', $County_code);
-		//$this->db->where('Login_PW', $Login_PW);
+		$this->db->where('Town_id <= 29');
 		$query = $this->db->get();
 		$result = $query->result();
 		log_message('debug', 'town query result:');
