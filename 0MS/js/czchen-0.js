@@ -247,6 +247,39 @@
     　　return result;
     }
 
+    Date.prototype.yyyymmdd = function() {
+      var mm = this.getMonth() + 1; // getMonth() is zero-based
+      var dd = this.getDate();
+
+      return [this.getFullYear(),
+              "-" + (mm>9 ? '' : '0') + mm,
+              "-" + (dd>9 ? '' : '0') + dd
+             ].join('');
+    };
+    function Date_today(year){    //傳回今天日期 2016-05-13 變數調整年
+        //為了相容於舊版JS引擎，參數預設值改成在內部定義
+          year = typeof year !== 'undefined' ? year : 0;
+          //....................................
+      var today = new Date();
+      // today += (1000 * 60 * 60 * 24) * offsetDay;
+      // today = new Date(today);
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+      var yyyy = today.getFullYear();
+      yyyy = (parseInt(yyyy) + year);
+      //console.log(today);
+      if(dd<10) {
+          dd='0'+dd
+      } 
+  
+      if(mm<10) {
+          mm='0'+mm
+      } 
+  
+      today = yyyy+'-'+mm+'-'+dd;
+      //console.log(today);
+      return today;
+    }
     $(document).ready(function() {
         /*$(':input').on('propertychange input', function (e) {
             //console.log(e);

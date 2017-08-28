@@ -15,7 +15,17 @@ class Useroos_Model extends CI_Model {
 			$searchs = explode(" ", $search);
 			$searchs_len = count($searchs);
 			for ($i=0;$i<$searchs_len;$i++){
-				$this->db->where("CONCAT(User_account, User_name, 機關, 單位, 系統等級, 帳號啟用, User_OU_code, User_OU_Title, User_login_time) like '%".$searchs[$i]."%'");
+				$this->db->where("
+					User_account like '%".$searchs[$i]."%' OR 
+					User_name like '%".$searchs[$i]."%' OR 
+					機關 like '%".$searchs[$i]."%' OR 
+					單位 like '%".$searchs[$i]."%' OR 
+					系統等級 like '%".$searchs[$i]."%' OR 
+					帳號啟用 like '%".$searchs[$i]."%' OR 
+					User_OU_code like '%".$searchs[$i]."%' OR 
+					User_OU_Title like '%".$searchs[$i]."%' OR 
+					User_login_time like binary '%".$searchs[$i]."%'
+					");
 			}
 		}
 

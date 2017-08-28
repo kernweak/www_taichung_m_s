@@ -482,4 +482,99 @@
         });
     }
 
+$(document).ready(function() {
+    setTimeout(function(){
+        read_file_list_pending();
+    }, 1000);
+    //案件列表，轉換為可排序可分頁之dataTable
+
+    setTimeout(function(){
+        $('#table_id').dataTable({
+            "lengthMenu": [100, 75, 50, 25, 10, 1],
+            "language": {
+                "paginate": {
+                    "previous": "前頁",
+                    "next": "後頁"
+                },
+                "lengthMenu": "每頁顯示 _MENU_ 筆",
+                "info": "第 _PAGE_ / _PAGES_ 頁",
+                "search": "粗搜索:",
+                "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
+            },
+            "order": [[ 6, "desc" ]]
+        });
+        $('#table_progress').dataTable({
+            "lengthMenu": [100, 75, 50, 25, 10, 1],
+            "language": {
+                "paginate": {
+                    "previous": "前頁",
+                    "next": "後頁"
+                },
+                "lengthMenu": "每頁顯示 _MENU_ 筆",
+                "info": "第 _PAGE_ / _PAGES_ 頁",
+                "search": "粗搜索:",
+                "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
+            },
+            "order": [[ 6, "desc" ]]
+        });
+        $('#table_supporting').dataTable({
+            "lengthMenu": [100, 75, 50, 25, 10, 1],
+            "language": {
+                "paginate": {
+                    "previous": "前頁",
+                    "next": "後頁"
+                },
+                "lengthMenu": "每頁顯示 _MENU_ 筆",
+                "info": "第 _PAGE_ / _PAGES_ 頁",
+                "search": "粗搜索:",
+                "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
+            },
+            "order": [[ 6, "desc" ]]
+        });
+        $('#table_fail').dataTable({
+            "lengthMenu": [100, 75, 50, 25, 10, 1],
+            "language": {
+                "paginate": {
+                    "previous": "前頁",
+                    "next": "後頁"
+                },
+                "lengthMenu": "每頁顯示 _MENU_ 筆",
+                "info": "第 _PAGE_ / _PAGES_ 頁",
+                "search": "粗搜索:",
+                "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
+            },
+            "order": [[ 6, "desc" ]]
+        });
+        $('#table_delete').dataTable({
+            "lengthMenu": [100, 75, 50, 25, 10, 1],
+            "language": {
+                "paginate": {
+                    "previous": "前頁",
+                    "next": "後頁"
+                },
+                "lengthMenu": "每頁顯示 _MENU_ 筆",
+                "info": "第 _PAGE_ / _PAGES_ 頁",
+                "search": "粗搜索:",
+                "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
+            },
+            "order": [[ 6, "desc" ]]
+        });
+    }, 100);
+
     
+    
+    //股票列表，轉換為可排序可分頁之dataTable
+    var Stock_table = $('#Stock_table').dataTable({
+        "lengthMenu": [10, 25, 1],
+        "language": {
+            "paginate": {
+                "previous": "前頁",
+                "next": "後頁"
+            },
+            "lengthMenu": "每頁顯示 _MENU_ 筆",
+            "info": "第 _PAGE_ / _PAGES_ 頁",
+            "search": "粗搜索:",
+            "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
+        }
+    });
+})

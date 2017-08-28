@@ -22,9 +22,10 @@
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-2017-02-07.css?<?php echo time(); ?>">
     <link rel="stylesheet" type="text/css" href="/0MS/css/czchen-metro.css">
     <link rel="stylesheet" type="text/css" href="/0MS/css/bootstrap-toggle.min.css">
-
+    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="/0MS/js/template.js?<?php echo time(); ?>"></script>
     <script src="/0MS/js/czchen-0.js?<?php echo time(); ?>"></script>
     <script src="/0MS/js/cz-progress.js?<?php echo time(); ?>"></script>
     <script src="/0MS/js/cz-pre-edit-file.js?<?php echo time(); ?>"></script>
@@ -162,7 +163,7 @@
             </nav>
         </div>
         <div class="tab-content" id="Home_root">
-            <div id="filelist-navcon"       role="tabpanel" class="tab-pane active fade in nav-container"><h2>我目前的待辦辦案件</h2>
+            <div id="filelist-navcon"       role="tabpanel" class="tab-pane active fade in nav-container"><h2>我目前的待辦案件</h2>
                 <?php include('filelist.php');?>
             </div>
             <div id="filelist-progress"     role="tabpanel" class="tab-pane fade nav-container"><h2>流程進行中之案件</h2>

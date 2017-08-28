@@ -36,9 +36,12 @@ class Chart extends MY_Controller {
   //       <option value="各區核定案件數量">各區核定案件數量</option>
   //       <option value="各區核定案件扶助級別人數">各區核定案件扶助級別人數</option>
   //       <option value="全市核定案件扶助級別人數">全市核定案件扶助級別人數</option>
+
 		$data = [];
 		if($statistics_type == "各區案件申請數量"){			
 			$data = $this->statistics_model->Statistics_1($Date_1,$Date_2);			
+		}elseif($statistics_type == "人均案件申請數量(件/每10萬人)"){			
+			$data = $this->statistics_model->Statistics_1_avg($Date_1,$Date_2);
 		}elseif($statistics_type == "各區核定案件數量"){			
 			$data = $this->statistics_model->Statistics_2($Date_1,$Date_2);
 		}elseif($statistics_type == "各區核定案件扶助級別人數"){			

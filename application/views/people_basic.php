@@ -398,18 +398,21 @@
         <div class="inc-div-cont add-i-p-cont">
             
         </div>
-        <div class="proper-inc-div add-i-p-cont" style="height: 9.8em;">
-            <div style="position: static;font-size: 1em;display: inline-grid;float: left;text-align: left;width: 8em;margin-left: 2.5em;"><sapn class="add-inc add-new-button" value="Salary">＋薪資</sapn>
-            <sapn class="add-inc add-new-button cz-tooltip" value="Salary" data-toggle="tooltip" data-placement="right" title="一般身分下，若查無任何薪資收入，則使用此項">＋基本薪資</sapn>
-            <sapn class="add-inc add-new-button cz-tooltip" value="Salary" data-toggle="tooltip" data-placement="right" title="請搭配右上角[參考資料-職類薪資]使用，或參照105年度職類薪資調查報告紙本">＋職類別薪資</sapn></div><div style="position: static;font-size: 1em;display: inline-block;text-align: left;float: left;width: calc(100% - 11.5em);">
-            <sapn class="add-inc add-new-button" value="Stock-int">＋股票配息</sapn>
-            <sapn class="add-inc add-new-button" value="Profit">＋營利</sapn>
-            <sapn class="add-inc add-new-button" value="Bank-int">＋存款利息</sapn>
-            
-            <sapn class="add-inc add-new-button" value="others">＋新增其他</sapn></div>
-              <div class="miliboy-add-new-inc-comm fade" style="position: absolute;bottom: 0;right: 0; color:red;">役男服役薪資所得請勿登錄列計<span>
-            </span>
-        </div>
+        <div class="proper-inc-div add-i-p-cont" style="height: 12.2em;">
+
+<div style="position: static;font-size: 1em;display: inline-grid;float: left;text-align: left;width: 8em;margin-left: 2.5em;"><sapn class="add-inc add-new-button" value="Salary">＋薪資</sapn>
+  <sapn class="add-inc add-new-button cz-tooltip" value="Salary" data-toggle="tooltip" data-placement="right" title="一般身分下，若查無任何薪資收入，則使用此項">＋基本薪資</sapn>
+  <sapn class="add-inc add-new-button cz-tooltip" value="Salary" data-toggle="tooltip" data-placement="right" title="請搭配右上角[參考資料-職類薪資]使用，或參照105年度職類薪資調查報告紙本">＋職類別薪資</sapn>
+  <sapn class="add-inc add-new-button" value="others">＋執行業務</sapn>
+</div>
+<div style="position: static;font-size: 1em;display: inline-block;text-align: left;float: left;width: calc(100% - 11.5em);">
+  <sapn class="add-inc add-new-button" value="Stock-int">＋股票配息</sapn>
+  <sapn class="add-inc add-new-button" value="Profit">＋營利</sapn>
+  <sapn class="add-inc add-new-button" value="Bank-int">＋存款利息</sapn>
+  <sapn class="add-inc add-new-button" value="others">＋新增其他</sapn>
+</div>
+<div class="miliboy-add-new-inc-comm fade" style="position: absolute;bottom: 0;right: 0; color:red;">役男服役薪資所得請勿登錄列計</div>
+
         </div>
         <div class="modal fade" id="confirm-delete-inc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -434,7 +437,8 @@
   <div role="tabpanel" class="tab-pane fade" id="right_tab_property">
     <div style="">
         <div class="proper-inc-div">
-            <sapn class="auto-proper">自動帶入</sapn>
+            <sapn class="auto-proper btn-coffee">自動帶入</sapn>
+            <div class="" style="position: absolute;bottom: 0;right: 0; color:red;">可依據所得中存款利息、股票配息換算出對應財產</div>
         </div>
         <div class="pro-div-cont">
             <div class="proper-inc-div">
@@ -504,7 +508,9 @@
   <div role="tabpanel" class="tab-pane fade" id="right_tab_membercomm">
     <div style="">
       <div class="proper-inc-div" >
-                <sapn class="auto-comm">自動帶入</sapn>
+                <sapn class="auto-comm btn-coffee">自動帶入</sapn>
+                <div style="position: absolute;bottom: 0;right: 0; color:red;">職業資訊請填入左側人物面板的<span style="color:#555555;">所得職業</span>欄位
+                </div>
       </div>
       <textarea style="display: block;background-color: #f3ede8;height: 12em;">測試</textarea>
       <div class="modal fade" id="confirm-auto-comm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

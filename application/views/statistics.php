@@ -3,7 +3,7 @@
           <div class='col-lg-4 col-md-4 col-sm-4'>
               <div class="form-group"><span style="color:white;">起始日期：</span>
                   <div class='input-group date' id='datetimepicker1'>
-                      <input type='text' class="form-control" />
+                      <input type='text' class="form-control" value="2017-01-25" />
                       <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                       </span>
@@ -13,7 +13,7 @@
           <div class='col-lg-4 col-md-4 col-sm-4'>
               <div class="form-group"><span style="color:white;">結尾日期：</span>
                   <div class='input-group date' id='datetimepicker2'>
-                      <input type='text' class="form-control" />
+                      <input type='text' class="form-control"  value="2017-08-25" />
                       <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                       </span>
@@ -26,6 +26,7 @@
                       <select class="form-control" style="border-radius: 0.25em;">
                         <option value=""><<請選擇統計類型>></option>
                         <option value="各區案件申請數量">各區案件申請數量</option>
+                        <option value="人均案件申請數量(件/每10萬人)">人均案件申請數量(件/每10萬人)</option>
                         <option value="各區核定案件數量">各區核定案件數量</option>
                         <option value="各區核定案件扶助級別人數">各區核定案件扶助級別人數</option>
                         <option value="全市核定案件扶助級別人數">全市核定案件扶助級別人數</option>
@@ -48,30 +49,24 @@
   <br><br><br>
 
 <script type="text/javascript">
-  function Date_today(year){    //傳回今天日期 2016-05-13 變數調整年
-	  //為了相容於舊版JS引擎，參數預設值改成在內部定義
-		year = typeof year !== 'undefined' ? year : 0;
-		//....................................
-    var today = new Date();
-    // today += (1000 * 60 * 60 * 24) * offsetDay;
-    // today = new Date(today);
-    var dd = today.getDate();
-    var mm = today.getMonth()+1; //January is 0!
-    var yyyy = today.getFullYear();
-    yyyy = (parseInt(yyyy) + year);
-    console.log(today);
-    if(dd<10) {
-        dd='0'+dd
-    } 
+  $(function() {
+    //統計頁面，範圍起始日期，選擇器初始化        
+    $('#datetimepicker1').datetimepicker({
+        viewMode: 'years',
+        format: 'YYYY-MM-DD',
+        locale: 'zh-tw'
+    });
+    //統計頁面，範圍結束日期，選擇器初始化
+    $('#datetimepicker2').datetimepicker({
+        viewMode: 'years',
+        format: 'YYYY-MM-DD',
+        locale: 'zh-tw'
+    });
+  });
+    
 
-    if(mm<10) {
-        mm='0'+mm
-    } 
-
-    today = yyyy+'-'+mm+'-'+dd;
-    console.log(today);
-    return today;
-  }
+  $("#datetimepicker1 input").val(Date_today(-1));
+  $("#datetimepicker2 input").val(Date_today());
 
   google.charts.load('current', {'packages':['corechart', 'bar']});
   function PieColumnChart(chart_data, chart1_main_title, type) {
@@ -167,11 +162,18 @@
             chartData.push(row);            
           }
           break;
+        case "人均案件申請數量(件/每10萬人)":
+          chartData.push(["區域", "件數", { role: 'annotation' }]);
+          for(i=0; i<origData.length; i++){
+            var row = [origData[i].Town_name, parseInt(origData[i].amount), origData[i].amount];
+            chartData.push(row);            
+          }
+          break;
         case "各區核定案件數量":
         case "各區核定案件扶助級別人數":
-          chartData.push(['區域','甲級','乙級',"丙級"]);
+          chartData.push(['區域','甲級','乙級',"丙級","不符"]);
           for(i=0; i<origData.length; i++){
-            var row = [origData[i].區別, parseInt(origData[i].甲級), parseInt(origData[i].乙級), parseInt(origData[i].丙級)];
+            var row = [origData[i].區別, parseInt(origData[i].甲級), parseInt(origData[i].乙級), parseInt(origData[i].丙級), parseInt(origData[i].不符)];
             chartData.push(row);
           }
           break;        
@@ -187,6 +189,7 @@
       //draw chart
       switch (sttsType){
         case "各區案件申請數量":
+        case "人均案件申請數量(件/每10萬人)":
         case "各區核定案件數量":
         case "各區核定案件扶助級別人數":
           setTimeout(function(){ PieColumnChart(chartData,sttsType,"Column"); }, 1000);
@@ -207,6 +210,7 @@
       }      
 
       //prepare map data and draw map
+      /*
       var mapInfoData;
       switch (sttsType){
         case "各區案件申請數量":
@@ -227,7 +231,7 @@
         case "全市核定案件扶助級別人數":
         default:          
           // hideMap();
-      }      
+      }      */
       
     })
     .fail(function() {
@@ -257,7 +261,7 @@
   function convertData2(data){
     var mapData = [];
     for(i=0; i<data.length; i++){
-      var total = parseInt(data[i].甲級) + parseInt(data[i].乙級) + parseInt(data[i].丙級);
+      var total = parseInt(data[i].甲級) + parseInt(data[i].乙級) + parseInt(data[i].丙級) + parseInt(data[i].不符);
       var info = {
           content: data[i].區別 + ' ' + total +'件',
           position: {
