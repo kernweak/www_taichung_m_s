@@ -379,7 +379,7 @@
     <li role="presentation" class="active"><a href="#right_tab_area" aria-controls="home" role="tab" data-toggle="tab">住址</a></li>
     <li role="presentation"><a href="#right_tab_income" aria-controls="profile" role="tab" data-toggle="tab">所得</a></li>
     <li role="presentation"><a href="#right_tab_property" aria-controls="messages" role="tab" data-toggle="tab">財產</a></li>
-    <li role="presentation"><a href="#right_tab_membercomm" aria-controls="settings" role="tab" data-toggle="tab">敘述</a></li>
+    <li role="presentation"><a href="#right_tab_membercomm" aria-controls="settings" role="tab" data-toggle="tab">個人敘述</a></li>
   </ul>
 
   <!-- Tab panes -->
@@ -463,19 +463,19 @@
                     <option value="桃園縣">桃園縣</option>
                     <option value="臺中市">臺中市</option>
                     <option value="臺南市">臺南市</option>
-					<option value="高雄市">高雄市</option>
-					<option value="基隆市">基隆市</option>
-					<option value="新竹縣">新竹縣</option>
-					<option value="苗栗縣">苗栗縣</option>
-					<option value="彰化縣">彰化縣</option>
-					<option value="雲林縣">雲林縣</option>
-					<option value="嘉義縣">嘉義縣</option>
-					<option value="屏東縣">屏東縣</option>
-					<option value="宜蘭縣">宜蘭縣</option>
-					<option value="花蓮縣">花蓮縣</option>
-					<option value="臺東縣">臺東縣</option>
-					<option value="金門縣">金門縣</option>
-					<option value="連江縣">連江縣</option>
+          					<option value="高雄市">高雄市</option>
+          					<option value="基隆市">基隆市</option>
+          					<option value="新竹縣">新竹縣</option>
+          					<option value="苗栗縣">苗栗縣</option>
+          					<option value="彰化縣">彰化縣</option>
+          					<option value="雲林縣">雲林縣</option>
+          					<option value="嘉義縣">嘉義縣</option>
+          					<option value="屏東縣">屏東縣</option>
+          					<option value="宜蘭縣">宜蘭縣</option>
+          					<option value="花蓮縣">花蓮縣</option>
+          					<option value="臺東縣">臺東縣</option>
+          					<option value="金門縣">金門縣</option>
+          					<option value="連江縣">連江縣</option>
                 </select>
             </div>
         </div>
@@ -512,7 +512,9 @@
                 <div style="position: absolute;bottom: 0;right: 0; color:red;">職業資訊請填入左側人物面板的<span style="color:#555555;">所得職業</span>欄位
                 </div>
       </div>
+      <div style="margin: 1em auto; width: calc(100% - 1.5em); font-size: 1.5em;"><span style="color: #872f1f;" id="membercomm_title">母親</span><span style="color: #e05f21;" id="membercomm_name">張小月</span>的個人敘述</div>
       <textarea style="display: block;background-color: #f3ede8;height: 12em;">測試</textarea>
+      <div style="margin: 1em auto;width: calc(100% - 1.8em);font-size: 1.2em;text-align: right;">全戶家況敘述請從上方選單列-[案件編修]-[整體家況]中進行修改</div>
       <div class="modal fade" id="confirm-auto-comm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-dialog">
               <div class="modal-content">

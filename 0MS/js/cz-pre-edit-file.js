@@ -1,23 +1,26 @@
 //區域,年度,最低生活費,不動產限額
 var Property_limit =[
-	["臺北市",106,15544,7400000],
-	["新北市",106,13700,3620000],
-	["桃園市",106,13692,3600000],
-	["臺中市",106,13084,3520000],
-	["臺南市",106,11448,3500000],
-	["高雄市",106,12941,3530000],
-	["基隆市",106,11448,3500000],
-	["新竹縣",106,11448,3500000],
-	["苗栗縣",106,11448,3500000],
-	["彰化縣",106,11448,3500000],
-	["雲林縣",106,11448,3500000],
-	["嘉義縣",106,11448,3500000],
-	["屏東縣",106,11448,3500000],
-	["宜蘭縣",106,11448,3500000],
-	["花蓮縣",106,11448,3500000],
-	["臺東縣",106,11448,3500000],
-	["金門縣",106,10290,2700000],
-	["連江縣",106,10290,2700000]
+    ["臺北市",106,15544,7400000],
+    ["新北市",106,13700,3620000],
+    ["桃園市",106,13692,3600000],
+    ["臺中市",106,13084,3520000],
+    ["臺南市",106,11448,3500000],
+    ["高雄市",106,12941,3530000],
+    ["基隆市",106,11448,3500000],
+    ["新竹縣",106,11448,3500000],
+    ["新竹市",106,11448,3500000],
+    ["苗栗縣",106,11448,3500000],
+    ["南投縣",106,11448,3500000],
+    ["彰化縣",106,11448,3500000],
+    ["雲林縣",106,11448,3500000],
+    ["嘉義縣",106,11448,3500000],
+    ["嘉義市",106,11448,3500000],
+    ["屏東縣",106,11448,3500000],
+    ["宜蘭縣",106,11448,3500000],
+    ["花蓮縣",106,11448,3500000],
+    ["臺東縣",106,11448,3500000],
+    ["金門縣",106,10290,2700000],
+    ["連江縣",106,10290,2700000]
 ];
 
 Property_limit.getIndexbyName = function(){
@@ -94,6 +97,7 @@ function read_file_new(file_key){
 function read_file_test(file_key,e){
     var thisdate = $(e).parents('tr').find('td').eq(6).text();
     var a = thisdate.split("-");
+    
     $("#reload_file_button").attr('onclick', 'reload_file('+a[0]+')');
     update_calc_setting_by_year(a[0],file_key);
 }
@@ -120,14 +124,15 @@ function read_file_test_1(file_key){
         update_Access_Print_botton(file_key);
         count = responsive.members.length;
         zero_member_bug = 0;
-        console.log(count);
+        //count_plus = 0;
+        //console.log(count);
         if (count == 0){
             zero_member_bug = 1;
         }
         $.each(responsive.members, function(index, member) {
             var GROUP_DIV = rf_member(member);
             $(GROUP_DIV).insertBefore($(".group-div.add-new-button"));
-            svg_redraw();
+            //svg_redraw();
             var this_index = $(".group-div").length - 2 ;
             var MDIV = $(".group-div").eq(this_index);
             $(MDIV).find('.people-special select').val(member.specials).trigger('change');
@@ -145,7 +150,8 @@ function read_file_test_1(file_key){
                     }else{
                         $("#family-edit-nav > ul > li:nth-child(1) > a").tab('show');
                     }
-                    $("#edit-navcon > div.center-total-count > div > div.group-div").first().find("button.close").remove();
+                    $("#edit-navcon > div.center-total-count > div > div.group-div").first().find("button.close").first().remove();
+                    svg_redraw();
                     CWait_End();
                 },300);
             }
@@ -158,7 +164,7 @@ function read_file_test_1(file_key){
                 $('#Add_file').modal('hide');
                 $("#family-edit-nav").fadeIn('400');
                 $("#family-edit-nav > ul > li:nth-child(2) > a").tab('show');
-                $("#edit-navcon > div.center-total-count > div > div.group-div").first().find("button.close").remove();
+                $("#edit-navcon > div.center-total-count > div > div.group-div").first().find("button.close").first().remove();
                 CWait_End();
             },300);
         }
@@ -289,31 +295,33 @@ function rf_member(member){
         '<div class="people-special">身分：<span style="color: #a47523;">一般</span>' +
             '<div>' +
                 '<select class="people-input-left">' +
-                  '<option value="0,0" selected>一般</option>' +
-                  '<option value="0,2">產業訓儲或第3階段替代</option>' +
-                  '<option value="1,15">歿</option>' +
-                  '<option value="1,1">服役中</option>' +
-                  '<option value="1,3">榮民領有生活費</option>' +
-                  '<option value="1,4">就學領有公費</option>' +
-                  '<option value="1,5">通緝或服刑</option>' +
-                  '<option value="1,6">失蹤有案</option>' +
-                  '<option value="1,7">災難失蹤</option>' +
-                  '<option value="1,8">政府安置</option>' +
-                  '<option value="1,9">無設籍外、陸配</option>' +
-                  '<option value="1,10">無扶養事實之直系尊親屬</option>' +
-                  '<option value="1,11">未盡照顧職責之父母</option>' +
-                  '<option value="1,12">父母離異而分離之兄弟姊妹</option>' +
-                  '<option value="1,13">無國籍</option>' +
-                  '<option value="1,14">不列口數：其他</option>' +
-                  '<option value="3,30">55歲以上,16歲以下無收入</option>' +
-                  '<option value="3,31">身心障礙、重大傷病</option>' +
-                  '<option value="3,32">3個月內之重大傷病</option>' +
-                  '<option value="3,33">學生</option>' +
-                  '<option value="3,34">孕婦</option>' +
-                  '<option value="3,35">獨自照顧直系老幼親屬</option>' +
-                  '<option value="3,36">獨自照顧重大傷病親屬</option>' +
-                  '<option value="3,37">依實際收入：其他</option>' +
-                  '<option value="2,38">不計收入：其他</option>' +
+                    '<option value="" disabled>----一般身分類----</option>'+
+                    '<option value="0,0" selected>一般</option>'+
+                    '<option value="0,2">產業訓儲或第3階段替代</option>'+
+                    '<option value="" disabled>----不列口數類----</option>'+
+                    '<option value="1,15">歿</option>'+
+                    '<option value="1,1">服役中</option>'+
+                    '<option value="1,3">榮民領有生活費</option>'+
+                    '<option value="1,4">就學領有公費</option>'+
+                    '<option value="1,5">通緝或服刑</option>'+
+                    '<option value="1,6">失蹤有案</option>'+
+                    '<option value="1,7">災難失蹤</option>'+
+                    '<option value="1,8">政府安置</option>'+
+                    '<option value="1,9">無設籍外、陸配</option>'+
+                    '<option value="1,10">無扶養事實之直系尊親屬</option>'+
+                    '<option value="1,11">未盡照顧職責之父母</option>'+
+                    '<option value="1,12">父母離異而分離之兄弟姊妹</option>'+
+                    '<option value="1,13">無國籍</option><option value="1,14">不列口數：其他</option>'+
+                    '<option value="" disabled>----依實際所得類----</option>'+
+                    '<option value="3,30">55歲以上,16歲以下無收入</option>'+
+                    '<option value="3,31">身心障礙、重大傷病</option>'+
+                    '<option value="3,32">3個月內之重大傷病</option>'+
+                    '<option value="3,33">學生</option>'+
+                    '<option value="3,34">孕婦</option>'+
+                    '<option value="3,35">獨自照顧直系老幼親屬</option>'+
+                    '<option value="3,36">獨自照顧重大傷病親屬</option>'+
+                    '<option value="3,37">依實際所得：其他</option>'+
+                    '<option value="2,38">不計收入：其他</option>'+
                 '</select>' +
             '</div>' +
         '</div>' +
@@ -342,7 +350,7 @@ function rf_mem_property(propertys){
         // console.log(property.note);
         // console.log(property.self_use);
         var D_none = "in", SD = "" , SS = "", SI = "", SH = "", SL = "", SO = "", SY = "", SM = "";
-        var a0="", a1="", a2="", a3="", a4="", a5="", a6="", a7="", a8="", a9="", a10="", a11="", a12="", a13="", a14="", a15="", a16="", a17="";
+        var a0="", a1="", a2="", a3="", a4="", a5="", a6="", a7="", a8="", a9="", a10="", a11="", a12="", a13="", a14="", a15="", a16="", a17="", a18="", a19="", a20="";
         switch(property.area) {
             case "臺北市":
                 a0 = "selected";
@@ -398,6 +406,15 @@ function rf_mem_property(propertys){
             case "連江縣":
                 a17 = "selected";
                 break;
+            case "南投縣":
+                a18 = "selected";
+                break;
+            case "新竹市":
+                a19 = "selected";
+                break;
+            case "嘉義市":
+                a20 = "selected";
+                break;
             default: 
         }
 
@@ -437,10 +454,13 @@ function rf_mem_property(propertys){
                             '<option value="高雄市"    '+ a5 +'>高雄市</option>' +
                             '<option value="基隆市"    '+ a6 +'>基隆市</option>' +
                             '<option value="新竹縣"    '+ a7 +'>新竹縣</option>' +
+                            '<option value="新竹市"    '+ a19 +'>新竹市</option>' +
                             '<option value="苗栗縣"    '+ a8 +'>苗栗縣</option>' +
+                            '<option value="南投縣"    '+ a18 +'>南投縣</option>' +
                             '<option value="彰化縣"    '+ a9 +'>彰化縣</option>' +
                             '<option value="雲林縣"    '+ a10 +'>雲林縣</option>' +
                             '<option value="嘉義縣"    '+ a11 +'>嘉義縣</option>' +
+                            '<option value="嘉義市"    '+ a20 +'>嘉義市</option>' +
                             '<option value="屏東縣"    '+ a12 +'>屏東縣</option>' +
                             '<option value="宜蘭縣"    '+ a13 +'>宜蘭縣</option>' +
                             '<option value="花蓮縣"    '+ a14 +'>花蓮縣</option>' +
@@ -519,7 +539,7 @@ $(document).ready(function() {
         event.preventDefault();
         //console.log("帶入自動家況");
         var HomeStr = "";
-        HomeStr = "本戶扶助等級擬列為" + $("#PH-level").text() + "，查其動產總額為" + numberWithCommas($("#PH-total-pro").text()) + "元整，不動產列計總額為" + numberWithCommas($("#PH-total-imm").text()) + "元整；全戶月均所得為" + numberWithCommas($("#PH-total-inc").text()) + "元整，所得支出比為" + (parseInt(noCommas($("#PH-total-inc").text()))/parseInt(noCommas($("#PH-need").text()))*100).toFixed(4) + "%。\n";
+        HomeStr = "本戶扶助等級擬列為" + $("#PH-level").text() + "，查其動產總額為" + numberWithCommas($("#PH-total-pro").text()) + "元整，不動產列計總額為" + numberWithCommas($("#PH-total-imm").text()) + "元整；全年總收入為" + numberWithCommas($("#PH-total-inc").text()) + "元整，所得支出比為" + (parseInt(noCommas($("#PH-total-inc").text()))/parseInt(noCommas($("#PH-need").text()))*100).toFixed(4) + "%。\n";
 
         $('.group-div').find(".comm-cont").each(function(index, el) {
             HomeStr += ($(this).val()).replace(/\n/g , "") + "\n";

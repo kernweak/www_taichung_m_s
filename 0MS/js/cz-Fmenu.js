@@ -38,28 +38,38 @@
                 };
 
                 $(this).find('.income-cont .proper-inc-div').each(function(index, el) {
-                    var income = {
-                            "key" : $(this).attr('code'),
-                            "type" : $(this).find('.proper-inc-div-1 option:selected').text(),
-                            "value" : $(this).children(".proper-inc-div-2").val(),
-                            "m_or_y" : $(this).children(".proper-inc-div-4").val(), 
-                            "from" : $(this).children(".proper-inc-div-3").val(),
-                            "note" : $(this).children(".proper-inc-div-5").val(),
-                            "rate" : $(this).children(".proper-inc-div-7").val() 
-                    };
-                    member.income.push(income);
+                    if($(this).children(".proper-inc-div-2").val() != 0){
+                        var income = {
+                                "key" : $(this).attr('code'),
+                                "type" : $(this).find('.proper-inc-div-1 option:selected').text(),
+                                "value" : $(this).children(".proper-inc-div-2").val(),
+                                "m_or_y" : $(this).children(".proper-inc-div-4").val(), 
+                                "from" : $(this).children(".proper-inc-div-3").val(),
+                                "note" : $(this).children(".proper-inc-div-5").val(),
+                                "rate" : $(this).children(".proper-inc-div-7").val() 
+                        };
+                        member.income.push(income);  
+                    }else{
+                        $(this).remove();
+                    }
+                    
                 });
                 $(this).find('.property-cont .proper-inc-div').each(function(index, el) {
-                    var property = {
-                    "key" :         $(this).attr('code'),
-                    "type":         $(this).find('.proper-inc-div-1 option:selected').text(),
-                    "value" :       $(this).children(".proper-inc-div-2").val(),                    
-                    "from" :        $(this).children(".proper-inc-div-3").val(),
-                    "note" :        $(this).children(".proper-inc-div-5").val(),
-                    "self_use" :    $(this).children(".proper-inc-div-4").val(),
-                    "area" :        $(this).children(".proper-inc-div-6").val()
-                }
-                    member.property.push(property);
+                    if($(this).children(".proper-inc-div-2").val() != 0){
+                        var property = {
+                            "key" :         $(this).attr('code'),
+                            "type":         $(this).find('.proper-inc-div-1 option:selected').text(),
+                            "value" :       $(this).children(".proper-inc-div-2").val(),                    
+                            "from" :        $(this).children(".proper-inc-div-3").val(),
+                            "note" :        $(this).children(".proper-inc-div-5").val(),
+                            "self_use" :    $(this).children(".proper-inc-div-4").val(),
+                            "area" :        $(this).children(".proper-inc-div-6").val()
+                        }
+                        member.property.push(property);
+                    }else{
+                        $(this).remove();
+                    }
+                    
                 });
              
 
@@ -112,8 +122,11 @@
             console.log("complete");
         })
         .done(function(responsive) {
+            //right_total_count_redraw();
             console.log("遠端儲存完成!");
+            $('.group-div').eq(0).trigger('click');
             CWait_Start(0,"遠端儲存完成!");
+
             CWait_End(1500);
             //
         })

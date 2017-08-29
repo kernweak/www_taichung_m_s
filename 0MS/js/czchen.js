@@ -764,6 +764,8 @@ $(document).ready(function() {
             $('.group-div.selected').find(".property-cont > div").clone().appendTo($(".pro-div-cont"));
         }
         //----------------------------敘述頁籤----------------------------------------------------
+        $("#membercomm_title").text($('.group-div.selected .people-title input').val());
+        $("#membercomm_name").text($('.group-div.selected .people-name input').val());
         $("#right_tab_membercomm  textarea").val($('.group-div.selected').find(".comm-cont").val());
         //$('.group-div.selected').find(".comm-cont").val();
 
@@ -821,7 +823,6 @@ $(document).ready(function() {
                 $(new_pro).find('.proper-inc-div-2').val(value).trigger('change');
                 $(new_pro).find('.proper-inc-div-3').val($(this).children('.proper-inc-div-3').val()).trigger('change');
                 $(new_pro).find('.proper-inc-div-5').val("自動逆算產生").trigger('change');
-                
               }
         }).delay(2000,function(){$(".Pdiv-Strong").removeClass('Pdiv-Strong');});
         //這寫法有點問題，等於each的每個物件都會去呼叫一次
