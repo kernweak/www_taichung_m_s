@@ -181,6 +181,7 @@
                             '</div>',
                     file.扶助級別,
                     yyy_dash(date_to_yyy(file.建案日期,0)),
+                    file.最後更動時間,
                     file.修改人姓名,
                     file.作業類別名稱,
                     Button_str
@@ -515,7 +516,7 @@ $(document).ready(function() {
                 "search": "粗搜索:",
                 "infoFiltered": "(從 _MAX_ 筆資料中過濾出)"
             },
-            "order": [[ 6, "desc" ]]
+            "order": [[ 7, "desc" ]]
         });
         $('#table_supporting').dataTable({
             "lengthMenu": [100, 75, 50, 25, 10, 1],

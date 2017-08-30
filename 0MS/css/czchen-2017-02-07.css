@@ -1277,6 +1277,17 @@
     padding: 4px 0.5em;
 }
 
+#view_log_comment > thead > tr > th:nth-child(1){
+    width: 11em;
+}
+
+#view_log_comment > thead > tr > th:nth-child(2){
+    width: 13.5em;
+}
+#view_log_comment > thead > tr > th:nth-child(3){
+    width: 5.5em;
+}
+
 .btn-coffee {
     background-image: linear-gradient(to bottom,#d64f3e 0,#5a1c0d 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff265a88', GradientType=0);

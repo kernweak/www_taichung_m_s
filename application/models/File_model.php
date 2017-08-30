@@ -235,9 +235,15 @@ class File_model extends CI_Model {
 
 		$query = $this->db->get();
 		$result = $query->result_array();
+		//var_dump($this->db->last_query());
 		return $result;
 		// var_dump($result);
-		// var_dump($this->db->last_query());
+			// SELECT `files_process_log`.`日期時間`, `files_process_log`.`動作者機關`, `files_process_log`.`動作者單位`, `files_process_log`.`動作者`, `files_process_log`.`動作者職級`, `files_process_log`.`動作名稱`, `files_process_log`.`動作後案件流程層級`, `files_process_log`.`動作者意見`
+			// FROM `files_process_log`
+			// JOIN `files_info_table` ON files_info_table.案件流水號 = files_process_log.案件流水號
+			// JOIN `area_town` ON `area_town`.`Town_code` = `files_info_table`.`town`
+			// WHERE `files_process_log`.`案件流水號` = 74
+		
 	}	
 
 	public function update($file){
@@ -423,12 +429,22 @@ class File_model extends CI_Model {
 
 	//本機關相關的所有流程中案件列表
 	public function read_file_list_progress($user_level, $user_organ){
-		$this->db->select("miliboy_table.入伍日期,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別,files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,files_info_table.可否編修,`files_status_code`.`案件階段名稱`,files_type.作業類別名稱");
+		$this->db->select("miliboy_table.入伍日期,area_town.Town_name,miliboy_table.役男姓名,miliboy_table.身分證字號,files_info_table.審批階段,files_info_table.扶助級別,files_info_table.建案日期,files_info_table.修改人姓名,files_info_table.案件流水號,files_info_table.可否編修,`files_status_code`.`案件階段名稱`,files_type.作業類別名稱, Active_newest.最後更動時間");
 		$this->db->from('files_info_table');
 		$this->db->join('miliboy_table', '`miliboy_table`.`役男系統編號` = `files_info_table`.`役男系統編號`');
 		$this->db->join('area_town', 'area_town.Town_code = files_info_table.town');
 		$this->db->join('files_status_code', '`files_status_code`.`審批階段代號` = `files_info_table`.`審批階段`','left');
 		$this->db->join('files_type', 'files_type.作業類別 = files_info_table.作業類別','left');
+		$this->db->join(
+			'(SELECT c.案件流水號, p1.日期時間 as 最後更動時間 
+				FROM files_info_table c
+				JOIN files_process_log p1 ON (c.案件流水號 = p1.案件流水號)
+				LEFT OUTER JOIN files_process_log p2 ON (c.案件流水號 = p2.案件流水號 AND 
+				    (p1.日期時間 < p2.日期時間 OR p1.日期時間 = p2.日期時間 AND p1.log_index < p2.log_index))
+				WHERE p2.log_index IS NULL) as Active_newest
+			', 
+			'Active_newest.案件流水號 = files_info_table.案件流水號','left');
+		
 		$this->db->where('是否扶助', null);
 		$this->db->where('案件刪除', 0);
 		//若扶助有資料，
@@ -464,6 +480,20 @@ class File_model extends CI_Model {
 		return $result;
 		// var_dump($result);
 		// var_dump($this->db->last_query());
+
+		// (SELECT c.案件流水號, p1.日期時間
+		// FROM files_info_table c
+		// JOIN files_process_log p1 ON (c.案件流水號 = p1.案件流水號)
+		// LEFT OUTER JOIN files_process_log p2 ON (c.案件流水號 = p2.案件流水號 AND 
+		//     (p1.日期時間 < p2.日期時間 OR p1.日期時間 = p2.日期時間 AND p1.log_index < p2.log_index))
+		// WHERE p2.log_index IS NULL) as Active_newest
+
+		// SELECT c.案件流水號, c.役男系統編號, p1.動作者機關, p1.動作者單位, p1.動作者, p1.動作名稱, p1.動作後案件流程層級, p1.日期時間
+		// FROM files_info_table c
+		// JOIN files_process_log p1 ON (c.案件流水號 = p1.案件流水號)
+		// LEFT OUTER JOIN files_process_log p2 ON (c.案件流水號 = p2.案件流水號 AND 
+		//     (p1.日期時間 < p2.日期時間 OR p1.日期時間 = p2.日期時間 AND p1.log_index < p2.log_index))
+		// WHERE p2.log_index IS NULL;
 	}
 
 	//本機關相關的通過且扶助中案件列表

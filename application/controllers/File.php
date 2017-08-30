@@ -103,6 +103,9 @@ class File extends MY_Controller {
 			'Msg' => "success"
 			);
 
+		$this->log_activity('add new file', 'file_key='.$file_key.'   boy_key='.$boy_key.' :'.$name);
+		$this->progress_log($file_key, "", "新增案件", 1);
+
 		echo json_encode($data);
 	}
 
