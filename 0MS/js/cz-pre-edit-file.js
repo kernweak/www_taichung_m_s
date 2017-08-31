@@ -539,7 +539,23 @@ $(document).ready(function() {
         event.preventDefault();
         //console.log("帶入自動家況");
         var HomeStr = "";
-        HomeStr = "本戶扶助等級擬列為" + $("#PH-level").text() + "，查其動產總額為" + numberWithCommas($("#PH-total-pro").text()) + "元整，不動產列計總額為" + numberWithCommas($("#PH-total-imm").text()) + "元整；全年總收入為" + numberWithCommas($("#PH-total-inc").text()) + "元整，所得支出比為" + (parseInt(noCommas($("#PH-total-inc").text()))/parseInt(noCommas($("#PH-need").text()))*100).toFixed(4) + "%。\n";
+        var percentage = (parseInt(noCommas($("#PH-total-inc").text()))/parseInt(noCommas($("#PH-need").text()))*100).toFixed(4);
+        //已逾三口之最低生活費471,024元，
+        // 若萌要求加入之敘述
+        var ifover = "";
+        if(percentage >= 100){
+            ifover = "已逾";
+        }else{
+            ifover = "未逾";
+        }
+        ifover +=  $("#PH-members").text() + "口之最低生活費" + $("#PH-need").text() + "元，";
+        HomeStr = 
+        "本戶扶助等級擬列為" + $("#PH-level").text() + 
+        "，查其動產總額為" + numberWithCommas($("#PH-total-pro").text()) + 
+        "元整，不動產列計總額為" + numberWithCommas($("#PH-total-imm").text()) + 
+        "元整，全年總收入為" + numberWithCommas($("#PH-total-inc").text()) + 
+        "元整，" + ifover +
+        "所得支出比為" + percentage + "%。\n";
 
         $('.group-div').find(".comm-cont").each(function(index, el) {
             HomeStr += ($(this).val()).replace(/\n/g , "") + "\n";
