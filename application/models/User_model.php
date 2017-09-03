@@ -16,6 +16,15 @@ class User_model extends CI_Model {
 		return $query;
 	}
 
+    function User_exist($Login_ID){
+		$this->db->select('*');
+		$this->db->from('user');
+		$this->db->where('user_id', $Login_ID);
+		//$this->db->where('Login_PW', $Login_PW);
+		$query = $this->db->get();
+		return $query;
+	}
+
 	function User_PW_Error_Read($Login_ID){
 		$this->db->select('*');
 		$this->db->from('user');

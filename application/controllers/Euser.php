@@ -7,7 +7,10 @@ class Euser extends MY_Controller {
 		$this->load->model('useroos_model');
 	}
 	
-
+	public function whosyourdaddy(){	//session
+		$this->load->library('session');
+		var_dump($this->session->all_userdata());
+	}
 
 	Public function SQL_basic(){
 		

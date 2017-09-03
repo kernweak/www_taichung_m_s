@@ -279,7 +279,8 @@ class Welcome extends MY_Controller {
 					'帳號啟用'			=> 1,
 					'User_OU_code'		=> (string)$OU->OU_DeptCode,
 					'User_OU_Title'		=> (string)$title,
-					'User_login_time'	=> (string)date('Y-m-d H:i:s', time())
+					'User_login_time'	=> (string)date('Y-m-d H:i:s', time()),
+					'IP'				=> $this->input->ip_address()
 				);
 					
 				$Update_Val = array(						
@@ -287,7 +288,8 @@ class Welcome extends MY_Controller {
 					'單位'				=> (string)$OU->OU_DeptName,
 					'User_OU_code'		=> (string)$OU->OU_DeptCode,
 					'User_OU_Title'		=> (string)$title,
-					'User_login_time'	=> (string)date('Y-m-d H:i:s', time())
+					'User_login_time'	=> (string)date('Y-m-d H:i:s', time()),
+					'IP'				=> $this->input->ip_address()
 				);
 				$this->user_model->Insert_Update_ON_DUPLICATE("user_oss", $Insert_Val, $Update_Val);
 			}else{
@@ -303,14 +305,16 @@ class Welcome extends MY_Controller {
 						'帳號啟用'			=> 1,
 						'User_OU_code'		=> (string)$ou,
 						'User_OU_Title'		=> (string)$title,
-						'User_login_time'	=> (string)date('Y-m-d H:i:s', time())
+						'User_login_time'	=> (string)date('Y-m-d H:i:s', time()),
+						'IP'				=> $this->input->ip_address()
 					);
 						
 					$Update_Val = array(						
 						'機關'				=> (string)$OU->Town_name,
 						'User_OU_code'		=> (string)$ou,
 						'User_OU_Title'		=> (string)$title,
-						'User_login_time'	=> (string)date('Y-m-d H:i:s', time())
+						'User_login_time'	=> (string)date('Y-m-d H:i:s', time()),
+						'IP'				=> $this->input->ip_address()
 					);
 					$this->user_model->Insert_Update_ON_DUPLICATE("user_oss", $Insert_Val, $Update_Val);
 				}
