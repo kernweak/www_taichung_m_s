@@ -31,16 +31,27 @@ class File extends MY_Controller {
 		$this->load->model('area_model');
     } 
 
+    public function debugX(){		//檢查此役男是否存在			
+		$debugX = $this->input->get_post('debugX');
+		//$this->log_activity('Debug', $debugX);
+
+	}
+
 	public function check_boy_exist(){		//檢查此役男是否存在		
 		$this->load->model('boy_model');		
 		$ADF_code = $this->input->post('ADF_code');		
 		$query = $this->boy_model->read_row_by_code($ADF_code);
+		$answer = "";
 		 	if ($query->num_rows() >= 1){				//若抓到相同使用者成功
-				echo json_encode("已存在");
+				$answer = "已存在";
 			}
 			else{
-			    echo json_encode("不存在");
+			    $answer = "不存在";
 			}
+
+			echo json_encode($answer);
+
+		$this->log_activity('檢查此役男是否存在', '輸入證號='.$ADF_code.'   結果='.$answer);
 	}
 
 	public function read_boy_file_by_id(){		//		

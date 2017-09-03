@@ -94,12 +94,14 @@
             /* Act on the event */
         });
         $("#ADF-code").on('change', function(event) {   //輸入身分證字號後，連線檢查是否已存在
+            // debugX("change event:" + $('#ADF-code').val());
             if($('#ADF-code').val() == ""){
                 alert("請輸入完整身分證字號!");
                 return;
             }
-            if(TW_PersonalCodeCheck($('#ADF-code').val()) == false){
+            if(TW_PersonalCodeCheck(NTW($('#ADF-code').val())) == false){
                 //alert("請先輸入身分證字號!");
+                // debugX("change event and front-end check error:" + $('#ADF-code').val());
                 $("#ADF-Msg").text('身分證字號有誤!').addClass('btn-warning');
                 return;
             }
@@ -152,7 +154,7 @@
             /* Act on the event */
         });
         $("#ADF-birthday").on('change', function(event) {
-            if(!yyy_to_date($("#ADF-birthday").val())){
+            if(!yyy_to_date(NTW($("#ADF-birthday").val()))){
                 //alert("請先輸入役男生日!");
                 $("#ADF-Msg").text('役男生日有誤!').addClass('btn-warning');
             }else{
@@ -160,7 +162,7 @@
             }
         });
         $("#ADF-milidate").on('change', function(event) {
-            if(!yyy_to_date($("#ADF-milidate").val())){
+            if(!yyy_to_date(NTW($("#ADF-milidate").val()))){
                 //alert("請先輸入役男生日!");
                 $("#ADF-Msg").text('役男入伍日期有誤!').addClass('btn-warning');
             }else{
@@ -194,7 +196,7 @@
                 $("#ADF-Msg").text('請先輸入身分證字號!').addClass('btn-warning');
                 return;
             }
-            if(TW_PersonalCodeCheck($('#ADF-code').val()) == false){
+            if(TW_PersonalCodeCheck(NTW($('#ADF-code').val())) == false){
                 //alert("請先輸入身分證字號!");
                 $("#ADF-Msg").text('身分證字號有誤!').addClass('btn-warning');
                 return;

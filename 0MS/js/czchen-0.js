@@ -3,6 +3,19 @@
     var file_list_refile_pointer = "";
     var CWait_interrupt = 0;
 
+//debugX()
+    function debugX(input){
+        $.ajax({
+            url: '/file/debugX',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                debugX        : input,
+            },
+        });
+    }
+
+
     function CWait_Start(wait_time, msg){
         //為了相容於舊版JS引擎，參數預設值改成在內部定義
         wait_time = typeof wait_time !== 'undefined' ? wait_time : 1000;
