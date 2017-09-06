@@ -10,7 +10,7 @@ class Attachment extends MY_Controller {
         $config['allowed_types'] = 'pdf';
         // $config['max_filename'] = '255';
         // $config['encrypt_name'] = TRUE;
-        $config['max_size'] = '4064'; //4MB
+        $config['max_size'] = '8192'; //8MB
 
         /*  rename the uploaded attachment to [fileid_category_timestamp]
         *   category的數字代表

@@ -1,5 +1,5 @@
 <a type="button" class="btn add-new-file-button" style="margin-bottom: 2em;" href="#" onclick="$('#Add_file').modal('toggle')">新增案件</a>
-<table id="table_id" class="table table-condensed table-hover" style="zoom:calc(0.7 + (1280px - 100vw)/260px);">
+<table id="table_id" class="table table-condensed table-hover">
     <thead>
         <tr>
             <th>入伍日期</th>

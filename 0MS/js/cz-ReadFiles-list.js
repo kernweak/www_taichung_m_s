@@ -1,4 +1,21 @@
 
+    function ScaleToParent(Table){
+        Table.css('transform', "scale(1)");
+        var TableW = Table.width();
+        var ParentW = Table.parent().width();
+        if(TableW > ParentW){
+            var ZRatio =  ParentW / TableW;
+            Table.css('transform-origin', "0% 0%");
+            Table.css('transform', "scale(" + ZRatio + ")");
+        }
+    }
+
+
+    $(window).resize(function(event) {
+        console.log("resize");
+        ScaleToParent($("#table_id"));
+    });
+
     //待辦案件
     function read_file_list_pending(){  
         $.ajax({
@@ -113,6 +130,10 @@
                     var progress = (progress_temp/6)*100;
                     $("#table_id tbody").find("tr[trkey="+file.案件流水號+"] .progress-bar").css('width', progress+'%');
                 });
+
+                //-------------
+                ScaleToParent($("#table_id"));
+
             },1500);
 
         })
