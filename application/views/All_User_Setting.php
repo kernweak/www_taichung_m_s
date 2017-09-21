@@ -170,7 +170,6 @@
             All_User_List_Level($(this).parents("tr").attr('User_id'), $(this).val());
         });
 
-
         function All_User_List_Level(User_id, User_level){
             $.ajax({
                 url: '/Euser/User_Level',

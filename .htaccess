@@ -4,3 +4,14 @@ RewriteCond $1 !^(index\.php|images|css|js|robots\.txt|favicon\.ico)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ ./index.php/$1 [L,QSA]
+
+order deny,allow
+deny from all
+#區公所網段
+allow from 172.18
+#民政局網段
+allow from 192.168.131
+#宗儒公司固定IP
+allow from 220.132.142.198
+#宗儒公司內網IP
+allow from 192.168.10.8

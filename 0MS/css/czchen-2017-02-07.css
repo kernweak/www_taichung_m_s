@@ -473,6 +473,7 @@
         font-size: 1.3em;
         width: 18em;
         z-index: 5;
+        height: 1.5em;
     }
 
     .people-birthday > input{
@@ -499,7 +500,7 @@
         border: 0px solid #ccc;
         border-radius: 0 4px 4px 0;
         width: 2.5em;
-        height: 50%;
+        height: 100%;
         cursor: pointer;
         transition: .3s;
     }
