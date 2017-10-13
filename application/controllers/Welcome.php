@@ -38,9 +38,10 @@ class Welcome extends MY_Controller {
 			$this->session->set_userdata('Last_time_CPW', date('Y-m-d H:i:s', time()));
 			$this->output->set_header('Cache-Control: max-age=2592000');	//快取儲存一個月
 			$this->load->view('TEST', Array(
-				'FullName' 		=> 	$this->session->userdata('FullName'),
+				'FullName' 			=> 	$this->session->userdata('FullName'),
 				'organization' 		=> 	$this->session->userdata('organization'),
 				'User_Level' 		=> 	$this->session->userdata('User_Level'),
+				'BatchPro'			=>	$this->SC('BatchPro'),
 				'Auto_Logout_Time' 	=> 	120,
 			));
 
@@ -69,6 +70,7 @@ class Welcome extends MY_Controller {
 				'User_Level' 		=> 	$User_Level,
 				'Auto_Logout_Time' 	=> 	$Auto_Logout_Time,
 				'SSO' 				=> 	$this->session->userdata('SSO'),
+				'BatchPro'			=>	$this->SC('BatchPro'),
 				'Browser' 			=> 	$Browser,
 			));
 
@@ -168,6 +170,8 @@ class Welcome extends MY_Controller {
 		$name 	= $handle2->out;
 		$ou 	= $handle3->out;
 		$title 	= $handle4->out;
+
+		$this->log_activity($activity1="SSO連線檢查", $activity2="id=".$id."; "."name=".$name."; "."ou=".$ou."; "."title=".$title.";", $activity3="");
 		
 		if($id != ""){
 			$User_Login = $this->sso_login($id, $name, $ou, $title, "1");
@@ -196,6 +200,15 @@ class Welcome extends MY_Controller {
 		}
 		
 	}
+	/*
+	public function sso_tt(){	//測試Find_Organ_by_OU
+		//id=pinina; name=李若萌; ou=020014; title=科員;
+		$ou="020015";
+		$this->load->model('user_model');
+		$OU = $this->user_model->Find_Organ_by_OU($ou);
+		var_dump($OU);
+	}
+	*/
 	private function sso_login($id, $name, $ou, $title, $type = "0"){
 		$If_Pass = false ;
 		$this->load->library('session');

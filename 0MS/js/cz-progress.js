@@ -78,6 +78,27 @@
             //console.log("error");
         });
     }
+    function progress_batch_next(){
+        $.ajax({
+            url: '/file/progress_batch_next',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                User_Level        : User_Level,
+                log_comment     : $("#log_comment").val()
+            },
+        })
+        .always(function() {
+            //console.log("complete");
+        })
+        .done(function(responsive) {
+            //console.log("success");
+            read_file_list_pending();
+        })
+        .fail(function() {
+            //console.log("error");
+        });
+    }
     var file_transfer_target = "";  //要轉移到哪個區?(代碼)
     function progress_transfer(file_key){
         $.ajax({
@@ -420,8 +441,32 @@
         $('#myModal').modal('show');
         $('#myModalLabel').text('向上級呈核');
         var tr = $(event).parents("tr").get(0);
+        batch_p_next();
         update_myModal(tr);
     }
+
+    function batch_p_next(){
+        if (User_Level >= BatchPro){   //等級6以上有此功能
+            $('<button id="BatchAgree" type="button" class="btn btn-warning" onclick="batch_next()">主管專用-批核全部案件</button>').insertAfter( "#myModal .btn-primary" );
+
+        }
+    }
+
+    function batch_next(){
+        console.log("123");
+        $('#myModal').modal('hide');
+        progress_batch_next();
+    }
+
+    $(document).ready(function() {
+
+
+    
+        $('#myModal').on('hide.bs.modal', function (e) {
+            $("#BatchAgree").remove();
+        })
+    })
+    
 
     function progress_p_transfer(file_key,event,key){
         file_list_pointer = file_key;

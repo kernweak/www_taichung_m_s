@@ -59,7 +59,7 @@ class User_model extends CI_Model {
 	}
 
 	function Find_Organ_by_OU($OU){
-		$OU = substr($OU, 4);
+		$OU = substr($OU, 0, 4);
 		$this->db->select('*');
 		$this->db->from('ad_ou');
 		$this->db->like('OU_DeptCode', $OU);
@@ -68,6 +68,7 @@ class User_model extends CI_Model {
 			$row = $query->row(1);
 			return $row;
 		}
+		//var_dump($this->db->last_query());
 		//array(1,"使用者登入錯誤之紀錄已更新")
 		return array("OU_OrganCode" => 0);
 	}

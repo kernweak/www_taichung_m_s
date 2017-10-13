@@ -36,6 +36,7 @@
         var User_Level = <?php echo $User_Level ?>;
         var organization = '<?php echo $organization ?>';
         var FullName = '<?php echo $FullName ?>';
+        var BatchPro = '<?php echo $BatchPro ?>';
     </script>
 </head>
 

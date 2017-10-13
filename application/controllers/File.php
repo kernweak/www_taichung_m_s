@@ -359,6 +359,30 @@ class File extends MY_Controller {
 		echo json_encode("Success");
 	}
 
+	public function progress_batch_next(){
+		$User_Level = (int)$this->input->post('User_Level');
+		$file_info = /*$User_Level*/ 6+1;
+		if($User_Level < $this->SC('BatchPro')) {
+			return;
+		}
+
+		$log_comment = $this->input->post('log_comment');	
+		//$file_info = $this->file_model->progress_file($file_key,"+");
+		$file_info_array = $this->file_model->progress_batch_next($User_Level);
+		//var_dump($file_info_array);
+		foreach ($file_info_array as $file_key){
+			if($file_info == 7){
+				$this->progress_log($file_key, $log_comment, "批次-案件審核完成，結案",$file_info);
+			}else{
+				$this->progress_log($file_key, $log_comment, "批次-向上呈核",$file_info);
+			}
+			
+			$this->log_activity("批次-向上呈核", "file_key=$file_key");
+		}
+		
+		echo json_encode("Success");
+	}
+
 	public function progress_transfer(){
 		$file_key = (int)$this->input->post('file_key');
 		$target_code = (int)$this->input->post('target_code');

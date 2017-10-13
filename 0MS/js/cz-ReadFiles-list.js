@@ -114,7 +114,7 @@
                     'PLV'   : file.審批階段,
                     'FNum': file.案件數,
                 });;
-                if(file.審批階段 <= 1){
+                if(file.審批階段 <= 1 || file.審批階段 == 4){
                     $(row).addClass('LV1-Rmenu');
                 }
                 

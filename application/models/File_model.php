@@ -148,6 +148,70 @@ class File_model extends CI_Model {
     	//var_dump($this->db->last_query());
 	}
 
+	public function progress_batch_next($User_Level){
+
+		$this->db->select('役男系統編號, 源版本號, 審批階段, 扶助級別, 案件流水號');
+		$this->db->from('files_info_table');
+		$this->db->where('審批階段', 6 /*$User_Level*/);
+
+		// $query 		= $this->db->get();
+		// $result 	= $query->result();
+		// var_dump($result);
+		$query = $this->db->get();
+		$results = $query->result_array();
+		//var_dump($results);
+		$file_key_array  = array();
+		//var_dump($this->db->last_query());
+		foreach ($results as $result) {
+			//var_dump($result);
+			//var_dump($value);
+			$boy_key 	= $result['役男系統編號'];
+			$file_source= $result['源版本號'];
+			$file_key_array[]=$result['案件流水號'];
+
+
+				if($result['審批階段'] == 6){
+					$update_boy_table_flag = 1;
+					if( $result['扶助級別'] == "資格不符"){
+						$data = array(
+							'審批階段' => ($result['審批階段'] + 1),
+							'是否扶助' => false
+						);
+
+					}else{
+						$data = array(
+							'審批階段' => ($result['審批階段'] + 1),
+							'是否扶助' => true
+						);
+					}
+				}else{
+					$data = array(
+						'審批階段' => ($result['審批階段'] + 1)
+					);
+				}
+
+
+			$this->db->where('案件流水號', $result['案件流水號']);
+	    	$this->db->update('files_info_table', $data);
+
+	    	//每次案件結案，要把案件流水號寫入miliboy table。這樣，如果是複查案，就能連結到最新的複查案。
+	    	if($update_boy_table_flag == 1){ 
+				$data = array(
+					'最新案件流水號' => $result['案件流水號']
+				);
+		    	$this->db->where('役男系統編號', $boy_key);
+		    	$this->db->update('miliboy_table', $data);
+	    	}
+		}
+		return $file_key_array;
+
+  //   	if ($oper == "+"){
+		// 	return $result[0]->審批階段 + 1;
+		// }
+
+
+	}
+
 	public function progress_transfer($file_key, $target_code){
 		$data = array(
 						'審批階段' => 0,

@@ -287,50 +287,21 @@
     #table_id > thead > tr > th:last-child{
         min-width: 250px;
     }
+
     @media (max-width: 1444px) {
-        #filelist-navcon, #filelist-progress, #filelist-supporting, #filelist-Fail, #filelist-Delete {
+        #filelist-progress, #filelist-supporting, #filelist-Fail, #filelist-Delete {
             font-size: 0.90em;
         }
-        #filelist-navcon .btn-group{
-            zoom:0.95;
-        }
-        /*
-        #table_id > thead > tr > th:last-child{
-            min-width: 220px;
-        }
-        #table_id > thead > tr > th:nth-child(7){
-            min-width: 160px;
-        }*/
     }  
     @media (max-width: 1290px) {
-        #filelist-navcon, #filelist-progress, #filelist-supporting, #filelist-Fail, #filelist-Delete {
+        #filelist-progress, #filelist-supporting, #filelist-Fail, #filelist-Delete {
             font-size: 0.85em;
         }
-        #filelist-navcon .btn-group{
-            zoom:0.9;
-        }
-        /*
-        #table_id > thead > tr > th:last-child{
-            min-width: 220px;
-        }
-        #table_id > thead > tr > th:nth-child(7){
-            min-width: 160px;
-        }*/
     }
     @media (max-width: 1180px) {
-        #filelist-navcon, #filelist-progress, #filelist-supporting, #filelist-Fail, #filelist-Delete {
+        #filelist-progress, #filelist-supporting, #filelist-Fail, #filelist-Delete {
             font-size: 0.8em;
         }
-        #filelist-navcon .btn-group{
-            zoom:0.85;
-        }
-        /*
-        #table_id > thead > tr > th:last-child{
-            min-width: 180px;
-        }
-        #table_id > thead > tr > th:nth-child(7){
-            min-width: 140px;
-        }*/
     }
 
 
