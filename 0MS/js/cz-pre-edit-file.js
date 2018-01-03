@@ -39,7 +39,7 @@ Property_limit.getImmLimitbyName = function(area_string){
     return result;    
 }
 //今年
-var This_Year = 106;
+var This_Year = 107;
 //銀行定存利率(用於反算存款)
 //var bank_interest_rate = 0.01355; //105年
 var bank_interest_rate = 0.0107; //106年
@@ -54,16 +54,18 @@ var property_move_limit_base = 2500000;
 var property_move_limit_single = 250000;
 
 //不同案件要呼叫不同年份的規定
-function update_calc_setting_by_year(year_in, file_key){
+function update_calc_setting_by_year(year_in, file_key, thisdate){
     //為了相容於舊版JS引擎，參數預設值改成在內部定義
     year_in = typeof year_in !== 'undefined' ? year_in : This_Year;
+    thisdate = typeof thisdate !== 'undefined' ? thisdate : Date_today();
     //console.log(year_in, file_key);
     $.ajax({
         url: '/file/get_calc_setting_by_year',
         type: 'post',
         dataType: 'json',
         data: {
-            year: year_in
+            year: year_in,
+            thisdate: thisdate
         },
     })
     .done(function(responsive_) {
@@ -71,10 +73,13 @@ function update_calc_setting_by_year(year_in, file_key){
         var LowIncome = responsive_['LowIncome'];
         var BankRate = responsive_['BankRate'];
         var MProperty = responsive_['MProperty'];
+        var MMWage = responsive_['MMWage'];
 
-        bank_interest_rate = parseFloat(BankRate[0].利率);
-        property_move_limit_base = parseInt(MProperty[0].起算額);
-        property_move_limit_single = parseInt(MProperty[0].每人增加額);
+        bank_interest_rate =            parseFloat(BankRate[0].利率);
+        property_move_limit_base =      parseInt(MProperty[0].起算額);
+        property_move_limit_single =    parseInt(MProperty[0].每人增加額);
+        monthly_minimum_wage =          parseInt(MMWage[0].月薪資額);
+
         for(i=0;i<LowIncome.length;i++){
             Property_limit[i] = LowIncome[i];
             if(i == LowIncome.length - 1){
@@ -91,15 +96,24 @@ function update_calc_setting_by_year(year_in, file_key){
 //點擊編輯之後的處理，先讀取該案件的所屬年分，然後讀取該年分設定檔，讀取完再讀取檔案
 
 function read_file_new(file_key){
-    update_calc_setting_by_year(This_Year,file_key);
+    var thisdate = Date_today();
+    update_calc_setting_by_year(This_Year,file_key,thisdate + " 00:00:00");
 }
 
 function read_file_test(file_key,e){
     var thisdate = $(e).parents('tr').find('td').eq(6).text();
     var a = thisdate.split("-");
+    var Myear = thisdate.substr(0,3);
+    Myear = parseInt(Myear) + 1911;
+    Myear = Myear + thisdate.substr(3);
+
+    // var strDate = thisdate;
+    // var DateArr = strDate.split("-");
+    // var date4=Cint(DateArr(0))+1911 & mid(strDate,len(DateArr(0))+1);   //date4 輸出︰2012/12/22
+
     
     $("#reload_file_button").attr('onclick', 'reload_file('+a[0]+')');
-    update_calc_setting_by_year(a[0],file_key);
+    update_calc_setting_by_year(a[0], file_key, Myear);
 }
 
 

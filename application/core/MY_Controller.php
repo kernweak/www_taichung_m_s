@@ -37,15 +37,10 @@ class  MY_Controller  extends  CI_Controller  {
 				//$this->y5e6g2s7e9y2d3Active_log('登入成功');
 			}
 			else{
+
+				//錯誤次數控管器
 				$code = 0;
 				$msg = "無此帳號或密碼錯誤";
-				$User_exist = $this->user_model->User_exist($Login_ID);
-				if ($User_exist->num_rows() != 1){	//USER ID 根本不存在
-					$RE_array = array('Msg' => $msg , 'Code' => $code);
-					echo json_encode($RE_array,JSON_NUMERIC_CHECK);
-					return;
-				}
-				//錯誤次數控管器
 				$UPEO = $this->User_PW_Error_Operate($Login_ID);
 				if( $UPEO[0] == 1){
 					$msg = $UPEO[1];
@@ -177,9 +172,8 @@ class  MY_Controller  extends  CI_Controller  {
 		return $code;
 	}
 
-	//須修復! IE不接受這種非正規作法，因為網址並沒有真的改變，瀏覽器不會強制更新，只會把本頁重建而非重抓一次
 	public function User_Logout($type="0"){						//承辦人登出
-		$this->log_activity('承辦人登出');
+		//$this->y5e6g2s7e9y2d3Active_log('承辦人登出');
 		$this->session_clear();
 		if($type=="0"){
 			header("Location: /"); /* Redirect browser */
@@ -243,6 +237,8 @@ class  MY_Controller  extends  CI_Controller  {
 	protected function log_activity($activity1="", $activity2="", $activity3=""){
 
 		$this->load->library('session');
+		$this->load->model('activitylog_model');
+		
 		$log['user_id'] = (string)$this->session->userdata('Login_ID'); //varchar 20
 		$log['full_name'] = (string)$this->session->userdata('FullName'); //varchar 20
 		
@@ -261,8 +257,14 @@ class  MY_Controller  extends  CI_Controller  {
 
 		$log['date_time'] 	= date('Y-m-d H:i:s', time());
 		$log['ip'] 			= $this->input->ip_address();
-		
-		$this->load->model('activitylog_model');
 		$this->activitylog_model->add($log);
+		
+		//********************
+		
+		$UserOnline['User_account'] = $log['user_id'];
+		$UserOnline['User_name'] = $log['full_name'];
+		$UserOnline['User_update'] = $log['date_time'];	
+		$this->activitylog_model->UserSessionUpdate($UserOnline);
+		
 	}
 }

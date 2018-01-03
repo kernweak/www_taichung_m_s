@@ -89,6 +89,10 @@
 
                   Button_str = Button_str + edit_button3 + edit_button2 +
                 "</div>";
+				var level = file.扶助級別;
+				if (level == "0口"){
+					level = "資格不符";
+				}
 
                 var data = [
                     yyy_dash(date_to_yyy(file.入伍日期,0)),
@@ -99,7 +103,7 @@
                                 '<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: '+"0"+'%;">' +
                                     ''+file.案件階段名稱+'</div>' +
                             '</div>',
-                    file.扶助級別,
+                    level,
                     yyy_dash(date_to_yyy(file.建案日期,0)),
                     file.修改人姓名,
                     file.作業類別名稱,
@@ -282,7 +286,7 @@
 
                 }
 
-                console.log(file.複查進行中);
+                //console.log(file.複查進行中);
                 if(file.複查進行中 == "0"){
                     var Button_str = 
                         '<div class="btn-group" role="group" aria-label="...">'+

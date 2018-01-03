@@ -1,0 +1,30 @@
+#DirectoryIndex index.php
+#RewriteEngine on
+#RewriteCond $1 !^(index\.php|images|css|js|robots\.txt|favicon\.ico)
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^(.*)$ ./index.php/$1 [L,QSA]
+
+
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_URI} !/welcome/sso/?$
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond $1 !^(index\.php|images|0MS|css|js|uploads|robots\.txt|favicon\.ico)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+
+
+
+order deny,allow
+deny from all
+#區公所網段
+allow from 172.18
+#民政局網段
+allow from 192.168.131
+allow from 192.168.132
+#宗儒公司固定IP
+allow from 220.132.142.198
+#宗儒公司內網IP
+allow from 192.168.10.8
+#民政局內網IP
+allow from 192.168.2.179

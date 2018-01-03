@@ -486,9 +486,13 @@ class File extends MY_Controller {
 
 	public function get_calc_setting_by_year(){
 		$year = (int)$this->input->post('year');
+		$thisdate = $this->input->post('thisdate');
+
 		$BankRate = $this->file_model->get_calc_BankRate($year);
 		$MProperty = $this->file_model->get_calc_Movable_Property($year);
 		$LowIncome = $this->file_model->get_calc_LowIncome($year);
+		$MonthlyMinimumWage = $this->file_model->get_calc_Monthly_Minimum_Wage($thisdate);
+
 		$LowInArr = array();
 		foreach ($LowIncome as $LowIn){
 			$LowInArr[] = array($LowIn["縣市"],(int)$LowIn["年度"],(int)$LowIn["月均所得"],(int)$LowIn["不動產限額"]);
@@ -496,6 +500,7 @@ class File extends MY_Controller {
 		$data['LowIncome'] = $LowInArr;
 		$data['BankRate'] = $BankRate;
 		$data['MProperty'] = $MProperty;
+		$data['MMWage'] = $MonthlyMinimumWage;
 		echo json_encode($data);		
 	}
 

@@ -11,7 +11,7 @@
     <link href="/0MS/css/metro.css" rel="stylesheet">
     <link href="/0MS/css/metro-icons.css" rel="stylesheet">
     <link href="/0MS/css/metro-responsive.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="/0MS/js/metro.js"></script>
  
     <style>

@@ -46,11 +46,6 @@ class Ftp extends MY_Controller {
 
 		//print_r($list);
 
-		$this->ftp->close();
-
-		
-			
+		$this->ftp->close();		
 	}
-		
-	
 }

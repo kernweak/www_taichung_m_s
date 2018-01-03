@@ -162,8 +162,8 @@
 	$('input[type=file]').on('change', function(e){
 		$(this).parent().children('.fake_input').val($(this).val());
 		var file = e.currentTarget.files[0];
-		if (file.size > 4194304){ //max file size is 4 MB = 4096 KB = 4194304 Bytes
-			$(this).next('.alert').html('檔案必須小於4MB');
+		if (file.size > 16777216){ //max file size is 4 MB = 4096 KB = 4194304 Bytes
+			$(this).next('.alert').html('檔案必須小於16MB');
 			// $(this).siblings('button').fadeOut('slow');
 			$(this).siblings('button').prop('disabled', true);		
 		}else{

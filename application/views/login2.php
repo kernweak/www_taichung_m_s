@@ -1,8 +1,8 @@
 <?php 
-$UIP = $this->input->ip_address();           
-if($UIP != "220.132.142.198" && $UIP != "192.168.2.179" && $UIP != "192.168.131.73" && $UIP != "127.0.0.1"  && $UIP != "192.168.10.8"){
-    return;
-}
+//$UIP = $this->input->ip_address();           
+//if($UIP != "220.132.142.198" && $UIP != "192.168.131.73" && $UIP != "127.0.0.1"  && $UIP != "192.168.10.8"){
+//    return;
+//}
 ?>
 
 
@@ -18,7 +18,7 @@ if($UIP != "220.132.142.198" && $UIP != "192.168.2.179" && $UIP != "192.168.131.
     <!-- 最新編譯和最佳化的 CSS -->
     <!-- <link rel="stylesheet" type="text/css" href="css/metro-icons.css"> -->
     <link href="/0MS/css/login.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
  
     <style>
         .login-form {

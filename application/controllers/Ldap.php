@@ -8,9 +8,29 @@ class Ldap extends CI_Controller {
         
       
      }
+     public function test4_ldap(){
+        //連到AD Server的帳號密碼
+        $account="192.168.0.105\pinina";
+        $password="#EDCvfr41024";
+        $server="ADLight.tccg.gov.tw";
+        //連線到AD server
+        $conn=ldap_connect($server) or die("Could not connect to LDAP server");
+        //以下兩行務必加上，否則AD無法在不指定OU下，作搜尋的動作
+        ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+        ldap_set_option($conn, LDAP_OPT_REFERRALS, 0);
+        //連線bind帳號密碼
+        $ldap_bd=ldap_bind($conn,$account,$password);
+        //檢查帳號密碼是否正確
+        if ($ldap_bd) {
+            echo "Auth passed!";
+        } else {
+            echo "Auth failed!";
+        }
+     }
+
      public function test3_ldap(){
         $username = 'pinina'; // username to check
-        $password = '@WSXcde31024'; // password to check
+        $password = '#EDCvfr41024'; // password to check
 
         /**
          * Is it an Active Directory?

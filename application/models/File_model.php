@@ -757,7 +757,7 @@ class File_model extends CI_Model {
 			//LV1 承辦人可以，檢視，編輯，呈核
 			/*
 			*/
-			$this->db->where_in('files_status_code.審批階段代號', array(0,1,8));
+			$this->db->where_in('files_status_code.審批階段代號', array(0,1,7,8));
 		}
 		elseif($user_level <= 3){	
 			//區公所使用者登入，應該只能看到自己公所
@@ -773,14 +773,15 @@ class File_model extends CI_Model {
 			//$this->db->where('files_status_code.審批階段代號', $user_level);
 		}
 		//$this->db->where('files_info_table.案件流水號', $file_key);
-		// ini_set('xdebug.var_display_max_depth', 5);
-		// ini_set('xdebug.var_display_max_children', 256);
-		// ini_set('xdebug.var_display_max_data', 1024);
+		//ini_set('xdebug.var_display_max_depth', 5);
+		//ini_set('xdebug.var_display_max_children', 256);
+		//ini_set('xdebug.var_display_max_data', 2048);
 		$query = $this->db->get();
 		$result = $query->result_array();
-		return $result;
+		
 		// var_dump($result);
-		// var_dump($this->db->last_query());
+		//var_dump($this->db->last_query());
+		return $result;
 	}
 	//本機關 被刪除的案件列表
 	public function read_file_list_delete($user_level, $user_organ){
@@ -859,6 +860,21 @@ class File_model extends CI_Model {
 		log_message('debug', 'town query result:');
 		log_message('debug', print_r($result,true));		
 		return $result;
+	}
+
+	function get_calc_Monthly_Minimum_Wage($thisdate){
+		//$thisdate = $thisdate." 00:00:00";
+		$this->db->select('月薪資額');
+		$this->db->from('cnf_monthly_minimum_wage');
+		$this->db->where('啟用日期 <=', $thisdate);
+		$this->db->order_by('啟用日期', "desc");
+		$this->db->limit(1);
+		$query = $this->db->get();
+		$result = $query->result();
+		log_message('debug', 'town query result:');
+		log_message('debug', print_r($result,true));		
+		return $result;
+
 	}
 
 }

@@ -19,6 +19,7 @@ $Img_Path = "C:\wamp_25_64\www\mcare\uploads\*.*";
 
 // 修改完配置文件后, 只需要执行mysqldump 脚本就可以了。备份脚本中不需要涉及用户名密码相关信息。
 $CC = "C:\wamp_25_64\bin\mysql\mysql5.6.17\bin\mysqldump military_family_support_taichung --single-transaction > ";
+//$CC = "C:\wamp_25_64\bin\mysql\mysql5.6.17\bin\mysqldump --all-databases –lock-all-tables > ";
 
 system($CC.$OutTemp_Path."\MFST_DB_Backup.sql");
 //sleep(10);//最後上線前改成30秒

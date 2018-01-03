@@ -11,7 +11,7 @@ class Statistics_model extends CI_Model {
     	$this->db->from('files_info_table');
     	$this->db->join('area_town', 'area_town.Town_code = files_info_table.town','left');
     	$this->db->where("`files_info_table`.`建案日期` BETWEEN '{$Date_1}' and '{$Date_2}'");
-      $this->db->where("案件刪除", 0);
+        $this->db->where("案件刪除", 0);
     	$this->db->group_by('town');
     	$this->db->order_by('amount');
     	$query = $this->db->get();
