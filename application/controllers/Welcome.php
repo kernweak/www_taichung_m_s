@@ -229,6 +229,8 @@ class Welcome extends MY_Controller {
 			$this->session->unset_userdata('organization');
 			$this->session->unset_userdata('department');
 			$this->session->unset_userdata('User_Level');
+			$this->session->unset_userdata('Edit_Town');
+			$this->session->unset_userdata('Edit_County');
 			$this->session->unset_userdata('SSO');
 
 			$Login_ID = $id;
@@ -304,6 +306,15 @@ class Welcome extends MY_Controller {
 					'User_login_time'	=> (string)date('Y-m-d H:i:s', time()),
 					'IP'				=> $this->input->ip_address()
 				);
+
+				if($system_level == 1){
+					$Insert_Val["Edit_Town"]=1;
+					$Update_Val["Edit_Town"]=1;
+				}elseif($system_level == 4){
+					$Insert_Val["Edit_County"]=1;
+					$Update_Val["Edit_County"]=1;
+				}
+				
 				$this->user_model->Insert_Update_ON_DUPLICATE("user_oss", $Insert_Val, $Update_Val);
 			}else{
 				//$id, $name, $ou, $title
@@ -343,6 +354,8 @@ class Welcome extends MY_Controller {
 				$organization = $query->row()->機關;
 				$department = $query->row()->單位;
 				$User_Level = $query->row()->系統等級;
+				$Edit_Town = $query->row()->Edit_Town;
+				$Edit_County = $query->row()->Edit_County;
 				
 				$this->log_activity($activity1="試圖SSO登入", $activity2="已看到存在應用系統", $activity3="");
 
@@ -361,6 +374,8 @@ class Welcome extends MY_Controller {
 				$this->session->set_userdata('organization', $organization);
 				$this->session->set_userdata('department', $department);
 				$this->session->set_userdata('User_Level', $User_Level);
+				$this->session->set_userdata('Edit_Town', $Edit_Town);
+				$this->session->set_userdata('Edit_County', $Edit_County);
 				$this->session->set_userdata('SSO', 1);
 				
 				$this->log_activity($activity1="SSO成功登入", $activity2="已看到存在應用系統", $activity3="");

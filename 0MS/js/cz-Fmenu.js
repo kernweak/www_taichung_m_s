@@ -138,8 +138,18 @@
 	//放棄修改-重新讀取
     function reload_file(year){
 
-        //read_file_test($(".people_home").attr('file_id'));
-        update_calc_setting_by_year(year,$(".people_home").attr('file_id'));
+        //read_file_test($(".people_home").attr('file_id'));//PH-milidate
+
+
+        var thisdate = $("#PH-milidate").text() + " 00:00:00";
+        var a = thisdate.split("-");
+        var Myear = thisdate.substr(0,3);
+        Myear = parseInt(Myear) + 1911;
+        Myear = Myear + thisdate.substr(3);
+
+
+
+        update_calc_setting_by_year(year,$(".people_home").attr('file_id'), Myear);
     }
 
     //新增役男-改為修復用

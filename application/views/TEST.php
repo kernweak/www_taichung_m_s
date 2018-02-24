@@ -33,10 +33,10 @@
     <script src="/0MS/js/cz-Fmenu.js?<?php echo time(); ?>"></script>
     <script src="/0MS/js/bootstrap-toggle.min.js"></script>
     <script>
-        var User_Level = <?php echo $User_Level ?>;
-        var organization = '<?php echo $organization ?>';
-        var FullName = '<?php echo $FullName ?>';
-        var BatchPro = '<?php echo $BatchPro ?>';
+        var User_Level = <?php echo $User_Level ?>;         //使用者等級
+        var organization = '<?php echo $organization ?>';   //機關名稱
+        var FullName = '<?php echo $FullName ?>';           //使用者全名
+        var BatchPro = '<?php echo $BatchPro ?>';           //批次批核功能
     </script>
 </head>
 

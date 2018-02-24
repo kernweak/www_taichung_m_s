@@ -311,7 +311,16 @@
         });*/
         $("body").on('change', 'input', function(event) {
             event.preventDefault();
-            this.value = NTW(this.value);
+            if($(this).attr('type') != "file"){     //2018-01-03 檢查是否為檔案上傳欄位，避免干擾
+                this.value = NTW(this.value);
+            }
+            /* Act on the event */
+        });
+
+        $("body").on('change', 'textarea', function(event) {
+            //消除空白字元會導致換行符號也消除掉，先不修改
+            //event.preventDefault();
+            //this.value = NTW(this.value);
             /* Act on the event */
         });
     });
